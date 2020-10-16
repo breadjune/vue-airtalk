@@ -12,6 +12,10 @@ import Maps from 'src/pages/Maps.vue'
 import Notifications from 'src/pages/Notifications.vue'
 import Upgrade from 'src/pages/Upgrade.vue'
 
+import MemberManage from 'src/pages/admin/member/MemberManage.vue'
+import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
+
+
 const routes = [
   {
     path: '/',
@@ -28,6 +32,21 @@ const routes = [
         name: 'Overview',
         component: Overview
       },
+      {
+        path: 'member-list',
+        name: 'Member',
+        component: MemberManage
+      },
+      {
+        path: 'member-view',
+        name: 'MemberInfo',
+        component: MemberInfo
+      },
+      /*{
+        path: 'user-register',
+        name: 'User',
+        component: UserRegister
+      },*/
       {
         path: 'user',
         name: 'User',

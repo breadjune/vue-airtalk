@@ -6,15 +6,27 @@
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/admin/user">
+      <sidebar-link to="/admin/member-list">
         <i class="nc-icon nc-circle-09"></i>
-        <p>User Profile</p>
+        <p>회원 관리</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/admin-list">
+        <i class="nc-icon nc-circle-09"></i>
+        <p>계정 관리</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/menu-list">
+        <i class="nc-icon nc-notes"></i>
+        <p>메뉴 관리</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/group-list">
+        <i class="nc-icon nc-layers-3"></i>
+        <p>권한 관리</p>
       </sidebar-link>
       <sidebar-link to="/admin/table-list">
         <i class="nc-icon nc-notes"></i>
         <p>Table list</p>
       </sidebar-link>
-      <sidebar-link to="/admin/typography">
+      <!--<sidebar-link to="/admin/typography">
         <i class="nc-icon nc-paper-2"></i>
         <p>Typography</p>
       </sidebar-link>
@@ -38,6 +50,7 @@
           <p>Upgrade to PRO</p>
         </sidebar-link>
       </template>
+      -->
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>

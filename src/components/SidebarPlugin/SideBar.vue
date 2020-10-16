@@ -43,11 +43,11 @@
     props: {
       title: {
         type: String,
-        default: 'Vue LBD'
+        default: 'Air Talk'
       },
       backgroundColor: {
         type: String,
-        default: 'black',
+        default: 'red',
         validator: (value) => {
           let acceptedValues = ['', 'blue', 'azure', 'green', 'orange', 'red', 'purple', 'black']
           return acceptedValues.indexOf(value) !== -1
