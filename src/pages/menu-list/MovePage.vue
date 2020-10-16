@@ -1,12 +1,14 @@
 <template>
     <div>
+        <h1>메뉴 관리</h1>
+        {{ funclist}}
         <menu-tree></menu-tree>
-        <detail-table v-bind="detailList"></detail-table>
+        <menu-info v-bind="detailList"></menu-info>
     </div>
 </template>
 <script>
 import axios from 'axios'
-import detailVue from './detail.vue';
+import menuinfo from './menuInfo.vue';
 import menutree from './menutree.vue';
 
 export default {
@@ -22,7 +24,8 @@ export default {
                 regdate : '7',
                 moddate : '8'
             },
-            id : '1'
+            funclist: [],
+            id : '3'
         }
     },
     created() {
@@ -36,11 +39,19 @@ export default {
                 this.detailList.regdate=result.data.regDate;
                 this.detailList.moddate=result.data.modDate;
             });
+        const re = axios.get('/admin/menu/function', {params : { id : this.id}}).then(result =>{
+            console.log("result1 - : " + result);
+            console.log("result2 - : " + result.data);
+            this.funclist = result.data;
+
+                // this.menufunc.funcList = result.data.Item;
+                // console.log('function - '+this.menufunc.funcList);
+            });
         
     },
     components : {
         'menu-tree' : menutree,
-        'detail-table' : detailVue
+        'menu-info' : menuinfo
     },
     methods : {
         
