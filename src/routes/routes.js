@@ -15,6 +15,9 @@ import Upgrade from 'src/pages/Upgrade.vue'
 import MemberManage from 'src/pages/admin/member/MemberManage.vue'
 import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
+import GroupManage from 'src/pages/admin/group/GroupManage.vue'
+import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
+
 
 const routes = [
   {
@@ -41,6 +44,16 @@ const routes = [
         path: 'member-view',
         name: 'MemberInfo',
         component: MemberInfo
+      },
+      {
+        path: 'group-list',
+        name: 'Group',
+        component: GroupManage
+      },
+      {
+        path: 'group-view',
+        name: 'GroupInfo',
+        component: GroupInfo
       },
       /*{
         path: 'user-register',
