@@ -3,6 +3,7 @@ import DashboardLayout from '../layout/DashboardLayout.vue'
 import NotFound from '../pages/NotFoundPage.vue'
 
 // Admin pages
+import Login from 'src/pages/Login.vue'
 import Overview from 'src/pages/Overview.vue'
 import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
@@ -15,14 +16,18 @@ import Upgrade from 'src/pages/Upgrade.vue'
 import MemberManage from 'src/pages/admin/member/MemberManage.vue'
 import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
-import AdminManager from 'src/pages/admin/adminManager/AdminManager.vue'
-
+import Menu from 'src/pages/menu-list/Menu.vue'
+import MovePage from 'src/pages/menu-list/MovePage.vue'
 
 const routes = [
   {
     path: '/',
     component: DashboardLayout,
     redirect: '/admin/overview'
+  },
+  {
+    path: '/login',
+    component: Login
   },
   {
     path: '/admin',
@@ -88,6 +93,16 @@ const routes = [
         path: 'upgrade',
         name: 'Upgrade to PRO',
         component: Upgrade
+      },
+      {
+        path: '/admin/menu-list',
+        name : 'Menu',
+        component: Menu,
+      },
+      {
+        path: '/admin/movePage',
+        name : 'MovePage',
+        component: MovePage,
       }
     ]
   },

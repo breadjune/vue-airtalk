@@ -20,6 +20,7 @@ import App from './App.vue'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/css/demo.css'
 
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
@@ -37,6 +38,11 @@ Vue.use(LightBootstrap)
 
 // configure router
 const router = new VueRouter({
+<<<<<<< HEAD
+  mode: 'history',
+=======
+  mode:'history',
+>>>>>>> 0cf94782c226edd2d2280bac0db4343945c04c60
   routes, // short for routes: routes
   linkActiveClass: 'nav-item active',
   scrollBehavior: (to) => {
