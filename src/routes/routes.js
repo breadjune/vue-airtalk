@@ -19,6 +19,8 @@ import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 import Menu from 'src/pages/menu-list/Menu.vue'
 import MovePage from 'src/pages/menu-list/MovePage.vue'
 
+import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
+
 const routes = [
   {
     path: '/',
