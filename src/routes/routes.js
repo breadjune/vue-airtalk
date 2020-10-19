@@ -49,6 +49,11 @@ const routes = [
         name: 'MemberInfo',
         component: MemberInfo
       },
+      {
+        path: 'admin-list',
+        name: 'Amdin',
+        component: AdminManager
+      },
       /*{
         path: 'user-register',
         name: 'User',
