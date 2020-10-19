@@ -3,6 +3,7 @@ import DashboardLayout from '../layout/DashboardLayout.vue'
 import NotFound from '../pages/NotFoundPage.vue'
 
 // Admin pages
+import Login from 'src/pages/Login.vue'
 import Overview from 'src/pages/Overview.vue'
 import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
@@ -18,12 +19,20 @@ import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 import GroupManage from 'src/pages/admin/group/GroupManage.vue'
 import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
 
+import Menu from 'src/pages/menu-list/Menu.vue'
+import MovePage from 'src/pages/menu-list/MovePage.vue'
+
+import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
 
 const routes = [
   {
     path: '/',
     component: DashboardLayout,
     redirect: '/admin/overview'
+  },
+  {
+    path: '/login',
+    component: Login
   },
   {
     path: '/admin',
@@ -54,6 +63,11 @@ const routes = [
         path: 'group-view',
         name: 'GroupInfo',
         component: GroupInfo
+      },
+      {
+        path: 'admin-list',
+        name: 'Amdin',
+        component: AdminManager
       },
       /*{
         path: 'user-register',
@@ -94,6 +108,16 @@ const routes = [
         path: 'upgrade',
         name: 'Upgrade to PRO',
         component: Upgrade
+      },
+      {
+        path: '/admin/menu-list',
+        name : 'Menu',
+        component: Menu,
+      },
+      {
+        path: '/admin/movePage',
+        name : 'MovePage',
+        component: MovePage,
       }
     ]
   },

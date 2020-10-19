@@ -826,3 +826,21 @@
 .documentation .dropdown .dropdown-menu.show {
     transform: translate3d(0, 39px, 0) !important;
 }
+
+/* login */  
+/* .container-row {
+    padding: 5%;
+    border: 1px solid black;
+    max-width: 40rem;
+} */
+.login-row {
+    height: 40rem;
+}
+.login-form {
+    margin : 0;
+    padding: 2% 5% 2% 5%;
+    max-width: 30rem;
+}
+.login-reset {
+    margin-left: 5%;
+}
