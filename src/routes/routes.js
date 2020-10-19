@@ -15,6 +15,8 @@ import Upgrade from 'src/pages/Upgrade.vue'
 import MemberManage from 'src/pages/admin/member/MemberManage.vue'
 import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
+import AdminManager from 'src/pages/admin/adminManager/AdminManager.vue'
+
 
 const routes = [
   {
@@ -41,6 +43,11 @@ const routes = [
         path: 'member-view',
         name: 'MemberInfo',
         component: MemberInfo
+      },
+      {
+        path: 'admin-list',
+        name: 'Amdin',
+        component: AdminManager
       },
       /*{
         path: 'user-register',
