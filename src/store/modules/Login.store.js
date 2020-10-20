@@ -28,16 +28,19 @@ const loginStore = {
             state.name = data.name
             state.errorCode = data.errorCode
             state.adminGroupSeq = data.adminGroupSeq
-            state.isAuth = data.isAuth
+            state.isAuth = true
+        },
+        setAuthComplete (state) {
+            state.isAuth = true
         }
     },
     actions: {
-        LOGIN ({commit}) {
-            // return axios.post(`${resourHost}/login.json`, {uid, password})
-            //     .then(({data}) => {
-            //         commit('LOGIN', data)
-            //     })
+        setLogininfo ({commit, /*state*/}) {
+            console.log("action invoked!");
             commit('loginComplete', data)
+        },
+        setAuth ({commit}) {
+            commit('setAuthComplete')
         }
     }
 }

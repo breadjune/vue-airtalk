@@ -45,7 +45,6 @@
               <b-form-group id="input-group-2" label="Password:" label-for="input-pw">
                 <b-form-input id="input-pw" v-model="form.password" placeholder="Enter Password" required></b-form-input>
               </b-form-group>
-              {{ msg }}
               <div class="login-btn text-center mt-6">
                 <b-button type="submit" variant="primary" class="login-submit">Login</b-button>
                 <b-button type="reset" variant="danger" class="login-reset">Reset</b-button>
@@ -57,18 +56,32 @@
 </template>
 
 <script>
+  /*(function() {
+    if(this.$store.getters.getIsAuth) {
+          console.log("awaked function invoked!")
+          this.$router.push('/admin/overview');
+        }
+  }());*/
+
   import axios from 'axios'
+
+  const loginStore = 'loginStore'
 
   export default {
     data() {
       return {
         form: {
           email: '',
-          password: '',
-          msg: ''
+          password: ''
         },
         show: true
       }
+    },
+    mounted(){
+        console.log("auth : " + this.$store.getters.getIsAuth);
+        if(this.$store.getters.getIsAuth) {
+          this.$router.push('/admin/overview');
+        }
     },
     methods: {
       onSubmit(evt) {
@@ -80,17 +93,18 @@
           if(result.status === 200 && result.data != null ) {
             var data = result.data;
             console.log("data : " + JSON.stringify(data));
+            this.$store.commit("loginStore/loginComplete", data)
+            console.log("auth2 : " + this.$store.getters.getIsAuth);
+            // this.$session.start()
+            // this.$session.set('name', data.name);
+            // this.$session.set('admin', data.adminGroupSeq);
+            // this.$session.set('errorCode', data.errorCode);
 
-            this.$session.start()
-            this.$session.set('name', data.name);
-            this.$session.set('admin', data.adminGroupSeq);
-            this.$session.set('errorCode', data.errorCode);
-
-            console.log("session : " + this.$session.get("name"));
+            // console.log("session : " + this.$session.get("name"));
             
             this.$router.push('/admin/overview');
           } else {
-            this.msg = '아이디 또는 비밀번호가 일치하지 않습니다.'
+            this.$store.dispatch('loginStore/setAuth')
           }
           
         });  
@@ -98,6 +112,8 @@
       onReset(evt) {
         evt.preventDefault()
         // Reset our form values
+        var getAuth = this.$store.getters.getIsAuth;
+        console.log("getAuth : " + getAuth);
         this.form.email = ''
         this.form.password = ''
         // Trick to reset/clear native browser form validation state
