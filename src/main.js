@@ -16,6 +16,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
+import VueSession from 'vue-session'
 
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -35,6 +36,7 @@ import './registerServiceWorker'
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(LightBootstrap)
+Vue.use(VueSession)
 
 // configure router
 const router = new VueRouter({
@@ -49,6 +51,11 @@ const router = new VueRouter({
     }
   }
 })
+
+// configure vue-session
+const sessionOptions = {
+  persist: true
+}
 
 /* eslint-disable no-new */
 new Vue({

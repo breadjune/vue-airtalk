@@ -833,14 +833,23 @@
     border: 1px solid black;
     max-width: 40rem;
 } */
+.login-container {
+    min-width: 40rem;
+}
 .login-row {
     height: 40rem;
 }
 .login-form {
     margin : 0;
     padding: 2% 5% 2% 5%;
-    max-width: 30rem;
+    min-width: 20rem;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px #666666;
 }
 .login-reset {
     margin-left: 5%;
+}
+.login-btn {
+    margin-top: 50px;
 }
