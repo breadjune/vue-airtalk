@@ -63,7 +63,8 @@ const routes = [
       {
         path: 'group-view',
         name: 'GroupInfo',
-        component: GroupInfo
+        component: GroupInfo,
+        props: true
       },
       {
         path: 'group-create',
