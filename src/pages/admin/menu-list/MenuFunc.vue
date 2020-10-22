@@ -8,24 +8,24 @@
 <script>
 export default {
     props:{
-        // id : Array,
-        // title : Array,
-        // points : Array,
-        // user : Array,
-        // time : Array,
-        // time_ago : Array,
-        // comments_count : Array,
-        // type : Array,
-        // url : Array,
-        // domain : Array
-        funcSeq : Array,
-        menuSeq : Array,
-        name : Array,
+        id : Array,
+        title : Array,
+        points : Array,
+        user : Array,
+        time : Array,
+        time_ago : Array,
+        comments_count : Array,
+        type : Array,
         url : Array,
-        auth : Array,
-        description : Array,
-        regDate : Array,
-        modDate : Array
+        domain : Array
+        // funcSeq : Array,
+        // menuSeq : Array,
+        // name : Array,
+        // url : Array,
+        // auth : Array,
+        // description : Array,
+        // regDate : Array,
+        // modDate : Array
     },
     data() {
       return {
@@ -40,9 +40,9 @@ export default {
     },
     created(){
         console.log('func page');
-        console.log('length : ' + this.funcSeq.length);
-        for(var i = 0; i<this.funcSeq.length; i++){
-            this.items.push({ NAME: this.funcSeq[i], URL: this.funcSeq[i], AUTH: this.funcSeq[i], aa:''});
+        console.log('length : ' + this.id.length);
+        for(var i = 0; i<this.id.length; i++){
+            this.items.push({ NAME: this.id[i], URL: this.type[i], AUTH: this.url[i], aa:''});
         }
 
     }
