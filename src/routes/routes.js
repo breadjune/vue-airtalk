@@ -19,8 +19,8 @@ import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 import GroupManage from 'src/pages/admin/group/GroupManage.vue'
 import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
 
-import Menu from 'src/pages/menu-list/Menu.vue'
-import MovePage from 'src/pages/menu-list/MovePage.vue'
+import Menu from 'src/pages/admin/menu-list/Menu.vue'
+import MovePage from 'src/pages/admin/menu-list/MovePage.vue'
 
 import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
 
@@ -110,12 +110,12 @@ const routes = [
         component: Upgrade
       },
       {
-        path: '/admin/menu-list',
+        path: 'menu-list',
         name : 'Menu',
         component: Menu,
       },
       {
-        path: '/admin/movePage',
+        path: 'movePage',
         name : 'MovePage',
         component: MovePage,
       }

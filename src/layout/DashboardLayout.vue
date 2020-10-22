@@ -78,6 +78,11 @@
       DashboardContent,
       MobileMenu
     },
+    // created(){
+    //     if(!this.$store.getters.getIsAuth) {
+    //       this.$router.push('/login');
+    //     }
+    // },
     methods: {
       toggleSidebar () {
         if (this.$sidebar.showSidebar) {
