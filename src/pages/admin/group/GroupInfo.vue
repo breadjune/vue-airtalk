@@ -5,14 +5,14 @@
         <div class="col-md-12">
          
 <b-button v-b-toggle.collapse-1 variant="primary">
-  {{ this.$store.getters['memberStore/memberInfo'].adminId}} 
-  ({{ this.$store.getters['memberStore/memberInfo'].adminName }})
+  {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq}} 
+  ({{ this.$store.getters['groupStore/memberInfo'].id }})
   </b-button>
     
              <b-collapse id="collapse-1">
         <b-list-group style="text-align:left;">
-          <b-list-group-item>아이디: {{ this.$store.getters['memberStore/memberInfo'].adminId }}</b-list-group-item>
-          <b-list-group-item>이름: {{ this.$store.getters['memberStore/memberInfo'].adminName }}</b-list-group-item>
+          <b-list-group-item>아이디: {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq }}</b-list-group-item>
+          <b-list-group-item>이름: {{ this.$store.getters['groupStore/memberInfo'].id }}</b-list-group-item>
         </b-list-group>
     </b-collapse>
 
@@ -86,12 +86,10 @@ export default {
   data() {
     return {
       user: {
-          adminId: this.$store.getters['memberStore/memberInfo'].adminId,
-          firstName: 'Mike',
-          company: 'Light dashboard',
-          username: 'michael23',
-          lastName: 'Andrew',
-          address: 'Melbourne, Australia'
+          authGroupSeq: this.$store.getters['groupStore/memberInfo'].authGroupSeq,
+          authName: '',
+          desc: '',
+          regDate: '',
       },
       form: {
           adminId: ''
@@ -100,14 +98,17 @@ export default {
       
   },
   mounted() {
-    this.form.adminId = this.$route.params.adminId
+    this.form.authGroupSeq = this.$route.params.authGroupSeq
     this.getInitPageData()
-    console.log('MemberInfo: ' + this.form.adminId);
+    console.log('MemberInfo: ' + this.form.authGroupSeq);
   },
   methods: {
     async getInitPageData() {
-      var data = await this.request('/admin/member/getMemberInfoBySeq.json', this.form)
-      this.$store.dispatch("memberStore/getMemberInfoBySeq", data)
+      var data = await this.request('/admin/member/getGroupInfoBySeq.json', this.form)
+      console.log('파라미터 정보 : ' + data);
+       alert("Hello! Spring type post2!");
+
+      this.$store.dispatch("memberStore/getGroupInfoBySeq", data)
     }
   }
 }
