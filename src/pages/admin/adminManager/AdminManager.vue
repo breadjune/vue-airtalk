@@ -1,79 +1,85 @@
 <template>
-<div class="content">
+  <div class="content">
     <div class="container-fluid">
       <div class="row">
-
         <div class="col-12">
-          
-          <card>
+          <card class="strpied-tabled-with-hover"
+                body-classes="table-full-width table-responsive">
+
             <template slot="header">
               <h4 class="card-title">Admin Manger</h4>
               <p class="card-category">계정 관리</p>
             </template>
-
-            ID     : <input type="text" v-model="id" value=""><br>
-            PW     : <input type="text" v-model="pw" value=""><br>
-            RESULT : <input type="text" v-model="inputTest" value="" :disabled="validated ? disabled : ''"><br>
-            {{ result }} <br>
-            <b-button name="btn" class="btn-info btn-fill" variant="primary" id="getBtn" @click="getBtn">getBtn</b-button> &nbsp;
-            <b-button name="btn" class="btn-info btn-fill" variant="primary" id="postBtn" @click="postBtn">postBtn</b-button><br>
-
+            <b-table
+                striped
+                hover
+                ref="selectableTable"
+                selectable
+                select-mode="single"
+                :fields="fields"
+                :list="list"
+                @row-selected="onRowSelected">
+              <!-- <tr v-for="(item, index) in items" :key="index">
+                <td>{{item.adminId}}</td>
+                <td>{{item.adminName}}</td>
+                <td>{{item.adminGroupSeq}}</td>
+                <td>{{item.regDate}}</td>
+                <td><button name="test" value="test">test</button></td>
+              </tr> -->
+              </b-table>
           </card>
-
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios"
 
 export default {
   data() {
-      return {
-          result : "",
-          inputTest : "",
-          id : "",
-          validated : "",
-          pw : ""
+    return {
+      list: {
+        adminId : '', 
+        adminName : '', 
+        adminGroupSeq : '', 
+        regDate : ''
+      },
+      fields: ['사용자ID', '사용자이름', '사용자그룹', '등록일'],
+      items: {
+        adminId: Array, 
+        adminName: Array, 
+        adminGroup: Array, 
+        regDate: Array
       }
+    }
   },
   
-  methods:{
-    getBtn() {
-        alert("Hello! Spring type get!")
-        axios.get('/admin/admin-list/getTest?title=getTestTitle').then(result => {
-            alert(result.data);
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      axios
+        .get("/admin/admin-list/adminSearch")
+        .then((result) => {
+          console.log(result.data);
+          console.log("adminId : " +result.data.adminList.getAdminId);
+          // this.adminId = result.data.amdinList.adminId;
+          // this.adminName = result.data.amdinList.adminName;
+          // this.adminGroupSeq = result.amdinList.data.adminGroupSeq;
+          // this.regDate = result.data.amdinList.regDate;
+          this.items.adminId.put(result.data.getAdminId);
+          this.items.adminName.put(result.data.getAdminName);
+          this.items.adminGroup.put(result.data.getAdminGroup);
+          this.items.regDate.put(result.data.getRegDate);
         })
-        .catch(e => {
-            console.log('error : ' + e);
-        })
+        .catch((e) => {
+          console.log("error : " + e);
+        });
     },
-
-    postBtn() {
-        let data = {
-            id : this.id,
-            pw : this.pw
-        };
-        alert("Hello! Spring type post!");
-
-        console.log("id : " + this.id);
-        console.log("pw : " + this.pw);
-
-        axios.post('/admin/admin-list/postTest', data).then(result => {
-            console.log("result.data : " + result.data);
-            this.result = result.data;
-            this.inputTest = result.data;
-            alert(result.data);
-        })
-        .catch(e => {
-            console.log('error : ' + e);
-           })
-        }
-    }
-}
-
+  }
+};
 </script>
 
