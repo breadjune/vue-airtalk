@@ -70,10 +70,10 @@ export default {
           // this.adminName = result.data.amdinList.adminName;
           // this.adminGroupSeq = result.amdinList.data.adminGroupSeq;
           // this.regDate = result.data.amdinList.regDate;
-          this.items.adminId.put(result.data.getAdminId);
-          this.items.adminName.put(result.data.getAdminName);
-          this.items.adminGroup.put(result.data.getAdminGroup);
-          this.items.regDate.put(result.data.getRegDate);
+          this.items.adminId = result.data.getAdminId;
+          this.items.adminName = result.data.getAdminName;
+          this.items.adminGroup = result.data.getAdminGroup;
+          this.items.regDate = result.data.getRegDate;
         })
         .catch((e) => {
           console.log("error : " + e);
