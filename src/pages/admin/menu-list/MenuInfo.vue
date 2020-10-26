@@ -44,27 +44,10 @@
             </table>
             <button class="btn btn-info btn-fill btn-primary">수정</button>
         </form>
-
-        <h4>Menu_func</h4>
-        <b-table striped hover :items="items"></b-table>
   </div>
 </template>
 <script>
 export default {
     props:['seq','title','type','url','icon','description','regdate','moddate'],
-    data() {
-      return {
-        items: [
-          { NAME: 40, URL: 'Dickerson', AUTH: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ]
-      }
-    },
-    created(){
-        console.log('menuInfo vue console ... ');
-        console.log(this.$props.seq);
-    }
 }
 </script>
