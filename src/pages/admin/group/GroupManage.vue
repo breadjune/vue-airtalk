@@ -5,8 +5,9 @@
         <div class="col-12">
           <card>
             <template slot="header">
-              <h4 class="card-title">권한 관리</h4>
+              <h3 class="card-title">권한 관리</h3>
               <p class="card-category">여기는 권한을 관리하는 곳입니다.</p>
+              <hr>
             </template>
             <b-form inline>
               <b-form-select
@@ -18,24 +19,23 @@
               <div class="mt-3">
                 <strong>{{ form.searchType }}</strong>
               </div>
-
               <b-form-input
+                class="mb-2 mr-sm-2 mb-sm-0"
                 id="adminName"
                 name="adminName"
                 v-model="form.searchWord"
               ></b-form-input>
               <div>
                 <b-button
-                  class="btn-info btn-fill"
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="groupList()"
                   >목록 출력
                 </b-button>
               </div>
-
               <div>
                 <b-button
-                  class="btn-info btn-fill"
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage"
                   >목록 추가
@@ -46,6 +46,7 @@
             <b-table
               striped
               hover
+              outlined
               ref="selectableTable"
               selectable
               select-mode="single"
@@ -117,6 +118,7 @@ export default {
   methods: {
     init: async function () {
       var data = await this.request("/admin/group/search.json", this.form);
+      console.log("DB 정보 확인 : " + JSON.stringify(data));
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
     onRowSelected(items) {
@@ -126,7 +128,7 @@ export default {
       console.log("파라미터 : " + items[0].regDate);
 
        alert("콘솔창 확인 ");
-
+      
       this.$router.push({
         name: "GroupInfo",
         params: { authGroupSeq : items[0].authGroupSeq,
@@ -137,6 +139,8 @@ export default {
       });
     },
     async groupList() {
+      // params 테스트 용 
+      // this.$router.push({name: 'GroupInfo', params: {authGroupSeq: '1', age:4}})
       var data = await this.request("/admin/group/search.json", this.form);
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },

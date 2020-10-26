@@ -36,7 +36,6 @@ const groupStore = {
     },
     actions: {
         selectGroupListBySearchWord({ commit, /*state*/ }) {
-            console.log("selectGroupListBySearchWord : " + arguments[1]);
             commit('successSelectGroupListBySearchWord', arguments[1]);
         },
         getGroupInfoBySeq({ commit, /*state*/ }) {

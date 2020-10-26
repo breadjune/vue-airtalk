@@ -8,7 +8,7 @@
             {{ this.$store.getters["memberStore/memberInfo"].adminName }}
             회원 정보
           </b-button> -->
-<!-- 
+          <!-- 
           <b-collapse id="collapse-1">
             <b-list-group style="text-align: left">
               <b-list-group-item
@@ -27,74 +27,92 @@
           </b-collapse> -->
 
           <card>
-            <h4 slot="header" class="card-title">권한 관리 추가 </h4>
-            <hr>
+            <h3 slot="header" class="card-title">권한 관리 추가</h3>
+            <p class="card-category">권한 관리 그룹을 추가해 주십시오.</p>
+            <hr />
             <b-form id="form">
-              <div class="row">
-                <div class="col-md-6">
-                  <label> 관리자 ID </label>
-                  <b-input
-                    name="id"
-                    type="text"
-                    placeholder="관리자 ID"
-                    v-model="user.id">
-                  </b-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <label> 관리자 명 </label>
-                  <b-input
-                    name="gname"
-                    type="text"
-                    placeholder="관리자 명"
-                    v-model="user.gname">
-                  </b-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
+              <b-row>
+                <div class="col-md-3"></div>
+                <div class="col-md-6 ml-sm-3">
                   <label> 사용자 그룹 </label>
                   <b-input
                     name="userGroup"
                     type="text"
                     placeholder="사용자 그룹"
-                    v-model="user.userGroup">
+                    v-model="user.userGroup"
+                  >
                   </b-input>
                 </div>
-              </div>
+              </b-row>
 
-              <div class="row">
-                <div class="col-md-6">
+              <b-row>
+                <div class="col-md-3"></div>
+                <div class="col-md-6 ml-sm-3">
+                  <label> 설명 </label>
+                  <b-input
+                    name="gname"
+                    type="text"
+                    placeholder="관리자 명"
+                    v-model="user.gname"
+                  >
+                  </b-input>
+                </div>
+              </b-row>
+              <b-row>
+                <div class="col-md-3"></div>
+                <div class="col-md-6 ml-sm-3">
+                  <label> 메뉴별 권한 </label>
+
+                  <b-table
+                    striped
+                    ref="selectableTable"
+                    selectable
+                    select-mode="single"
+                    :fields="fields"
+                    :items="items"
+                  >
+                    <template #cell(show_details)>
+                      <b-form-select
+                        v-model="selected"
+                        :options="options"
+                      ></b-form-select>
+                    </template>
+                  </b-table>
+                </div>
+              </b-row>
+              <b-row>
+                <div class="col-md-3"></div>
+                <div class="col-md-6 ml-sm-3">
                   <label> 등록일 </label>
                   <b-input
                     name="regDate"
                     type="text"
                     disabled="true"
                     placeholder="2020-10-20"
-                    v-model="user.regDate">
+                    v-model="user.regDate"
+                  >
                   </b-input>
                 </div>
-              </div>
-
+              </b-row>
+              <div class="col-md-4"></div>
               <div class="text-center">
-                <button
-                  class="btn btn-info btn-fill float-right"
+                <b-button
+                  pill
+                  variant="success"
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click="create()"
                 >
                   저장
-                </button>
-              </div>
-              <div class="text-center">
-                <button
+                </b-button>
+
+                <b-button
+                  pill
                   type="submit"
-                  class="btn btn-info btn-fill float-right"
+                  class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click.prevent="movePage"
                 >
                   목록
-                </button>
+                </b-button>
               </div>
               <div class="clearfix"></div>
             </b-form>
@@ -108,48 +126,66 @@
 
 <script>
 const groupStore = "groupStore";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "GroupCreate",
   data() {
     return {
-       user: {
-          id : '',
-          gname : '',
-          userGroup : '',
-          regDate : '2020-10-21',
+      user: {
+        userGroup: "",
+        gname: "",
+        regDate: "2020-10-21",
       },
+      fields: ["first_name", "show_details"],
+      items: [
+        { first_name: "회원관리" },
+        { first_name: "계정관리" },
+        { first_name: "메뉴관리" },
+      ],
+      selected: "R",
+      options: [
+        { value: "R", text: "읽기" },
+        { value: "RA", text: "읽기/승인" },
+        { value: "RC", text: "읽기/생성" },
+        { value: "RUA", text: "읽기/수정/승인" },
+        { value: "RCU", text: "읽기/생성/수정" },
+        { value: "RCUD", text: "읽기/생성/수정/삭제" },
+        { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
+      ],
     };
   },
   methods: {
-      movePage : function(event){
-        this.$router.push('/admin/group-list')
+    movePage: function (event) {
+      this.$router.push("/admin/group-list");
     },
-      async create(){
-           let data = {
-            id : this.user.id,
-            gname : this.user.gname,
-            userGroup : this.user.userGroup,
-            regDate : this.user.regDate
-        };
+    async create() {
+      let data = {
+        gname: this.user.gname,
+        userGroup: this.user.userGroup,
+        auth: this.selected, 
+        regDate: this.user.regDate,
+      };
 
-        console.log("id : " + this.user.id);
-        console.log("pw : " + this.user.gname);
-        console.log(data);
+      console.log("id : " + this.user.id);
+      console.log("pw : " + this.user.gname);
+      console.log(data);
 
-        alert("Hello! Spring type post2!");
-
-        axios.post('/admin/group/create.json', data).then(result => {
-            console.log("result.data : " + result.data);
-            this.result = result.data;
-            alert(result.data);
+      axios
+        .post("/admin/group/create.json", data)
+        .then((result) => {
+          console.log("result.data : " + result.data);
+          this.result = result.data;
+          if(result.data == "SUCCESS")
+           alert(result.data + " 정상 처리 되었습니다." );
+          else
+          alert(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
         })
-        .catch(e => {
-            console.log('error : ' + e);
-           })
-    //   this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
-      this.$router.push('/admin/group-list');
+        .catch((e) => {
+          console.log("error : " + e);
+        });
+
+      this.$router.push("/admin/group-list");
     },
   },
 };
