@@ -40,7 +40,7 @@ Vue.use(VueSession)
 
 // configure router
 const router = new VueRouter({
-  mode:'history',
+  // mode:'history',
   routes, // short for routes: routes
   linkActiveClass: 'nav-item active',
   scrollBehavior: (to) => {
@@ -56,7 +56,6 @@ const router = new VueRouter({
 const sessionOptions = {
   persist: true
 }
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

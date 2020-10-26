@@ -1,3 +1,4 @@
+import Default from '../layout/Default.vue'
 import DashboardLayout from '../layout/DashboardLayout.vue'
 // GeneralViews
 import NotFound from '../pages/NotFoundPage.vue'
@@ -27,27 +28,26 @@ import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
 const routes = [
   {
     path: '/',
-    component: DashboardLayout,
-    redirect: '/admin/overview'
+    component: Default,
   },
   {
     path: '/login',
+    name: 'Login',
     component: Login
   },
   {
     path: '/admin',
     component: DashboardLayout,
-    redirect: '/admin/overview',
     children: [
       {
         path: 'overview',
         name: 'Overview',
-        component: Overview
+        component: Overview,
       },
       {
         path: 'member-list',
         name: 'Member',
-        component: MemberManage
+        component: MemberManage,
       },
       {
         path: 'member-view',
@@ -66,7 +66,7 @@ const routes = [
       },
       {
         path: 'admin-list',
-        name: 'Amdin',
+        name: 'Admin',
         component: AdminManager
       },
       /*{
@@ -110,18 +110,18 @@ const routes = [
         component: Upgrade
       },
       {
-        path: '/admin/menu-list',
-        name : 'Menu',
+        path: 'admin/menu-list',
+        name: 'Menu',
         component: Menu,
       },
       {
         path: '/admin/movePage',
-        name : 'MovePage',
+        name: 'MovePage',
         component: MovePage,
-      }
+      },
     ]
   },
-  { path: '*', component: NotFound }
+  // { path: '*', component: NotFound }
 ]
 
 /**
