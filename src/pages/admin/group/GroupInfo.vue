@@ -52,6 +52,32 @@
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
+                            <label> 메뉴별 권한 <span class="required">*</span></label>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td style="width:20%"> 회원 관리 </td>
+                                        <td style="width:50%">
+                                            <b-form-select
+                                             v-model="selected_user"
+                                             :options="options">
+                                              
+                                            </b-form-select>
+                                        </td>
+                                    </tr>
+                                      <tr>
+                                        <td style="width:20%"> 계정 관리 </td>
+                                        <td style="width:50%">
+                                            <b-form-select
+                                             v-model="selected_admin"
+                                             :options="options">
+                                              
+                                            </b-form-select>
+                                        </td>
+                                    </tr>
+                                </table>
+                </div>
+                <!-- <div class="col-md-3"></div>
+                <div class="col-md-6 ml-sm-3">
                   <label> 메뉴별 권한 </label>
 
                   <b-table
@@ -62,14 +88,24 @@
                     :fields="fields"
                     :items="items"
                   >
-                    <template #cell(show_details)>
+                    <template #cell(show_details)="row">
                       <b-form-select
                         v-model="selected"
                         :options="options"
+                        @change="row.toggleDetails"
                       ></b-form-select>
+
+                        <b-button
+                  pill
+                  variant="danger"
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  @click="row.toggleDetails"
+                >
+                  테스트
+                </b-button>
                     </template>
                   </b-table>
-                </div>
+                </div> -->
               </b-row>
               <b-row>
                 <div class="col-md-3"></div>
@@ -133,23 +169,42 @@ export default {
   data() {
     return {
       user: {
-          authGroupSeq: this.$store.getters['groupStore/memberInfo'].authGroupSeq,
+          authGroupSeq: '',
           authName: '',
           desc: '',
           regDate: '',
       },
       form: {
           adminId: ''
-        }
+        },
+        fields: ["Menu_name", "show_details"],
+      items: [
+        { Menu_name: "회원관리" },
+        { Menu_name: "계정관리" },
+        { Menu_name: "메뉴관리" },
+      ],
+      selected_user: "R",
+      selected_admin: "R",
+      options: [
+        { value: "R", text: "읽기" },
+        { value: "RA", text: "읽기/승인" },
+        { value: "RC", text: "읽기/생성" },
+        { value: "RUA", text: "읽기/수정/승인" },
+        { value: "RCU", text: "읽기/생성/수정" },
+        { value: "RCUD", text: "읽기/생성/수정/삭제" },
+        { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
+      ],
       }
       
   },
 
   mounted() {
+    this.form.authGroupSeq = this.$route.params.authGroupSeq
     this.form.authName = this.$route.params.authName
     this.form.desc = this.$route.params.desc
     this.form.regDate = this.$route.params.regDate
 
+    console.log('authGroupSeq: ' + this.form.authGroupSeq);
     console.log('authName: ' + this.form.authName);
     console.log('desc: ' + this.form.desc);
     console.log('regDate: ' + this.form.regDate);
@@ -160,20 +215,17 @@ export default {
     },
     update() {
       let data = {
-        gname: this.form.authName,
-        userGroup: this.form.desc,
-        auth: this.selected, 
-        regDate: this.user.regDate,
+        authGroupSeq: this.$route.params.authGroupSeq,
+        gname: this.$route.params.authName,
+        userGroup: this.$route.params.desc,
+        auth: this.selected_user, 
       };
-
-      console.log("id : " + this.user.id);
-      console.log("pw : " + this.user.gname);
       console.log(data);
 
-      alert("Hello! Spring type post2!");
+      alert("콘솔창 확인 ");
 
       axios
-        .post("/admin/group/update.json", data)
+        .post("/rest/group/update.json", data)
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
@@ -187,7 +239,25 @@ export default {
     },
 
     remove() {
+       let data = {
+        authGroupSeq: this.form.authGroupSeq,
+      };
+      console.log(data);
 
+      alert("콘솔창 확인 ");
+
+      axios
+        .post("/rest/group/remove.json", data)
+        .then((result) => {
+          console.log("result.data : " + result.data);
+          this.result = result.data;
+          alert(result.data);
+        })
+        .catch((e) => {
+          console.log("error : " + e);
+        });
+
+      this.$router.push("/admin/group-list");
 
     },
 

@@ -144,6 +144,7 @@ export default {
         { first_name: "메뉴관리" },
       ],
       selected: "R",
+      selected_user: "R",
       options: [
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
@@ -166,13 +167,10 @@ export default {
         auth: this.selected, 
         regDate: this.user.regDate,
       };
-
-      console.log("id : " + this.user.id);
-      console.log("pw : " + this.user.gname);
       console.log(data);
 
       axios
-        .post("/admin/group/create.json", data)
+        .post("/rest/group/create.json", data)
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;

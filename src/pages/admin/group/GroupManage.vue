@@ -83,26 +83,10 @@ export default {
   data() {
     return {
       fields: [
-        {
-          key: "authGroupSeq",
-          label: "관리자 ID",
-          sortable: true,
-        },
-        {
-          key: "authName",
-          label: "관리자 명",
-          sortable: false,
-        },
-        {
-          key: "desc",
-          label: "사용자 그룹",
-          sortable: false,
-        },
-        {
-          key: "regDate",
-          label: "등록일",
-          sortable: false,
-        },
+        { key: "authGroupSeq", label: "관리자 ID", sortable: true, },
+        { key: "authName",label: "관리자 명", sortable: false, },
+        { key: "desc", label: "사용자 그룹", sortable: false, },
+        { key: "regDate", label: "등록일", sortable: false, },
       ],
       form: {
         searchWord: "",
@@ -114,10 +98,9 @@ export default {
       ],
     };
   },
-  created: function () {},
   methods: {
     init: async function () {
-      var data = await this.request("/admin/group/search.json", this.form);
+      var data = await this.request("/rest/group/search.json", this.form);
       console.log("DB 정보 확인 : " + JSON.stringify(data));
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
@@ -141,7 +124,7 @@ export default {
     async groupList() {
       // params 테스트 용 
       // this.$router.push({name: 'GroupInfo', params: {authGroupSeq: '1', age:4}})
-      var data = await this.request("/admin/group/search.json", this.form);
+      var data = await this.request("/rest/group/search.json", this.form);
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
     movePage: function (event) {
