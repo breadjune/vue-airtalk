@@ -119,7 +119,6 @@
   import Overview from '../pages/Overview'
   import MemberManage from '../pages/admin/member/MemberManage.vue'
   import GroupManage from '../pages/admin/group/GroupManage.vue'
-  import Menu from '../pages/admin/menu-list/Menu.vue'
   import AdminManager from '../pages/admin/adminManager/AdminManager.vue'
   export default {
     data() {
