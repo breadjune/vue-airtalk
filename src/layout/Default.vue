@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
+      <a href=# @click="movePage('Login')" ref="loginBtn" style="display:none">link</a>
       <li>
         <a href="#" @click="movePage('Overview')" class="nav-link">
           <i class="nc-icon nc-chart-pie-35"></i>
@@ -54,11 +54,24 @@
   import DashboardContent from '../pages/Overview'
   import MobileMenu from './MobileMenu.vue'
   export default {
+    data() {
+      return {
+        name: ''
+      }
+    },
     components: {
       TopNavbar,
       ContentFooter,
       DashboardContent,
       MobileMenu
+    },
+    mounted(){
+      console.log('auth : ' + this.$session.get('auth'));
+      console.log('name : ' + this.name);
+      if(!this.$session.get('auth')) {
+        // const elem = this.$refs.loginBtn
+        // elem.click()
+      }
     },
     methods: {
       toggleSidebar () {
@@ -66,10 +79,12 @@
           this.$sidebar.displaySidebar(false)
         }
       },
+      trigger() {
+        
+      },
       movePage(urlName, el) {
         console.log("element : " + el);
         console.log("name : " + urlName);
-        console.log("this name : " + this.name);
         //console.log(document.querySelector('.nav-main__links li'));
         var list = document.querySelectorAll('.nav-main__links li');
         console.log('listAll : ' + list);

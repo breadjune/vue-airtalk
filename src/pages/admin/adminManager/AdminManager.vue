@@ -7,25 +7,19 @@
                 body-classes="table-full-width table-responsive">
 
             <template slot="header">
-              <h4 class="card-title">Admin Manger</h4>
+              <h4 class="card-title">Admin Manager</h4>
               <p class="card-category">계정 관리</p>
             </template>
             <b-table
                 striped
                 hover
+                outlined
                 ref="selectableTable"
                 selectable
                 select-mode="single"
                 :fields="fields"
-                :list="list"
+                :items="items"
                 @row-selected="onRowSelected">
-              <!-- <tr v-for="(item, index) in items" :key="index">
-                <td>{{item.adminId}}</td>
-                <td>{{item.adminName}}</td>
-                <td>{{item.adminGroupSeq}}</td>
-                <td>{{item.regDate}}</td>
-                <td><button name="test" value="test">test</button></td>
-              </tr> -->
               </b-table>
           </card>
         </div>
@@ -36,50 +30,57 @@
 
 <script>
 import axios from "axios"
-
+const groupStore = "groupStore";
 export default {
   data() {
     return {
-      list: {
-        adminId : '', 
-        adminName : '', 
-        adminGroupSeq : '', 
-        regDate : ''
-      },
-      fields: ['사용자ID', '사용자이름', '사용자그룹', '등록일'],
-      items: {
-        adminId: Array, 
-        adminName: Array, 
-        adminGroup: Array, 
-        regDate: Array
-      }
+      fields: [
+        { key:'adminId', label:'사용자ID' }, 
+        { key:'adminName', label:'사용자명' }, 
+        { key:'adminGroupSeq', label:'사용자그룹' }, 
+        { key:'regDate', label:'등록일' }
+      ],
+      items: []
     }
   },
   
-  created() {
-    this.getList()
+  mounted() {
+    this.list()
   },
+  
   methods: {
-    getList() {
-      axios
-        .get("/admin/admin-list/adminSearch")
-        .then((result) => {
-          console.log(result.data);
-          console.log("adminId : " +result.data.adminList.getAdminId);
-          // this.adminId = result.data.amdinList.adminId;
-          // this.adminName = result.data.amdinList.adminName;
-          // this.adminGroupSeq = result.amdinList.data.adminGroupSeq;
-          // this.regDate = result.data.amdinList.regDate;
-          this.items.adminId = result.data.getAdminId;
-          this.items.adminName = result.data.getAdminName;
-          this.items.adminGroup = result.data.getAdminGroup;
-          this.items.regDate = result.data.getRegDate;
-        })
-        .catch((e) => {
-          console.log("error : " + e);
-        });
+    list: function() {
+      axios.get("/rest/admin-list/adminList").then((result) => {
+        
+        for (var i = 0; i < result.data.length; i++) {
+          var data = new Object;
+          data.adminId = JSON.stringify(result.data[i].adminId).substring(1, JSON.stringify(result.data[i].adminId).length - 1);
+          data.adminName = JSON.stringify(result.data[i].adminName).substring(1, JSON.stringify(result.data[i].adminName).length - 1);
+          data.adminGroupSeq = JSON.stringify(result.data[i].adminGroupSeq).substring(1, JSON.stringify(result.data[i].adminGroupSeq).length - 1);
+          data.regDate = JSON.stringify(result.data[i].regDate).substring(1, JSON.stringify(result.data[i].regDate).length - 1);
+          this.items.push(data);
+        }
+
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    },
+    
+    onRowSelected(items) {
+      console.log(items);
+
+      this.$router.push({
+        name: "AdminInfo",
+        path: "./AdminManagerView",
+        params: { 
+          adminId : items.adminId,
+          adminName : items.adminName,
+          adminGroup : items.adminGroup,
+          regDate : items.regDate,
+        },
+      });
     },
   }
 };
 </script>
-
