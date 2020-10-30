@@ -69,6 +69,7 @@ export default {
     
         add(){
             console.log('add');
+            this.$emit('rename','Content');
             this.$router.push('/admin/noticeadd');
         }
     }

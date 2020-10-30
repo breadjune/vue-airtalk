@@ -96,6 +96,7 @@
   import Menu from '../pages/admin/menu/Menu.vue'
   import Admin from '../pages/admin/adminManager/AdminManager.vue'
   import Notice from '../pages/admin/notice/notice.vue'
+  import NoticeAdd from '../pages/admin/notice/notice_add.vue'
   export default {
     data() {
       return {
@@ -112,7 +113,8 @@
       Member,
       Group,
       Menu,
-      Admin
+      Admin,
+      NoticeAdd
     },
     mounted(){
       // console.log('auth : ' + this.$session.get('auth'));
@@ -123,6 +125,7 @@
     },
     methods: {
       rename(name) {
+        console.log('Dashboard_rename');
         this.name = name
       },
       changeCountents(name) {
