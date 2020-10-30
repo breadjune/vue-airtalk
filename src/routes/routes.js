@@ -21,10 +21,12 @@ import GroupManage from 'src/pages/admin/group/GroupManage.vue'
 import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
 import GroupCreate from 'src/pages/admin/group/GroupCreate.vue'
 
-import Menu from 'src/pages/admin/menu-list/Menu.vue'
-import MovePage from 'src/pages/admin/menu-list/MovePage.vue'
+import Menu from 'src/pages/admin/menu/Menu.vue'
 
 import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
+
+import Notice from 'src/pages/admin/notice/notice.vue'
+import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 
 const routes = [
   {
@@ -117,14 +119,19 @@ const routes = [
         component: Upgrade
       },
       {
-        path: 'menu-list',
+        path: 'menu',
         name : 'Menu',
         component: Menu,
       },
       {
-        path: 'movePage',
-        name : 'MovePage',
-        component: MovePage,
+        path: 'notice',
+        name : 'Notice',
+        component: Notice,
+      },
+      {
+        path: 'noticeadd',
+        name : 'NoticeAdd',
+        component: NoticeAdd,
       },
     ]
   },

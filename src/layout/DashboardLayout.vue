@@ -37,6 +37,12 @@
           권한 관리
         </a>
       </li>
+      <li>
+        <a href="#" @click="movePage('Notice')" class="nav-link">
+          <i class="nc-icon nc-layers-3"></i>
+          공지 게시판
+        </a>
+      </li>
       <!-- <sidebar-link to="/admin/typography">
         <i class="nc-icon nc-paper-2"></i>
         <p>Typography</p>
@@ -88,8 +94,9 @@
   import Overview from '../pages/Overview'
   import MemberManage from '../pages/admin/member/MemberManage.vue'
   import GroupManage from '../pages/admin/group/GroupManage.vue'
-  import Menu from '../pages/admin/menu-list/Menu.vue'
+  import Menu from '../pages/admin/menu/Menu.vue'
   import AdminManager from '../pages/admin/adminManager/AdminManager.vue'
+  import Notice from '../pages/admin/notice/notice.vue'
   export default {
     // data() {
     //   return {
@@ -100,6 +107,7 @@
       TopNavbar,
       // ContentFooter,
       DashboardContent,
+      //Notice
       // MobileMenu,
       // Overview,
       // MemberManage,
