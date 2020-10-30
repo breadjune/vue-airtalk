@@ -92,7 +92,7 @@
             this.$session.start()
             this.$session.set('name', data.name);
             this.$session.set('level', data.adminGroupSeq);
-            this.$cookie.set('test', 'hello world', 1);
+            // this.$cookie.set('test', 'hello world', 1);
             if(data.errorCode === '0') {
               this.$session.set('auth', true);
             } else {
