@@ -1,27 +1,36 @@
 <template>
-<div class="content">
+  <div class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-         
-<b-button v-b-toggle.collapse-1 variant="primary">
-  {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq}} 
-  {{ this.$store.getters['groupStore/memberInfo'].id }}
-  회원 정보
-  </b-button>
-    
-             <b-collapse id="collapse-1">
-        <b-list-group style="text-align:left;">
-          <b-list-group-item>아이디: {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq }}</b-list-group-item>
-          <b-list-group-item>이름: {{ this.$store.getters['groupStore/memberInfo'].id }}</b-list-group-item>
-        </b-list-group>
-    </b-collapse>
+          <b-button v-b-toggle.collapse-1 variant="primary">
+            {{ this.$store.getters["groupStore/memberInfo"].authGroupSeq }}
+            {{ this.$store.getters["groupStore/memberInfo"].id }}
+            회원 정보
+          </b-button>
+
+          <b-collapse id="collapse-1">
+            <b-list-group style="text-align: left">
+              <b-list-group-item
+                >아이디:
+                {{ this.$store.getters["groupStore/memberInfo"].authGroupSeq }}
+                </b-list-group-item
+              >
+              <b-list-group-item
+                >이름:
+                {{ this.$store.getters["groupStore/memberInfo"].id }}
+                </b-list-group-item
+              >
+            </b-list-group>
+          </b-collapse>
 
           <card>
-             <h3 slot="header" class="card-title">권한 관리 상세</h3>
-            <p class="card-category">권한 관리 그룹을 확인 및 업데이트해 주십시오.</p>
+            <h3 slot="header" class="card-title">권한 관리 상세</h3>
+            <p class="card-category">
+              권한 관리 그룹을 확인 및 업데이트해 주십시오.
+            </p>
             <hr />
-             <b-form id="form">
+            <b-form id="form">
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
@@ -52,60 +61,30 @@
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
-                            <label> 메뉴별 권한 <span class="required">*</span></label>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td style="width:20%"> 회원 관리 </td>
-                                        <td style="width:50%">
-                                            <b-form-select
-                                             v-model="selected_user"
-                                             :options="options">
-                                              
-                                            </b-form-select>
-                                        </td>
-                                    </tr>
-                                      <tr>
-                                        <td style="width:20%"> 계정 관리 </td>
-                                        <td style="width:50%">
-                                            <b-form-select
-                                             v-model="selected_admin"
-                                             :options="options">
-                                              
-                                            </b-form-select>
-                                        </td>
-                                    </tr>
-                                </table>
+                  <label> 메뉴별 권한 <span class="required">*</span></label>
+                  <table class="table table-bordered">
+                    <tr>
+                      <td style="width: 20%">회원 관리</td>
+                      <td style="width: 50%">
+                        <b-form-select
+                          v-model="selected_user"
+                          :options="options"
+                        >
+                        </b-form-select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="width: 20%">계정 관리</td>
+                      <td style="width: 50%">
+                        <b-form-select
+                          v-model="selected_admin"
+                          :options="options"
+                        >
+                        </b-form-select>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
-                <!-- <div class="col-md-3"></div>
-                <div class="col-md-6 ml-sm-3">
-                  <label> 메뉴별 권한 </label>
-
-                  <b-table
-                    striped
-                    ref="selectableTable"
-                    selectable
-                    select-mode="single"
-                    :fields="fields"
-                    :items="items"
-                  >
-                    <template #cell(show_details)="row">
-                      <b-form-select
-                        v-model="selected"
-                        :options="options"
-                        @change="row.toggleDetails"
-                      ></b-form-select>
-
-                        <b-button
-                  pill
-                  variant="danger"
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
-                  @click="row.toggleDetails"
-                >
-                  테스트
-                </b-button>
-                    </template>
-                  </b-table>
-                </div> -->
               </b-row>
               <b-row>
                 <div class="col-md-3"></div>
@@ -140,7 +119,7 @@
                   목록
                 </b-button>
 
-                  <b-button
+                <b-button
                   pill
                   variant="danger"
                   class="btn-fill mb-2 mr-sm-2 mb-sm-0"
@@ -160,24 +139,24 @@
 
 
 <script>
-
-const memberStore = 'memberStore'
 import axios from "axios";
 
+const groupStore = "groupStore";
+
 export default {
-  name: 'GroupInfo',
+  name: "GroupInfo",
   data() {
     return {
       user: {
-          authGroupSeq: '',
-          authName: '',
-          desc: '',
-          regDate: '',
+        authGroupSeq: "",
+        authName: "",
+        desc: "",
+        regDate: "",
       },
       form: {
-          adminId: ''
-        },
-        fields: ["Menu_name", "show_details"],
+        adminId: "",
+      },
+      fields: ["Menu_name", "show_details"],
       items: [
         { Menu_name: "회원관리" },
         { Menu_name: "계정관리" },
@@ -194,20 +173,19 @@ export default {
         { value: "RCUD", text: "읽기/생성/수정/삭제" },
         { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
       ],
-      }
-      
+    };
   },
 
   mounted() {
-    this.form.authGroupSeq = this.$route.params.authGroupSeq
-    this.form.authName = this.$route.params.authName
-    this.form.desc = this.$route.params.desc
-    this.form.regDate = this.$route.params.regDate
+    this.form.authGroupSeq = this.$route.params.authGroupSeq;
+    this.form.authName = this.$route.params.authName;
+    this.form.desc = this.$route.params.desc;
+    this.form.regDate = this.$route.params.regDate;
 
-    console.log('authGroupSeq: ' + this.form.authGroupSeq);
-    console.log('authName: ' + this.form.authName);
-    console.log('desc: ' + this.form.desc);
-    console.log('regDate: ' + this.form.regDate);
+    console.log("authGroupSeq: " + this.form.authGroupSeq);
+    console.log("authName: " + this.form.authName);
+    console.log("desc: " + this.form.desc);
+    console.log("regDate: " + this.form.regDate);
   },
   methods: {
     movePage: function (event) {
@@ -218,7 +196,7 @@ export default {
         authGroupSeq: this.$route.params.authGroupSeq,
         gname: this.$route.params.authName,
         userGroup: this.$route.params.desc,
-        auth: this.selected_user, 
+        auth: this.selected_user,
       };
       console.log(data);
 
@@ -239,7 +217,7 @@ export default {
     },
 
     remove() {
-       let data = {
+      let data = {
         authGroupSeq: this.form.authGroupSeq,
       };
       console.log(data);
@@ -258,11 +236,9 @@ export default {
         });
 
       this.$router.push("/admin/group-list");
-
     },
-
-  }
-}
+  },
+};
 </script>
 <style>
 </style>

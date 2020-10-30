@@ -10,7 +10,7 @@
               <hr>
             </template>
             <b-form inline>
-              <b-form-select
+              <!-- <b-form-select
                 id="inline-form-custom-select-pref"
                 class="mb-2 mr-sm-2 mb-sm-0"
                 v-model="form.searchType"
@@ -32,7 +32,7 @@
                   @click="groupList()"
                   >목록 출력
                 </b-button>
-              </div>
+              </div> -->
               <div>
                 <b-button
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
@@ -70,8 +70,6 @@ import Card from "src/components/Cards/Card.vue";
 import Table from "src/pages/admin/group/GroupTable.vue";
 import axioMixin from "@/components/axioMixin";
 
-// const memberStore = "memberStore";
-
 const groupStore = "groupStore";
 
 export default {
@@ -84,8 +82,8 @@ export default {
     return {
       fields: [
         { key: "authGroupSeq", label: "관리자 ID", sortable: true, },
-        { key: "authName",label: "관리자 명", sortable: false, },
-        { key: "desc", label: "사용자 그룹", sortable: false, },
+        { key: "name",label: "관리자 명", sortable: false, },
+        { key: "description", label: "사용자 그룹", sortable: false, },
         { key: "regDate", label: "등록일", sortable: false, },
       ],
       form: {
@@ -106,8 +104,8 @@ export default {
     },
     onRowSelected(items) {
       console.log("파라미터 : " + items[0].authGroupSeq);
-      console.log("파라미터 : " + items[0].authName);
-      console.log("파라미터 : " + items[0].desc);
+      console.log("파라미터 : " + items[0].name);
+      console.log("파라미터 : " + items[0].description);
       console.log("파라미터 : " + items[0].regDate);
 
        alert("콘솔창 확인 ");
@@ -115,8 +113,8 @@ export default {
       this.$router.push({
         name: "GroupInfo",
         params: { authGroupSeq : items[0].authGroupSeq,
-                  authName : items[0].authName,
-                  desc : items[0].desc,
+                  authName : items[0].name,
+                  desc : items[0].description,
                   regDate : items[0].regDate,
                   },
       });

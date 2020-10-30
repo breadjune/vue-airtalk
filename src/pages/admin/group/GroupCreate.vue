@@ -69,9 +69,9 @@
                     selectable
                     select-mode="single"
                     :fields="fields"
-                    :items="items"
+                    :items="this.$store.getters['groupStore/memberList']"
                   >
-                    <template #cell(show_details)>
+                    <template #cell(auth_manage)>
                       <b-form-select
                         v-model="selected"
                         :options="options"
@@ -84,11 +84,7 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
                   <label> 등록일 </label>
-                  <b-input
-                    name="regDate"
-                    type="text"
-                    disabled="true"
-                    placeholder="2020-10-20"
+                  <b-input name="regDate" type="text" disabled="true"
                     v-model="user.regDate"
                   >
                   </b-input>
@@ -96,8 +92,7 @@
               </b-row>
               <div class="col-md-4"></div>
               <div class="text-center">
-                <b-button
-                  pill
+                <b-button pill
                   variant="success"
                   class="btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click="create()"
@@ -105,9 +100,7 @@
                   저장
                 </b-button>
 
-                <b-button
-                  pill
-                  type="submit"
+                <b-button pill
                   class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click.prevent="movePage"
                 >
@@ -125,7 +118,9 @@
 
 
 <script>
+
 const groupStore = "groupStore";
+
 import axios from "axios";
 
 export default {
@@ -135,17 +130,21 @@ export default {
       user: {
         userGroup: "",
         gname: "",
-        regDate: "2020-10-21",
+        regDate: "",
       },
-      fields: ["first_name", "show_details"],
-      items: [
-        { first_name: "회원관리" },
-        { first_name: "계정관리" },
-        { first_name: "메뉴관리" },
+      fields: [
+        {key: "title", label: "메뉴 이름",},
+        "auth_manage"
       ],
+      // items: [
+      //   { first_name: this.result.data },
+      //   { first_name: "계정관리" },
+      //   { first_name: "메뉴관리" },
+      // ],
       selected: "R",
       selected_user: "R",
       options: [
+        { value: "X", text: "권한없음" },
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
         { value: "RC", text: "읽기/생성" },
@@ -156,9 +155,24 @@ export default {
       ],
     };
   },
+   mounted() {
+    this.init();
+  },
   methods: {
     movePage: function (event) {
       this.$router.push("/admin/group-list");
+    },
+     init: function () {
+     axios
+        .get("/rest/group/create")
+        .then((result) => {
+          console.log("result.data : " + JSON.stringify(result.data));
+          this.result = result.data;
+           this.$store.dispatch("groupStore/selectGroupListBySearchWord", result.data);
+        })
+        .catch((e) => {
+          console.log("error : " + e);
+        });
     },
     async create() {
       let data = {
