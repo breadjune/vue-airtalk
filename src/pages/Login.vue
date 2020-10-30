@@ -18,7 +18,7 @@
                   <b-input-group-prepend is-text>
                     <i class="nc-icon nc-single-02" style="font-weight:bold;"></i>
                   </b-input-group-prepend>
-                  <b-form-input id="input-email" v-model="form.email" type="email" placeholder="Enter email" required></b-form-input>
+                  <b-form-input id="input-email" v-model="form.email" type="email" placeholder="Enter email" required value="test@test.com"></b-form-input>
                 </b-input-group>
               </b-form-group>
               <br/>
@@ -27,7 +27,7 @@
                   <b-input-group-prepend is-text>
                     <i class="nc-icon nc-lock-circle-open" style="font-weight:bold;"></i>
                   </b-input-group-prepend>
-                  <b-form-input id="input-pw" v-model="form.password" placeholder="Enter Password" required></b-form-input>
+                  <b-form-input id="input-pw" v-model="form.password" placeholder="Enter Password" required value="test123"></b-form-input>
                 </b-input-group>
               </b-form-group>
               <div class="login-btn text-center mt-6">
@@ -71,11 +71,11 @@
       }
     },
     mounted(){
-      console.log('auth : ' + this.$session.get('auth'));
-      if(this.$session.get('auth')) {
-        var elem = this.$refs.home
-        elem.click()
-      }
+      // console.log('auth : ' + this.$session.get('auth'));
+      // if(this.$session.get('auth')) {
+      //   var elem = this.$refs.home
+      //   elem.click()
+      // }
     },
     methods: {
       onSubmit(evt) {
@@ -92,6 +92,7 @@
             this.$session.start()
             this.$session.set('name', data.name);
             this.$session.set('level', data.adminGroupSeq);
+            this.$cookie.set('test', 'hello world', 1);
             if(data.errorCode === '0') {
               this.$session.set('auth', true);
             } else {

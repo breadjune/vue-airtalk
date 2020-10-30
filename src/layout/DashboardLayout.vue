@@ -151,21 +151,6 @@
       // },
       movePage(urlName) {
         console.log('name : ' + this.name);
-
-        var list = document.querySelectorAll('.nav-main__links li');
-
-        if(urlName !== 'Login') {
-          for (var i = 0; i < list.length; i++) { 
-            (function(idx) {
-              list[idx].classList.remove("active");
-              list[idx].onclick = function() {
-                list[idx].classList.add("active");
-                //console.log(idx);
-              }
-            })(i);
-          }
-        }
-
         if (this.name !== urlName) {
           this.name = urlName;
           this.$router.push({

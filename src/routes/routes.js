@@ -31,7 +31,7 @@ import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 const routes = [
   {
     path: '/',
-    component: Default,
+    component: DashboardLayout,
   },
   {
     path: '/login',

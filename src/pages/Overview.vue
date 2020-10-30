@@ -265,6 +265,9 @@
           ]
         }
       }
+    },
+    mounted(){
+      console.log('Overview Mounted!');
     }
   }
 </script>
