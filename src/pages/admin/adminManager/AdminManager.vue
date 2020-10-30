@@ -56,7 +56,6 @@ export default {
     }
   },
   
-<<<<<<< HEAD
   methods:{
     getBtn() {
         alert("Hello! Spring type get!")
@@ -65,32 +64,11 @@ export default {
         })
         .catch(e => {
             console.log('error : ' + e);
-=======
-  created() {
-    this.getList()
-  },
-  methods: {
-    getList() {
-      axios
-        .get("/admin/admin-list/adminSearch")
-        .then((result) => {
-          console.log(result.data);
-          console.log("adminId : " +result.data.adminList.getAdminId);
-          // this.adminId = result.data.amdinList.adminId;
-          // this.adminName = result.data.amdinList.adminName;
-          // this.adminGroupSeq = result.amdinList.data.adminGroupSeq;
-          // this.regDate = result.data.amdinList.regDate;
-          this.items.adminId = result.data.getAdminId;
-          this.items.adminName = result.data.getAdminName;
-          this.items.adminGroup = result.data.getAdminGroup;
-          this.items.regDate = result.data.getRegDate;
->>>>>>> efb9b4f51471093be738c54733171e7c4a482b23
         })
         .catch((e) => {
           console.log("error : " + e);
         });
     },
-<<<<<<< HEAD
 
     postBtn() {
         let data = {
@@ -115,9 +93,5 @@ export default {
     }
 }
 
-=======
-  }
-};
->>>>>>> efb9b4f51471093be738c54733171e7c4a482b23
 </script>
 
