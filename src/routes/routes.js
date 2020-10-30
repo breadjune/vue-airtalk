@@ -124,11 +124,6 @@ const routes = [
         component: Menu,
       },
       {
-        path: 'movePage',
-        name : 'MovePage',
-        component: MovePage,
-      },
-      {
         path: 'notice',
         name : 'Notice',
         component: Notice,
