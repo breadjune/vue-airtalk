@@ -8,31 +8,31 @@
         <p>Dashboard</p>
       </sidebar-link> -->
       <li>
-        <a href="#" @click="changeCountents('Overview')" class="nav-link">
+        <a href="#" @click="movePage('Overview')" class="nav-link">
           <i class="nc-icon nc-chart-pie-35"></i>
           Dashboard
         </a>
       </li>
       <li>
-        <a href="#" @click="changeCountents('MemberManage')" class="nav-link">
+        <a href="#" @click="movePage('Member')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           회원 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="changeCountents('AdminManager')" class="nav-link">
+        <a href="#" @click="movePage('Admin')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           계정 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="changeCountents('Menu')" class="nav-link">
+        <a href="#" @click="movePage('Menu')" class="nav-link">
           <i class="nc-icon nc-notes"></i>
           메뉴 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="changeCountents('GroupManage')" class="nav-link">
+        <a href="#" @click="movePage('Group')" class="nav-link">
           <i class="nc-icon nc-layers-3"></i>
           권한 관리
         </a>
@@ -66,14 +66,12 @@
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <!-- <dashboard-content @click="toggleSidebar">
+      <dashboard-content @click="toggleSidebar">
 
-      </dashboard-content> -->
+      </dashboard-content>
 
-      <component
-        :is="this.name"
-      >
-      </component>
+      <!-- <component :is="this.name"> -->
+      <!-- </component> -->
 
       <content-footer></content-footer>
     </div>
@@ -85,7 +83,7 @@
 <script>
   import TopNavbar from './TopNavbar.vue'
   import ContentFooter from './ContentFooter.vue'
-  // import DashboardContent from './Content.vue'
+  import DashboardContent from './Content.vue'
   import MobileMenu from './MobileMenu.vue'
   import Overview from '../pages/Overview'
   import MemberManage from '../pages/admin/member/MemberManage.vue'
@@ -93,21 +91,21 @@
   import Menu from '../pages/admin/menu-list/Menu.vue'
   import AdminManager from '../pages/admin/adminManager/AdminManager.vue'
   export default {
-    data() {
-      return {
-        name: 'Overview'
-      }
-    },
+    // data() {
+    //   return {
+    //     name: 'Overview'
+    //   }
+    // },
     components: {
       TopNavbar,
-      ContentFooter,
-      // DashboardContent,
-      MobileMenu,
-      Overview,
-      MemberManage,
-      GroupManage,
-      Menu,
-      AdminManager
+      // ContentFooter,
+      DashboardContent,
+      // MobileMenu,
+      // Overview,
+      // MemberManage,
+      // GroupManage,
+      // Menu,
+      // AdminManager
     },
     mounted(){
       // console.log('auth : ' + this.$session.get('auth'));
@@ -117,6 +115,9 @@
       // }
     },
     methods: {
+      parents(name) {
+        this.name = name
+      },
       changeCountents(name) {
 
         var list = document.querySelectorAll('.nav-main__links li');
@@ -141,30 +142,30 @@
       //     this.$sidebar.displaySidebar(false)
       //   }
       // },
-      // movePage(urlName) {
-      //   console.log('name : ' + this.name);
+      movePage(urlName) {
+        console.log('name : ' + this.name);
 
-      //   var list = document.querySelectorAll('.nav-main__links li');
+        var list = document.querySelectorAll('.nav-main__links li');
 
-      //   if(urlName !== 'Login') {
-      //     for (var i = 0; i < list.length; i++) { 
-      //       (function(idx) {
-      //         list[idx].classList.remove("active");
-      //         list[idx].onclick = function() {
-      //           list[idx].classList.add("active");
-      //           //console.log(idx);
-      //         }
-      //       })(i);
-      //     }
-      //   }
+        if(urlName !== 'Login') {
+          for (var i = 0; i < list.length; i++) { 
+            (function(idx) {
+              list[idx].classList.remove("active");
+              list[idx].onclick = function() {
+                list[idx].classList.add("active");
+                //console.log(idx);
+              }
+            })(i);
+          }
+        }
 
-      //   if (this.name !== urlName) {
-      //     this.name = urlName;
-      //     this.$router.push({
-      //     name: urlName
-      //     });
-      //   }
-      // }
+        if (this.name !== urlName) {
+          this.name = urlName;
+          this.$router.push({
+          name: urlName
+          });
+        }
+      }
     }
   }
 
