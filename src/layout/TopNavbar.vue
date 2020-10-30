@@ -55,9 +55,9 @@
             <a class="dropdown-item" href="#">Separated link</a>
           </base-dropdown>
           <li class="nav-item">
-            <router-link to="/login" class="nav-link">
+            <a @click="movePage('Login')" href='#' class="nav-link">
               Log out
-            </router-link>
+            </a>
           </li>
         </ul>
       </div>
@@ -92,6 +92,12 @@
       },
       hideSidebar () {
         this.$sidebar.displaySidebar(false)
+      },
+      movePage(urlName) {
+          this.$session.clear()
+          this.$router.replace({
+          name: urlName
+          });
       }
     }
   }

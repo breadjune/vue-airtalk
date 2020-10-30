@@ -1,27 +1,36 @@
 <template>
-<div class="content">
+  <div class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-         
-<b-button v-b-toggle.collapse-1 variant="primary">
-  {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq}} 
-  {{ this.$store.getters['groupStore/memberInfo'].id }}
-  회원 정보
-  </b-button>
-    
-             <b-collapse id="collapse-1">
-        <b-list-group style="text-align:left;">
-          <b-list-group-item>아이디: {{ this.$store.getters['groupStore/memberInfo'].authGroupSeq }}</b-list-group-item>
-          <b-list-group-item>이름: {{ this.$store.getters['groupStore/memberInfo'].id }}</b-list-group-item>
-        </b-list-group>
-    </b-collapse>
+          <!-- <b-button v-b-toggle.collapse-1 variant="primary">
+            {{ this.$store.getters["memberStore/memberInfo"].adminId }}
+            {{ this.$store.getters["memberStore/memberInfo"].adminName }}
+            회원 정보
+          </b-button> -->
+          <!-- 
+          <b-collapse id="collapse-1">
+            <b-list-group style="text-align: left">
+              <b-list-group-item
+                >아이디:
+                {{
+                  this.$store.getters["memberStore/memberInfo"].adminId
+                }}</b-list-group-item
+              >
+              <b-list-group-item
+                >이름:
+                {{
+                  this.$store.getters["memberStore/memberInfo"].adminName
+                }}</b-list-group-item
+              >
+            </b-list-group>
+          </b-collapse> -->
 
           <card>
-             <h3 slot="header" class="card-title">권한 관리 상세</h3>
-            <p class="card-category">권한 관리 그룹을 확인 및 업데이트해 주십시오.</p>
+            <h3 slot="header" class="card-title">권한 관리 추가</h3>
+            <p class="card-category">권한 관리 그룹을 추가해 주십시오.</p>
             <hr />
-             <b-form id="form">
+            <b-form id="form">
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
@@ -30,7 +39,7 @@
                     name="userGroup"
                     type="text"
                     placeholder="사용자 그룹"
-                    v-model="$route.params.authName"
+                    v-model="user.userGroup"
                   >
                   </b-input>
                 </div>
@@ -44,7 +53,7 @@
                     name="gname"
                     type="text"
                     placeholder="관리자 명"
-                    v-model="$route.params.desc"
+                    v-model="user.gname"
                   >
                   </b-input>
                 </div>
@@ -80,7 +89,7 @@
                     type="text"
                     disabled="true"
                     placeholder="2020-10-20"
-                    v-model="$route.params.regDate"
+                    v-model="user.regDate"
                   >
                   </b-input>
                 </div>
@@ -91,26 +100,18 @@
                   pill
                   variant="success"
                   class="btn-fill mb-2 mr-sm-2 mb-sm-0"
-                  @click="update()"
+                  @click="create()"
                 >
-                  수정
+                  저장
                 </b-button>
 
                 <b-button
                   pill
+                  type="submit"
                   class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click.prevent="movePage"
                 >
                   목록
-                </b-button>
-
-                  <b-button
-                  pill
-                  variant="danger"
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
-                  @click="remove()"
-                >
-                  삭제
                 </b-button>
               </div>
               <div class="clearfix"></div>
@@ -124,44 +125,44 @@
 
 
 <script>
-
-const memberStore = 'memberStore'
+const groupStore = "groupStore";
 import axios from "axios";
 
 export default {
-  name: 'GroupInfo',
+  name: "GroupCreate",
   data() {
     return {
       user: {
-          authGroupSeq: this.$store.getters['groupStore/memberInfo'].authGroupSeq,
-          authName: '',
-          desc: '',
-          regDate: '',
+        userGroup: "",
+        gname: "",
+        regDate: "2020-10-21",
       },
-      form: {
-          adminId: ''
-        }
-      }
-      
-  },
-
-  mounted() {
-    this.form.authName = this.$route.params.authName
-    this.form.desc = this.$route.params.desc
-    this.form.regDate = this.$route.params.regDate
-
-    console.log('authName: ' + this.form.authName);
-    console.log('desc: ' + this.form.desc);
-    console.log('regDate: ' + this.form.regDate);
+      fields: ["first_name", "show_details"],
+      items: [
+        { first_name: "회원관리" },
+        { first_name: "계정관리" },
+        { first_name: "메뉴관리" },
+      ],
+      selected: "R",
+      options: [
+        { value: "R", text: "읽기" },
+        { value: "RA", text: "읽기/승인" },
+        { value: "RC", text: "읽기/생성" },
+        { value: "RUA", text: "읽기/수정/승인" },
+        { value: "RCU", text: "읽기/생성/수정" },
+        { value: "RCUD", text: "읽기/생성/수정/삭제" },
+        { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
+      ],
+    };
   },
   methods: {
     movePage: function (event) {
       this.$router.push("/admin/group-list");
     },
-    update() {
+    async create() {
       let data = {
-        gname: this.form.authName,
-        userGroup: this.form.desc,
+        gname: this.user.gname,
+        userGroup: this.user.userGroup,
         auth: this.selected, 
         regDate: this.user.regDate,
       };
@@ -170,14 +171,15 @@ export default {
       console.log("pw : " + this.user.gname);
       console.log(data);
 
-      alert("Hello! Spring type post2!");
-
       axios
-        .post("/admin/group/update.json", data)
+        .post("/admin/group/create.json", data)
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
-          alert(result.data);
+          if(result.data == "SUCCESS")
+           alert(result.data + " 정상 처리 되었습니다." );
+          else
+          alert(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
         })
         .catch((e) => {
           console.log("error : " + e);
@@ -185,14 +187,8 @@ export default {
 
       this.$router.push("/admin/group-list");
     },
-
-    remove() {
-
-
-    },
-
-  }
-}
+  },
+};
 </script>
 <style>
 </style>

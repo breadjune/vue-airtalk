@@ -1,3 +1,4 @@
+import Default from '../layout/Default.vue'
 import DashboardLayout from '../layout/DashboardLayout.vue'
 // GeneralViews
 import NotFound from '../pages/NotFoundPage.vue'
@@ -18,6 +19,7 @@ import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
 import GroupManage from 'src/pages/admin/group/GroupManage.vue'
 import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
+import GroupCreate from 'src/pages/admin/group/GroupCreate.vue'
 
 import Menu from 'src/pages/admin/menu/Menu.vue'
 
@@ -30,26 +32,25 @@ const routes = [
   {
     path: '/',
     component: DashboardLayout,
-    redirect: '/admin/overview'
   },
   {
     path: '/login',
+    name: 'Login',
     component: Login
   },
   {
     path: '/admin',
     component: DashboardLayout,
-    redirect: '/admin/overview',
     children: [
       {
         path: 'overview',
         name: 'Overview',
-        component: Overview
+        component: Overview,
       },
       {
         path: 'member-list',
         name: 'Member',
-        component: MemberManage
+        component: MemberManage,
       },
       {
         path: 'member-view',
@@ -64,11 +65,17 @@ const routes = [
       {
         path: 'group-view',
         name: 'GroupInfo',
-        component: GroupInfo
+        component: GroupInfo,
+        props: true
+      },
+      {
+        path: 'group-create',
+        name: 'GroupCreate',
+        component: GroupCreate
       },
       {
         path: 'admin-list',
-        name: 'Amdin',
+        name: 'Admin',
         component: AdminManager
       },
       /*{
@@ -117,6 +124,7 @@ const routes = [
         component: Menu,
       },
       {
+<<<<<<< HEAD
         path: 'notice',
         name : 'Notice',
         component: Notice,
@@ -125,10 +133,15 @@ const routes = [
         path: 'noticeadd',
         name : 'NoticeAdd',
         component: NoticeAdd,
+=======
+        path: 'movePage',
+        name : 'MovePage',
+        component: MovePage,
+>>>>>>> efb9b4f51471093be738c54733171e7c4a482b23
       },
     ]
   },
-  { path: '*', component: NotFound }
+  // { path: '*', component: NotFound }
 ]
 
 /**

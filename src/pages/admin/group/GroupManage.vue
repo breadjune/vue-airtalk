@@ -5,64 +5,56 @@
         <div class="col-12">
           <card>
             <template slot="header">
-              <h4 class="card-title">권한 관리</h4>
+              <h3 class="card-title">권한 관리</h3>
               <p class="card-category">여기는 권한을 관리하는 곳입니다.</p>
+              <hr>
             </template>
-
-            <!-- <template> -->
-              <b-form inline>
-                <b-form-select
-                  id="inline-form-custom-select-pref"
-                  class="mb-2 mr-sm-2 mb-sm-0"
-                  v-model="form.searchType"
-                  :options="options"
-                ></b-form-select>
-                <div class="mt-3">
-                  <strong>{{ form.searchType }}</strong>
-                </div>
-
-                <b-form-input
-                  id="adminName"
-                  name="adminName"
-                  v-model="form.searchWord"
-                ></b-form-input>
-
-                <b-button
-                  class="btn-info btn-fill"
-                  variant="primary"
-                  @click="selectGroupListBySearchWord()"
-                  >검색</b-button
-                >
-              </b-form>
-            <!-- </template>
-            <b-form> -->
-              <div
-                v-if="this.$store.getters['groupStore/memberList'].length > 0"
-              >
-              <!-- <div> -->
-                <b-table
-                  striped
-                  hover
-                  ref="selectableTable"
-                  selectable
-                  select-mode="single"
-                  :fields="fields"
-                  :items="this.$store.getters['groupStore/memberList']"
-                  @row-selected="onRowSelected"
-                ></b-table>
+            <b-form inline>
+              <b-form-select
+                id="inline-form-custom-select-pref"
+                class="mb-2 mr-sm-2 mb-sm-0"
+                v-model="form.searchType"
+                :options="options"
+              ></b-form-select>
+              <div class="mt-3">
+                <strong>{{ form.searchType }}</strong>
               </div>
-              <!-- <div>
-                <b-table
-                  striped
-                  hover
-                  ref="selectableTable"
-                  selectable
-                  select-mode="single"
-                  :items="items"
-                  @row-selected="onRowSelected"
-                ></b-table>
-              </div> -->
-            <!-- </b-form> -->
+              <b-form-input
+                class="mb-2 mr-sm-2 mb-sm-0"
+                id="adminName"
+                name="adminName"
+                v-model="form.searchWord"
+              ></b-form-input>
+              <div>
+                <b-button
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                  variant="primary"
+                  @click="groupList()"
+                  >목록 출력
+                </b-button>
+              </div>
+              <div>
+                <b-button
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                  variant="primary"
+                  @click="movePage"
+                  >목록 추가
+                </b-button>
+              </div>
+            </b-form>
+            <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
+            <b-table
+              striped
+              hover
+              outlined
+              ref="selectableTable"
+              selectable
+              select-mode="single"
+              :fields="fields"
+              :items="this.$store.getters['groupStore/memberList']"
+              @row-selected="onRowSelected"
+            ></b-table>
+            <!-- </div> -->
           </card>
         </div>
       </div>
@@ -85,30 +77,30 @@ const groupStore = "groupStore";
 export default {
   // name: "GroupManage",
   components: {
-    Card
+    Card,
   },
   mixins: [axioMixin],
   data() {
     return {
       fields: [
         {
-          key: "adminId",
-          label: "아이디",
+          key: "authGroupSeq",
+          label: "관리자 ID",
           sortable: true,
         },
         {
-          key: "adminName",
-          label: "이름",
+          key: "authName",
+          label: "관리자 명",
           sortable: false,
         },
         {
-          key: "phone",
-          label: "전화번호",
+          key: "desc",
+          label: "사용자 그룹",
           sortable: false,
         },
         {
-          key: "email",
-          label: "이메일",
+          key: "regDate",
+          label: "등록일",
           sortable: false,
         },
       ],
@@ -120,31 +112,47 @@ export default {
         { value: null, text: "전체" },
         { value: "adminName", text: "이름" },
       ],
-      // items: [
-      //   { seq: 1, menu_seq: "TEST", auth: "테스트 유저", reg_date: "20201001" },
-      //   { seq: 2, menu_seq: "USER", auth: "사용자", reg_date: "20201013" },
-      //   { seq: 3, menu_seq: "ADMIN", auth: "관리자", reg_date: "20201012" },
-      //   { seq: 4, menu_seq: "NONE", auth: "권한 없음", reg_date: "20201016" },
-      // ],
     };
   },
   created: function () {},
   methods: {
-    async selectGroupListBySearchWord() {
-      var data = await this.request(
-        "/admin/group/selectGroupListBySearchWord.json",
-        this.form
-      );
+    init: async function () {
+      var data = await this.request("/admin/group/search.json", this.form);
+      console.log("DB 정보 확인 : " + JSON.stringify(data));
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
     onRowSelected(items) {
+      console.log("파라미터 : " + items[0].authGroupSeq);
+      console.log("파라미터 : " + items[0].authName);
+      console.log("파라미터 : " + items[0].desc);
+      console.log("파라미터 : " + items[0].regDate);
+
+       alert("콘솔창 확인 ");
+      
       this.$router.push({
         name: "GroupInfo",
-        params: { adminId: items[0].adminId },
+        params: { authGroupSeq : items[0].authGroupSeq,
+                  authName : items[0].authName,
+                  desc : items[0].desc,
+                  regDate : items[0].regDate,
+                  },
       });
     },
+    async groupList() {
+      // params 테스트 용 
+      // this.$router.push({name: 'GroupInfo', params: {authGroupSeq: '1', age:4}})
+      var data = await this.request("/admin/group/search.json", this.form);
+      this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
+    },
+    movePage: function (event) {
+      this.$router.push("/admin/group-create");
+    },
+  },
+  mounted() {
+    this.init();
   },
 };
+
 </script>
 <style>
 </style>

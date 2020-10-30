@@ -22,7 +22,7 @@ const groupStore = {
         failUpdateMember( /*state, payload*/ ) {
             console.log('ERROR!');
         },
-        successGetMemberInfoBySeq(state, payload) {
+        successGetGroupInfoBySeq(state, payload) {
             state.memberInfo = payload;
         },
     },
@@ -36,11 +36,10 @@ const groupStore = {
     },
     actions: {
         selectGroupListBySearchWord({ commit, /*state*/ }) {
-            console.log("selectGroupListBySearchWord : " + arguments[1]);
             commit('successSelectGroupListBySearchWord', arguments[1]);
         },
-        getMemberInfoBySeq({ commit, /*state*/ }) {
-            commit('successGetMemberInfoBySeq', arguments[1]);
+        getGroupInfoBySeq({ commit, /*state*/ }) {
+            commit('successGetGroupInfoBySeq', arguments[1]);
         }
     }
 }
