@@ -124,7 +124,11 @@ const routes = [
         component: Menu,
       },
       {
-<<<<<<< HEAD
+        path: 'movePage',
+        name : 'MovePage',
+        component: MovePage,
+      },
+      {
         path: 'notice',
         name : 'Notice',
         component: Notice,
@@ -133,11 +137,6 @@ const routes = [
         path: 'noticeadd',
         name : 'NoticeAdd',
         component: NoticeAdd,
-=======
-        path: 'movePage',
-        name : 'MovePage',
-        component: MovePage,
->>>>>>> efb9b4f51471093be738c54733171e7c4a482b23
       },
     ]
   },
