@@ -37,7 +37,7 @@
                 <b-button
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
-                  @click="movePage"
+                  @click="movePage()"
                   >목록 추가
                 </b-button>
               </div>
@@ -103,13 +103,16 @@ export default {
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
     onRowSelected(items) {
+      console.log("아이템 보기 ==== "+JSON.stringify(items));
+
       console.log("파라미터 : " + items[0].authGroupSeq);
       console.log("파라미터 : " + items[0].name);
       console.log("파라미터 : " + items[0].description);
       console.log("파라미터 : " + items[0].regDate);
 
        alert("콘솔창 확인 ");
-      
+
+      this.$emit('rename', 'Content');
       this.$router.push({
         name: "GroupInfo",
         params: { authGroupSeq : items[0].authGroupSeq,
@@ -126,6 +129,7 @@ export default {
       this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
     },
     movePage: function (event) {
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-create");
     },
   },

@@ -153,9 +153,6 @@ export default {
         desc: "",
         regDate: "",
       },
-      form: {
-        adminId: "",
-      },
       fields: ["Menu_name", "show_details"],
       items: [
         { Menu_name: "회원관리" },
@@ -177,18 +174,19 @@ export default {
   },
 
   mounted() {
-    this.form.authGroupSeq = this.$route.params.authGroupSeq;
-    this.form.authName = this.$route.params.authName;
-    this.form.desc = this.$route.params.desc;
-    this.form.regDate = this.$route.params.regDate;
+    this.user.authGroupSeq = this.$route.params.authGroupSeq;
+    this.user.authName = this.$route.params.authName;
+    this.user.desc = this.$route.params.desc;
+    this.user.regDate = this.$route.params.regDate;
 
-    console.log("authGroupSeq: " + this.form.authGroupSeq);
-    console.log("authName: " + this.form.authName);
-    console.log("desc: " + this.form.desc);
-    console.log("regDate: " + this.form.regDate);
+    console.log("authGroupSeq: " + this.user.authGroupSeq);
+    console.log("authName: " + this.user.authName);
+    console.log("desc: " + this.user.desc);
+    console.log("regDate: " + this.user.regDate);
   },
   methods: {
     movePage: function (event) {
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
     },
     update() {
@@ -198,7 +196,6 @@ export default {
         userGroup: this.$route.params.desc,
         auth: this.selected_user,
       };
-      console.log(data);
 
       alert("콘솔창 확인 ");
 
@@ -212,13 +209,13 @@ export default {
         .catch((e) => {
           console.log("error : " + e);
         });
-
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
     },
 
     remove() {
       let data = {
-        authGroupSeq: this.form.authGroupSeq,
+        authGroupSeq: this.user.authGroupSeq,
       };
       console.log(data);
 
@@ -235,6 +232,7 @@ export default {
           console.log("error : " + e);
         });
 
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
     },
   },
