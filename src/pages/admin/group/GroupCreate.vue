@@ -160,6 +160,7 @@ export default {
   },
   methods: {
     movePage: function (event) {
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
     },
      init: function () {
@@ -196,7 +197,7 @@ export default {
         .catch((e) => {
           console.log("error : " + e);
         });
-
+      this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
     },
   },
