@@ -58,7 +58,6 @@ export default {
           data.adminName = JSON.stringify(result.data[i].adminName).substring(1, JSON.stringify(result.data[i].adminName).length - 1);
           data.adminGroupSeq = JSON.stringify(result.data[i].adminGroupSeq).substring(1, JSON.stringify(result.data[i].adminGroupSeq).length - 1);
           data.regDate = JSON.stringify(result.data[i].regDate).substring(1, JSON.stringify(result.data[i].regDate).length - 1);
-
           this.items.push(data);
         }
 
