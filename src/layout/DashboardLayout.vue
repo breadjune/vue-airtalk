@@ -8,37 +8,37 @@
         <p>Dashboard</p>
       </sidebar-link> -->
       <li>
-        <a href="#" @click="movePage('Overview')" class="nav-link">
+        <a href="#" @click="changeCountents('Overview')" class="nav-link">
           <i class="nc-icon nc-chart-pie-35"></i>
           Dashboard
         </a>
       </li>
       <li>
-        <a href="#" @click="movePage('Member')" class="nav-link">
+        <a href="#" @click="changeCountents('Member')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           회원 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="movePage('Admin')" class="nav-link">
+        <a href="#" @click="changeCountents('Admin')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           계정 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="movePage('Menu')" class="nav-link">
+        <a href="#" @click="changeCountents('Menu')" class="nav-link">
           <i class="nc-icon nc-notes"></i>
           메뉴 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="movePage('Group')" class="nav-link">
+        <a href="#" @click="changeCountents('Group')" class="nav-link">
           <i class="nc-icon nc-layers-3"></i>
           권한 관리
         </a>
       </li>
       <li>
-        <a href="#" @click="movePage('Notice')" class="nav-link">
+        <a href="#" @click="changeCountents('Notice')" class="nav-link">
           <i class="nc-icon nc-layers-3"></i>
           공지 게시판
         </a>
@@ -72,12 +72,11 @@
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content @click="toggleSidebar">
+      <!-- <dashboard-content @click="toggleSidebar">
 
-      </dashboard-content>
+      </dashboard-content> -->
 
-      <!-- <component :is="this.name"> -->
-      <!-- </component> -->
+      <component :is="this.name" v-on:rename="rename"></component>
 
       <content-footer></content-footer>
     </div>
@@ -88,32 +87,32 @@
 </style>
 <script>
   import TopNavbar from './TopNavbar.vue'
-  import ContentFooter from './ContentFooter.vue'
-  import DashboardContent from './Content.vue'
+  import Footer from './ContentFooter.vue'
+  import Content from './Content.vue'
   import MobileMenu from './MobileMenu.vue'
   import Overview from '../pages/Overview'
-  import MemberManage from '../pages/admin/member/MemberManage.vue'
-  import GroupManage from '../pages/admin/group/GroupManage.vue'
+  import Member from '../pages/admin/member/MemberManage.vue'
+  import Group from '../pages/admin/group/GroupManage.vue'
   import Menu from '../pages/admin/menu/Menu.vue'
-  import AdminManager from '../pages/admin/adminManager/AdminManager.vue'
+  import Admin from '../pages/admin/adminManager/AdminManager.vue'
   import Notice from '../pages/admin/notice/notice.vue'
   export default {
-    // data() {
-    //   return {
-    //     name: 'Overview'
-    //   }
-    // },
+    data() {
+      return {
+        name: 'Overview'
+      }
+    },
     components: {
       TopNavbar,
-      // ContentFooter,
-      DashboardContent,
-      //Notice
-      // MobileMenu,
-      // Overview,
-      // MemberManage,
-      // GroupManage,
-      // Menu,
-      // AdminManager
+      Footer,
+      Content,
+      Notice,
+      MobileMenu,
+      Overview,
+      Member,
+      Group,
+      Menu,
+      Admin
     },
     mounted(){
       // console.log('auth : ' + this.$session.get('auth'));
@@ -123,7 +122,7 @@
       // }
     },
     methods: {
-      parents(name) {
+      rename(name) {
         this.name = name
       },
       changeCountents(name) {
