@@ -29,7 +29,7 @@ import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
 const routes = [
   {
     path: '/',
-    component: Default,
+    component: DashboardLayout,
   },
   {
     path: '/login',
