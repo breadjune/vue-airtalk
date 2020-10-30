@@ -827,25 +827,60 @@
     transform: translate3d(0, 39px, 0) !important;
 }
 
-/* login */  
-/* .container-row {
-    padding: 5%;
-    border: 1px solid black;
-    max-width: 40rem;
-} */
+/* login css */  
 .login-container {
     min-width: 40rem;
 }
 .login-row {
     height: 40rem;
 }
-.login-form {
-    margin : 0;
-    padding: 2% 5% 2% 5%;
-    min-width: 20rem;
+.login-contents {
+    /* border:1px solid red; */
+    height:30rem;
+    min-width: 50rem;
     border: 1px solid #cccccc;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 5px 5px 10px #666666;
+}
+.login-image-box {
+    /* border:1px solid green; */
+    height:30rem;
+    float:left;
+    background-color: #dc3545;
+    border-radius: 10px 0 0 10px;
+    line-height: 20rem;
+    text-align: center;
+}
+.login-title {
+    font-weight:bold;
+    /* color:white; */
+    /* float: left; */
+    position: absolute;
+    top: 12.7rem;
+    left: 7.5rem;
+    margin: 1.5rem;
+    opacity: 0.4;
+}
+.login-image {
+    width: 23rem;
+    opacity: 1;
+    margin-top: 5rem;
+    /* position: absolute;
+    right: 1rem;
+    top: 6rem; */
+}
+.login-form-box {
+    /* border:1px solid blue; */
+    height:30rem;
+    float:left;
+}
+.login-header {
+    font-weight: bold;
+    border-bottom:1px solid #ccc;
+    padding-bottom:2rem;
+}
+.input-group-prepend {
+    border-right: 1px solid black;
 }
 .login-reset {
     margin-left: 5%;

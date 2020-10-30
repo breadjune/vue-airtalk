@@ -94,12 +94,10 @@
         this.$sidebar.displaySidebar(false)
       },
       movePage(urlName) {
-          if (this.name !== urlName) {
-          this.name = urlName;
+          this.$session.clear()
           this.$router.replace({
           name: urlName
           });
-        }
       }
     }
   }
