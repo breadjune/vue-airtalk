@@ -42,8 +42,11 @@
                     </b-tr>
                 </tbody>
             </table>
-            <button class="btn btn-info btn-fill btn-primary">수정</button>
         </form>
+        <div style="text-align: right;">
+            <button  class="btn btn-info btn-fill btn-primary">수정</button>
+        </div>
+        
   </div>
 </template>
 <script>

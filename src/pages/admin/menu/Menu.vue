@@ -1,19 +1,35 @@
 <template>
-    <div>
-        <h1>메뉴 관리</h1>
-        <div style="float:left">
-            <menu-tree v-on:reSearchId="reSearch"></menu-tree>
-            <menu-info v-bind="detailList"></menu-info>
-            <menu-func v-bind="funclist"></menu-func>
-            <button v-on:click="check">check</button>
+    <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+            <card>
+                <template slot="header">
+                <h3 class="card-title">메뉴 관리</h3>
+                </template>
+                
+                <div class="row">
+                    <menu-tree v-on:reSearchId="reSearch"></menu-tree>
+                    <div class="col">
+                        <menu-info v-bind="detailList"></menu-info>
+                        <hr>
+                        <button v-on:click="check">chk</button>
+                        <menu-func v-bind="funclist"></menu-func>
+                        
+                    </div>
+                </div>
+            </card>
         </div>
+      </div>
+    </div>
     </div>
 </template>
 <script>
 import axios from 'axios'
-import menutree from './MenuTree';
-import menuinfo from './MenuInfo';
-import menufunc from './MenuFunc';
+import menufunc from './MenuFunc.vue'
+import menuinfo from './MenuInfo.vue'
+import menutree from './MenuTree.vue'
+import Card from "src/components/Cards/Card.vue";
 
 export default {
     data() {
@@ -25,28 +41,29 @@ export default {
                 url : '4',
                 auth : '5',
                 description : '6',
+                
                 regdate : '7',
                 moddate : '8'
             },
             funclist: {
-                // id : [],
-                // title : [],
-                // points : [],
-                // user : [],
-                // time : [],
-                // time_ago : [],
-                // comments_count : [],
-                // type : [],
-                // url : [],
-                // domain : []
-                funcSeq : [],
-                menuSeq : [],
-                name : [],
+                id : [],
+                title : [],
+                points : [],
+                user : [],
+                time : [],
+                time_ago : [],
+                comments_count : [],
+                type : [],
                 url : [],
-                auth : [],
-                description : [],
-                regDate : [],
-                modDate : []
+                domain : []
+                // funcSeq : [],
+                // menuSeq : [],
+                // name : [],
+                // url : [],
+                // auth : [],
+                // description : [],
+                // regDate : [],
+                // modDate : []
             },
             id : '1'
         }
@@ -57,12 +74,12 @@ export default {
     },
     methods : {
         check(){
-            console.log("funclist check : " + this.funclist.funcSeq);
-            console.log("funclist check : " + this.funclist.menuSeq);
-            console.log("funclist check : " + this.funclist.name);
+            console.log("funclist check : " + this.funclist.id);
+            console.log("funclist check : " + this.funclist.title);
+            console.log("funclist check : " + this.funclist.points);
         },
         detail(){
-            const res = axios.get('/admin/menu/detail', {params: { id : this.id }}).then((result) => {
+            const res = axios.get('/rest/menu/detail', {params: { id : this.id }}).then((result) => {
                 this.detailList.seq=result.data.menuSeq;
                 this.detailList.title=result.data.title;
                 this.detailList.type=result.data.type;
@@ -95,7 +112,9 @@ export default {
                     console.log(res);
             });
 
-            // const re = axios.get('/admin/menu/function',{params: {
+            console.log('api fin');
+
+            // const re = axios.get('/rest/menu/function',{params: {
             //     id : this.id
             // }}).then(res => {
             //     this.funclist.funcSeq = res.data.map(x=>x.funcSeq);
@@ -119,13 +138,27 @@ export default {
     components : {
         'menu-tree' : menutree,
         'menu-info' : menuinfo,
-        'menu-func' : menufunc
+        'menu-func' : menufunc,
+        Card
     },
     watch:{
         id : function(){
             this.detail();
+            console.log('watch_id');
+            this.func();
+        },
+        funclist : function(){
+            console.log('watch_func');
             this.func();
         }
     }
 }
 </script>
+<style scoped>
+.rowMenu{
+    display: flex;
+}
+.colMenu{
+    flex: 1;
+}
+</style>

@@ -14,13 +14,17 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>계정 관리</p>
       </sidebar-link>
-      <sidebar-link to="/admin/menu-list">
+      <sidebar-link to="/admin/menu">
         <i class="nc-icon nc-notes"></i>
         <p>메뉴 관리</p>
       </sidebar-link>
       <sidebar-link to="/admin/group-list">
         <i class="nc-icon nc-layers-3"></i>
         <p>권한 관리</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/notice">
+        <i class="nc-icon nc-notes"></i>
+        <p>공지사항</p>
       </sidebar-link>
       <sidebar-link to="/admin/table-list">
         <i class="nc-icon nc-notes"></i>

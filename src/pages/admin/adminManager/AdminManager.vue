@@ -44,7 +44,7 @@ export default {
   methods:{
     getBtn() {
         alert("Hello! Spring type get!")
-        axios.get('/admin/admin-list/getTest?title=getTestTitle').then(result => {
+        axios.get('/rest/admin-list/getTest?title=getTestTitle').then(result => {
             alert(result.data);
         })
         .catch(e => {
@@ -62,7 +62,7 @@ export default {
         console.log("id : " + this.id);
         console.log("pw : " + this.pw);
 
-        axios.post('/admin/admin-list/postTest', data).then(result => {
+        axios.post('/rest/admin-list/postTest', data).then(result => {
             console.log("result.data : " + result.data);
             this.result = result.data;
             this.inputTest = result.data;
