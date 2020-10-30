@@ -24,6 +24,7 @@ import GroupCreate from 'src/pages/admin/group/GroupCreate.vue'
 import Menu from 'src/pages/admin/menu/Menu.vue'
 
 import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
+import AdminManagerView from'src/pages/admin/adminManager/AdminManagerView.vue'
 
 import Notice from 'src/pages/admin/notice/notice.vue'
 import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
@@ -77,6 +78,11 @@ const routes = [
         path: 'admin-list',
         name: 'Admin',
         component: AdminManager
+      },
+      {
+        path: 'admin-info',
+        name: 'AdminInfo',
+        component: AdminManagerView
       },
       /*{
         path: 'user-register',

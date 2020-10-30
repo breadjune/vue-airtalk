@@ -67,17 +67,13 @@ export default {
       });
     },
     
-    onRowSelected(items) {
-      console.log(items);
+    onRowSelected(param) {
 
+      this.$emit('rename', 'Content');
       this.$router.push({
         name: "AdminInfo",
-        path: "./AdminManagerView",
         params: { 
-          adminId : items.adminId,
-          adminName : items.adminName,
-          adminGroup : items.adminGroup,
-          regDate : items.regDate,
+          adminId : param[0].adminId,
         },
       });
     },
