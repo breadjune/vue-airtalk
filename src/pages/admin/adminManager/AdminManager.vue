@@ -3,13 +3,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <card class="strpied-tabled-with-hover"
-                body-classes="table-full-width table-responsive">
-
+          <card>
             <template slot="header">
-              <h4 class="card-title">Admin Manager</h4>
-              <p class="card-category">계정 관리</p>
+              <h4 class="card-title">계정 관리</h4>
             </template>
+            <div>
+              <b-button
+                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                variant="primary"
+                @click="movePage()">
+                추가
+              </b-button>
+            </div>
             <b-table
                 striped
                 hover
@@ -30,7 +35,7 @@
 
 <script>
 import axios from "axios"
-const groupStore = "groupStore";
+
 export default {
   data() {
     return {
@@ -56,8 +61,8 @@ export default {
           var data = new Object;
           data.adminId = JSON.stringify(result.data[i].adminId).substring(1, JSON.stringify(result.data[i].adminId).length - 1);
           data.adminName = JSON.stringify(result.data[i].adminName).substring(1, JSON.stringify(result.data[i].adminName).length - 1);
-          data.adminGroupSeq = JSON.stringify(result.data[i].adminGroupSeq).substring(1, JSON.stringify(result.data[i].adminGroupSeq).length - 1);
-          data.regDate = JSON.stringify(result.data[i].regDate).substring(1, JSON.stringify(result.data[i].regDate).length - 1);
+          data.adminGroupSeq = JSON.stringify(result.data[i].adminGroup.name).substring(1, JSON.stringify(result.data[i].adminGroup.name).length - 1);
+          data.regDate = JSON.stringify(result.data[i].regDate).substring(1, 11);
           this.items.push(data);
         }
 
