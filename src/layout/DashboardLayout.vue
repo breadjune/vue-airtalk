@@ -13,24 +13,24 @@
           Dashboard
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a href="#" @click="changeCountents('Member')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           회원 관리
         </a>
-      </li>
+      </li> -->
       <li>
         <a href="#" @click="changeCountents('Admin')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           계정 관리
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a href="#" @click="changeCountents('Menu')" class="nav-link">
           <i class="nc-icon nc-notes"></i>
           메뉴 관리
         </a>
-      </li>
+      </li> -->
       <li>
         <a href="#" @click="changeCountents('Group')" class="nav-link">
           <i class="nc-icon nc-layers-3"></i>
@@ -79,7 +79,7 @@
       <component :is="this.name" v-on:rename="rename"></component>
       
 
-      <content-footer></content-footer>
+      <footer></footer>
     </div>
   </div>
 </template>
@@ -105,7 +105,7 @@ var EventBus = new Vue();
   export default {
     data() {
       return {
-        name: 'Overview'
+        name: ''
       }
     },
     components: {
@@ -141,9 +141,10 @@ var EventBus = new Vue();
       },
       changeCountents(name) {
 
-        var list = document.querySelectorAll('.nav-main__links li');
-
         if(name !== 'Login') {
+
+          var list = document.querySelectorAll('.nav-main__links li');
+
           for (var i = 0; i < list.length; i++) { 
             (function(idx) {
               list[idx].classList.remove("active");
@@ -155,14 +156,9 @@ var EventBus = new Vue();
           }
         }
 
-        if(name !== this.name) this.name = name
+        this.name = name
         
       },
-      // toggleSidebar () {
-      //   if (this.$sidebar.showSidebar) {
-      //     this.$sidebar.displaySidebar(false)
-      //   }
-      // },
       movePage(urlName) {
         console.log('name : ' + this.name);
         if (this.name !== urlName) {

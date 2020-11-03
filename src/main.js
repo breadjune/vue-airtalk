@@ -16,7 +16,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
+import Axios from 'axios'
 import VueSession from 'vue-session'
+import VueCookie from 'vue-cookie'
 
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -32,11 +34,15 @@ import routes from './routes/routes'
 import store from './store/index.js'
 
 import './registerServiceWorker'
+
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(LightBootstrap)
 Vue.use(VueSession)
+Vue.use(VueCookie)
+
+Vue.prototype.$http = Axios
 
 // configure router
 const router = new VueRouter({
