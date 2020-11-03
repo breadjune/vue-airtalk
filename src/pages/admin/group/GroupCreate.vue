@@ -62,29 +62,48 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
                   <label> 메뉴별 권한 </label>
+                  <table class="table table-bordered">
+                    <template v-for="item in this.resultL">
+                      <tr v-bind:key="item">
+                        <td style="width: 20%">
+                          {{ resultD[item - 1].title }}
+                        </td>
+                        <td style="width: 50%">
+                          <b-form-select
+                            v-bind:key="item"
+                            v-model="selected[item]"
+                            :options="options"
+                          ></b-form-select>
+                        </td>
+                      </tr>
+                    </template>
+                  </table>
 
-                  <b-table
+                  <!-- <b-table
                     striped
                     ref="selectableTable"
                     selectable
                     select-mode="single"
                     :fields="fields"
                     :items="this.$store.getters['groupStore/memberList']"
-                  >
+                  > 
                     <template #cell(auth_manage)>
                       <b-form-select
                         v-model="selected"
                         :options="options"
                       ></b-form-select>
                     </template>
-                  </b-table>
+                  </b-table> -->
                 </div>
               </b-row>
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
                   <label> 등록일 </label>
-                  <b-input name="regDate" type="text" disabled="true"
+                  <b-input
+                    name="regDate"
+                    type="text"
+                    disabled="true"
                     v-model="user.regDate"
                   >
                   </b-input>
@@ -92,7 +111,7 @@
               </b-row>
               <div class="col-md-4"></div>
               <div class="text-center">
-                <b-button pill
+                <b-button
                   variant="success"
                   class="btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click="create()"
@@ -100,11 +119,20 @@
                   저장
                 </b-button>
 
-                <b-button pill
-                  class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0"
+                <b-button
+                  variant="primary"
+                  class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click.prevent="movePage"
                 >
                   목록
+                </b-button>
+
+                <b-button
+                  variant="primary"
+                  class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  @click="test()"
+                >
+                  테스트
                 </b-button>
               </div>
               <div class="clearfix"></div>
@@ -118,7 +146,6 @@
 
 
 <script>
-
 const groupStore = "groupStore";
 
 import axios from "axios";
@@ -132,19 +159,12 @@ export default {
         gname: "",
         regDate: "",
       },
-      fields: [
-        {key: "title", label: "메뉴 이름",},
-        "auth_manage"
-      ],
-      // items: [
-      //   { first_name: this.result.data },
-      //   { first_name: "계정관리" },
-      //   { first_name: "메뉴관리" },
-      // ],
-      selected: "R",
-      selected_user: "R",
+      selected: [],
+      resultL: "",
+      resultD: [],
+
       options: [
-        { value: "X", text: "권한없음" },
+        { value: "X", text: "권한없음", default: "X" },
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
         { value: "RC", text: "읽기/생성" },
@@ -155,21 +175,30 @@ export default {
       ],
     };
   },
-   mounted() {
+  mounted() {
     this.init();
   },
   methods: {
     movePage: function (event) {
-      this.$emit('rename', 'Content');
+      this.$emit("rename", "Content");
       this.$router.push("/admin/group-list");
     },
-     init: function () {
-     axios
+    init: function () {
+      axios
         .get("/rest/group/create")
         .then((result) => {
           console.log("result.data : " + JSON.stringify(result.data));
           this.result = result.data;
-           this.$store.dispatch("groupStore/selectGroupListBySearchWord", result.data);
+          this.resultL = this.result.length;
+          console.log(this.result.length);
+
+          this.$store.dispatch(
+            "groupStore/selectGroupListBySearchWord",
+            result.data
+          );
+
+          this.resultD = this.$store.getters["groupStore/memberList"];
+          console.log(JSON.stringify(this.resultD));
         })
         .catch((e) => {
           console.log("error : " + e);
@@ -179,7 +208,7 @@ export default {
       let data = {
         gname: this.user.gname,
         userGroup: this.user.userGroup,
-        auth: this.selected, 
+        auth: this.selected,
         regDate: this.user.regDate,
       };
       console.log(data);
@@ -189,16 +218,22 @@ export default {
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
-          if(result.data == "SUCCESS")
-           alert(result.data + " 정상 처리 되었습니다." );
+          if (result.data == "SUCCESS")
+            alert(result.data + " 정상 처리 되었습니다.");
           else
-          alert(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
+            alert(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
         })
         .catch((e) => {
           console.log("error : " + e);
         });
-      this.$emit('rename', 'Content');
+      this.$emit("rename", "Content");
       this.$router.push("/admin/group-list");
+    },
+
+    test() {
+      console.log(this.selected[1]);
+      console.log(this.selected[2]);
+      console.log(this.selected[3]);
     },
   },
 };
