@@ -5,9 +5,10 @@
                 <div class="col-12">
                     <card>
                         <template slot="header">
-                            <h4 class="card-title">Admin Manager</h4>
-                            <p class="card-category">계정 관리</p>
+                            <h4 class="card-title">계정 관리</h4>
+                            <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호 입력 하십시오.</p>
                         </template>
+                        <hr>
                         <b-form>
                             <div>
                                 <label for="adminId">사용자ID</label>
@@ -21,7 +22,7 @@
                                 <label for="password">비밀번호</label>
                                 <b-input id="password" name="password" type="password" v-model="password" :disabled="pwPhoneEmail ? '' : disabled" maxlength="20"></b-input>
                             </div>
-                            <div>
+                            <div v-show="inputAdminGroupSelect">
                                 <label for="passwordCheck">비밀번호 확인</label>
                                 <b-input id="passwordCheck" name="passwordCheck" type="password" v-model="passwordCheck" :disabled="pwPhoneEmail ? '' : disabled" maxlength="20"></b-input>
                             </div>
@@ -34,27 +35,28 @@
                                 <b-input id="email" name="email" type="text" v-model="email" :disabled="pwPhoneEmail ? '' : disabled"></b-input>
                             </div>
                             <div>
-                                <label for="adminGroup">사용자그룹</label>
-                                <b-input id="adminGroup" name="adminGroup" type="text" v-model="adminGroup" readonly></b-input>
-                                <!-- <b-input id="adminGroup" name="adminGroup" type="text" v-model="adminGroup" readonly v-show='inputAdminGroup'></b-input> -->
-                                <!-- <select id="adminGroupSelect" name="adminGroupSelect" v-model="adminGroupSeq" v-show='inputAdminGroupSelect'>
+                                <label for="adminGroup" v-show='inputAdminGroup'>사용자그룹</label>
+                                <label for="adminGroupSelect" v-show='inputAdminGroupSelect'>사용자그룹</label>
+                                <b-input id="adminGroup" name="adminGroup" type="text" v-model="adminGroup" readonly v-show='inputAdminGroup'></b-input>
+                                <b-form-select id="adminGroupSelect" name="adminGroupSelect" v-model="adminGroupSeq" v-show='inputAdminGroupSelect'>
                                     <option value="1">관리자</option>
                                     <option value="2">USER</option>
                                     <option value="5">TEST</option>
-                                </select> -->
+                                </b-form-select>
                             </div>
                             <div>
                                 <label for="regDate">등록일</label>
                                 <b-input id="regDate" name="regDate" type="text" v-model="regDate" readonly></b-input>
                             </div>
+                            <br>
+                            <div class="text-center">
+                                <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
+                                <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
+                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()">삭제</b-button>
+                                <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">목록</b-button>
+                            </div>
                         </b-form>
                     </card>
-                    <div class="text-center">
-                        <b-button id="modifyBtn" variant="primary" class="btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
-                        <b-button id="saveBtn" variant="success" class="btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSaveDelete">저장</b-button>
-                        <b-button id="deleteBtn" variant="danger" class="btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnSaveDelete">삭제</b-button>
-                        <b-button id="listBtn" variant="info" class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">목록</b-button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -77,10 +79,10 @@
                 phone: "",
                 email: "",
                 btnModify: true,                // 수정 버튼 표시 or 숨김
-                btnSaveDelete: false,           // 저장, 삭제 버튼 표시 or 숨김
+                btnSave: false,           // 저장, 삭제 버튼 표시 or 숨김
                 pwPhoneEmail: true,             // phone, e-mail disable, undisable
-                // inputAdminGroup: true,          // adminGroup disable, undisable
-                // inputAdminGroupSelect: false,   // adminGroupSelect disable, undisable
+                inputAdminGroup: true,          // adminGroup disable, undisable
+                inputAdminGroupSelect: false,   // adminGroupSelect disable, undisable
             }
         },
 
@@ -98,8 +100,6 @@
         methods: {
             adminInfo: function() {
                 axios.get("/rest/admin-list/getAdminInfo?adminId=" + this.$route.params.adminId).then((result) => {
-                    console.log("update test");
-                    console.log(result.data.adminGroup.name);
                     this.adminId = result.data.adminId;
                     this.adminName = result.data.adminName;
                     this.adminGroup = result.data.adminGroup.name;
@@ -113,11 +113,12 @@
             },
 
             modify() {
+                this.password = "";
                 this.btnModify = false;
-                this.btnSaveDelete = true;
+                this.btnSave = true;
                 this.pwPhoneEmail = false;
-                // this.inputAdminGroup = false;
-                // this.inputAdminGroupSelect = true;
+                this.inputAdminGroup = false;
+                this.inputAdminGroupSelect = true;
             },
 
             save() {
@@ -142,22 +143,38 @@
                     formData.append('email', this.email);
 
                     axios.post("/rest/admin-list/updateAdminInfo", formData).then((result) =>  {
-                        console.log(result.data);
-                        
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data == 'SUCCESS') {
+                            alert("정상 수정 되었습니다.");
                             this.$emit('rename', 'Content');
                             this.$router.push("/admin/admin-list");
                         }
                         else {
-                            alret("저장에 실패하였습니다.");
+                            alert("저장에 실패하였습니다.");
                         }
                     });
                 }
             },
 
             del() {
-                console.log("del btn click");
+                if(confirm("삭제 하시겠습니까?") == true) {
+                    console.log(this.adminId);
+                    axios.get("/rest/admin-list/deleteAdmin", { params: { adminId: this.adminId } }).then((result) => {
+                        if(result.data == "SUCCESS") {
+                            alert("정상 삭제 되었습니다.");
+                            this.$emit('rename', 'Content');
+                            this.$router.push("/admin/admin-list");
+                        }
+                        else {
+                            alert("삭제 실패 하였습니다.");
+                            this.$emit('rename', 'Content');
+                            this.$router.push("/admin/admin-list");
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
             },
 
             list() {
@@ -165,7 +182,5 @@
                 this.$router.push("/admin/admin-list");
             }
         }
-
-        
     }
 </script>

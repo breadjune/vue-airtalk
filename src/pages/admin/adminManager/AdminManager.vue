@@ -7,18 +7,18 @@
             <template slot="header">
               <h4 class="card-title">계정 관리</h4>
             </template>
+            <hr>
             <div>
               <b-button
                 class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="primary"
-                @click="movePage()">
+                @click="create()">
                 추가
               </b-button>
             </div>
             <b-table
                 striped
                 hover
-                outlined
                 ref="selectableTable"
                 selectable
                 select-mode="single"
@@ -50,13 +50,12 @@ export default {
   },
   
   mounted() {
-    this.list()
+    this.list();
   },
   
   methods: {
     list: function() {
       axios.get("/rest/admin-list/adminList").then((result) => {
-        
         for (var i = 0; i < result.data.length; i++) {
           var data = new Object;
           data.adminId = JSON.stringify(result.data[i].adminId).substring(1, JSON.stringify(result.data[i].adminId).length - 1);
@@ -65,7 +64,6 @@ export default {
           data.regDate = JSON.stringify(result.data[i].regDate).substring(1, 11);
           this.items.push(data);
         }
-
       })
       .catch((e) => {
         console.log(e);
@@ -73,7 +71,6 @@ export default {
     },
     
     onRowSelected(param) {
-
       this.$emit('rename', 'Content');
       this.$router.push({
         name: "AdminInfo",
@@ -82,6 +79,11 @@ export default {
         },
       });
     },
+
+    create() {
+      this.$emit('rename', 'Content');
+      this.$router.push("/admin/admin-create");
+    }
   }
 };
 </script>
