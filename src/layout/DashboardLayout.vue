@@ -105,7 +105,7 @@ var EventBus = new Vue();
   export default {
     data() {
       return {
-        name: ''
+        name: 'Overview'
       }
     },
     components: {
