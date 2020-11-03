@@ -77,6 +77,7 @@
       </dashboard-content> -->
 
       <component :is="this.name" v-on:rename="rename"></component>
+      
 
       <content-footer></content-footer>
     </div>
@@ -97,6 +98,10 @@
   import Admin from '../pages/admin/adminManager/AdminManager.vue'
   import Notice from '../pages/admin/notice/notice.vue'
   import NoticeAdd from '../pages/admin/notice/notice_add.vue'
+  import NoticeDetail from '../pages/admin/notice/notice_detail.vue'
+  // import eventBus from '../components/eventBus'
+  import Vue from 'vue'
+var EventBus = new Vue();
   export default {
     data() {
       return {
@@ -114,9 +119,11 @@
       Group,
       Menu,
       Admin,
-      NoticeAdd
+      NoticeAdd,
+      NoticeDetail
     },
     mounted(){
+      EventBus.$on('message_bus',this.onReceive);
       // console.log('auth : ' + this.$session.get('auth'));
       // if(!this.$session.get('auth')) {
       //   const elem = this.$refs.login
@@ -124,8 +131,12 @@
       // }
     },
     methods: {
+      oonReceive(text) {
+            this.receiveText = text;
+        },
       rename(name) {
         console.log('Dashboard_rename');
+        console.log('naeme : ' + name);
         this.name = name
       },
       changeCountents(name) {

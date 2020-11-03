@@ -9,8 +9,8 @@
                         </template>
                         <add-form></add-form>
                         <div style="display:inline;">
-                            <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="add">등록</button>
-                            <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="add">취소</button>
+                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="add">등록</b-button>
+                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="cancel">취소</b-button>
                         </div>
                     </card>
                 </div>
@@ -25,5 +25,15 @@ export default {
     components : {
         'add-form' : addform
     },
+    methods :{
+        add(){
+            console.log('notice_add.vue - add()');
+        },
+        cancel(){
+            console.log('notice_add.vue - cancel()');
+            this.$emit('rename','Content');
+            this.$router.push('/admin/notice');
+        }
+    }
 }
 </script>
