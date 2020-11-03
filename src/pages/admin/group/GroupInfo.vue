@@ -62,28 +62,22 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
                   <label> 메뉴별 권한 <span class="required">*</span></label>
-                  <table class="table table-bordered">
-                    <tr>
-                      <td style="width: 20%">회원 관리</td>
-                      <td style="width: 50%">
-                        <b-form-select
-                          v-model="selected_user"
-                          :options="options"
-                        >
-                        </b-form-select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="width: 20%">계정 관리</td>
-                      <td style="width: 50%">
-                        <b-form-select
-                          v-model="selected_admin"
-                          :options="options"
-                        >
-                        </b-form-select>
-                      </td>
-                    </tr>
-                  </table>
+                    <table class="table table-bordered">
+                     <template v-for="item in this.resultL">
+                      <tr v-bind:key="item">
+                        <td style="width: 20%">
+                          {{ resultD[item - 1].title }}
+                        </td>
+                        <td style="width: 50%">
+                          <b-form-select
+                            v-bind:key="item"
+                            v-model="selected[item]"
+                            :options="options"
+                          ></b-form-select>
+                        </td>
+                      </tr>
+                    </template>
+                 </table>
                 </div>
               </b-row>
               <b-row>
@@ -103,26 +97,24 @@
               <div class="col-md-4"></div>
               <div class="text-center">
                 <b-button
-                  pill
                   variant="success"
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click="update()"
                 >
                   수정
                 </b-button>
 
                 <b-button
-                  pill
-                  class="btn btn-info btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  variant="primary"
+                  class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click.prevent="movePage"
                 >
                   목록
                 </b-button>
 
                 <b-button
-                  pill
                   variant="danger"
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
                   @click="remove()"
                 >
                   삭제
@@ -159,9 +151,11 @@ export default {
         { Menu_name: "계정관리" },
         { Menu_name: "메뉴관리" },
       ],
-      selected_user: "R",
-      selected_admin: "R",
+      selected: [],
+      resultL: "",
+      resultD: [],
       options: [
+        { value: "X", text: "권한없음", default: "X" },
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
         { value: "RC", text: "읽기/생성" },
@@ -174,6 +168,7 @@ export default {
   },
 
   mounted() {
+    this.init();
     this.user.authGroupSeq = this.$route.params.authGroupSeq;
     this.user.authName = this.$route.params.authName;
     this.user.desc = this.$route.params.desc;
@@ -188,6 +183,27 @@ export default {
     movePage: function (event) {
       this.$emit('rename', 'Content');
       this.$router.push("/admin/group-list");
+    },
+    init: function () {
+      axios
+        .get("/rest/group/create")
+        .then((result) => {
+          console.log("result.data : " + JSON.stringify(result.data));
+          this.result = result.data;
+          this.resultL = this.result.length;
+          console.log(this.result.length);
+
+          this.$store.dispatch(
+            "groupStore/selectGroupListBySearchWord",
+            result.data
+          );
+
+          this.resultD = this.$store.getters["groupStore/memberList"];
+          console.log(JSON.stringify(this.resultD));
+        })
+        .catch((e) => {
+          console.log("error : " + e);
+        });
     },
     update() {
       let data = {

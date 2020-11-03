@@ -43,6 +43,7 @@
               </div>
             </b-form>
             <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
+            
             <b-table
               striped
               hover
@@ -54,6 +55,7 @@
               :items="this.$store.getters['groupStore/memberList']"
               @row-selected="onRowSelected"
             ></b-table>
+          
             <!-- </div> -->
           </card>
         </div>
@@ -81,7 +83,7 @@ export default {
   data() {
     return {
       fields: [
-        { key: "authGroupSeq", label: "관리자 ID", sortable: true, },
+        { key: "authGroupSeq", label: "관리자 ID", sortable: true,},
         { key: "name",label: "관리자 명", sortable: false, },
         { key: "description", label: "사용자 그룹", sortable: false, },
         { key: "regDate", label: "등록일", sortable: false, },
