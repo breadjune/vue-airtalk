@@ -5,13 +5,14 @@
                 <div class="col-12">
                     <card>
                         <template slot="header">
-                            <h4 class="card-title">공지사항</h4>
+                            <h3 class="card-title">공지사항</h3>
+                            <p class="card-category">여기는 공지 게시판 입니다.</p>
+                        <hr>
                         </template>
-                        
                         <notice-search></notice-search>
                         <notice-list v-bind="noticeList"></notice-list>
                         <div style="display:inline;">
-                            <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="add">추가</button>
+                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="add">추가</b-button>
                             <tr style="float:right">
                                 paging
                             </tr>
@@ -25,6 +26,7 @@
 <script>
 import noticeSearch from './notice_search.vue'
 import noticeList from './notice_list.vue'
+import pagemove from '@/components/eventBus'
 import axios from 'axios'
 
 export default {
@@ -42,11 +44,20 @@ export default {
                 reg_date : Array,
                 mod_date : Array,
                 flag_file : Array
+            },
+            detailInfo: {
+                seq : '',
+                title : '',
+                contents : '',
+                id : '',
+                reg_date : '',
+                mod_date : '',
+                flag_file : ''
             }
         }
     },
     created : function() {
-        // this.list();
+        this.list();
     },
     methods : {
         list(){
@@ -68,9 +79,9 @@ export default {
         },
     
         add(){
-            console.log('add');
+            console.log('add!!');
             this.$emit('rename','Content');
-            this.$router.push('/admin/noticeadd');
+            (this.$router.push('/admin/noticeadd'));
         }
     }
 }

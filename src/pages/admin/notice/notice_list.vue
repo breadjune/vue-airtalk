@@ -1,19 +1,17 @@
 <template>
-    <b-table striped hover :items="items"></b-table>
+<div>
+    <b-table 
+    striped 
+    hover 
+    :items="items" 
+    @row-clicked="myRowClickHandler"></b-table>
+    <router-link to="/admin/noticedetail/2">aa</router-link>
+</div>
 </template>
 <script>
+// import dashboard from 'src/layout/DashboardLayout.vue'
 export default {
     props:{
-        // id : Array,
-        // title : Array,
-        // points : Array,
-        // user : Array,
-        // time : Array,
-        // time_ago : Array,
-        // comments_count : Array,
-        // type : Array,
-        // url : Array,
-        // domain : Array
         seq : Array,
         title : Array,
         contents : Array,
@@ -40,17 +38,19 @@ export default {
                 this.items.push(data);
             }
         }
-        // id(){
-        //     console.log('watch _ id : ' + this.id[0]);
-        //     for(var i=0; i<3; i++){
-        //         var data = new Object();
+    },
+    methods : {
+        myRowClickHandler(record, index) {
+            console.log('row click _ record : '+record); // This will be the item data for the row
+            console.log('row click _ index : '+index); // This will be the item data for the row
+            console.log('record.No : ' + record.No);
+            // this.$emit('DetailInfo',record.No);
             
-        //         data.No=this.id[i];
-        //         data.title=this.title[i];
-        //         data.user=this.user[i];
-        //         this.items.push(data);
-        //     }
-        // }
+            console.log('move_detail..');
+            // this.EventBus.$emit('rename','Content');
+            this.$emit('rename','Content');
+            this.$router.push("/admin/noticedetail/" + record.No);
+        }
     }
 }
 
