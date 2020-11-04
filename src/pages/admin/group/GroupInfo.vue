@@ -200,6 +200,11 @@ export default {
 
           this.resultD = this.$store.getters["groupStore/memberList"];
           console.log(JSON.stringify(this.resultD));
+        
+        //셀렉트 박스 디폴트 값 입력
+        for (var i = 0; i <=this.result.length ; i++ ){
+         this.selected[i]= "X";
+        }
         })
         .catch((e) => {
           console.log("error : " + e);

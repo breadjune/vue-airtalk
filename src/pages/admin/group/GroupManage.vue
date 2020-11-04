@@ -47,8 +47,6 @@
             <b-table
               striped
               hover
-              outlined
-              ref="selectableTable"
               selectable
               select-mode="single"
               :fields="fields"
