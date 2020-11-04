@@ -1,5 +1,27 @@
 <template>
-  <div class="editor">
+<div>
+  <b-form id="form">
+      <div style="display:inline;">
+          <label>작성자</label>
+          <b-input id="amdinId" name="adminId" type="text" readonly></b-input>
+      </div>
+      <div>
+          <label>제목</label>
+          <b-input id="title" name="title" type="text"></b-input>
+      </div>
+      <div>
+          <label>내용</label>
+          <b-input id="contents" name="contents" type="text"></b-input>
+      </div>
+      <div>
+          <label>파일첨부</label><br>
+          <input type="text" id="filename" name="filename" class="form-control" readonly>
+          <input id="fileupload" name="fileupload" type="file"/>
+      </div>
+  </b-form>
+  <hr>
+
+  <!-- <div class="editor">
     <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
       <div class="menubar">
 
@@ -132,91 +154,92 @@
     </editor-menu-bar>
 
     <editor-content class="editor__content" :editor="editor" />
-  </div>
+  </div> -->
+</div>
 </template>
 
 <script>
-import Icon from 'src/components/Icon/index.vue'
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
-import {
-  Blockquote,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
-  Bold,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-} from 'tiptap-extensions'
-import svgSpriteLoader from 'src/helpers/svg-sprite-loader'
+// import Icon from 'src/components/Icon/index.vue'
+// import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
+// import {
+//   Blockquote,
+//   CodeBlock,
+//   HardBreak,
+//   Heading,
+//   HorizontalRule,
+//   OrderedList,
+//   BulletList,
+//   ListItem,
+//   TodoItem,
+//   TodoList,
+//   Bold,
+//   Code,
+//   Italic,
+//   Link,
+//   Strike,
+//   Underline,
+//   History,
+// } from 'tiptap-extensions'
+// import svgSpriteLoader from 'src/helpers/svg-sprite-loader'
 
-const __svg__ = { path: 'src/assets/img/icons/*.svg', name: 'assets/img/[hash].sprite.svg' }
-svgSpriteLoader(__svg__.filename)
+// const __svg__ = { path: 'src/assets/img/icons/*.svg', name: 'assets/img/[hash].sprite.svg' }
+// svgSpriteLoader(__svg__.filename)
 
-export default {
-  components: {
-    EditorContent,
-    EditorMenuBar,
-    Icon,
-  },
-  data() {
-    return {
-      editor: new Editor({
-        extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-        ],
-        content: `
-          <h2>
-            Hi there,
-          </h2>
-          <p>
-            this is a very <em>basic</em> example of tiptap.
-          </p>
-          <pre><code>body { display: none; }</code></pre>
-          <ul>
-            <li>
-              A regular list
-            </li>
-            <li>
-              With regular items
-            </li>
-          </ul>
-          <blockquote>
-            It's amazing 👏
-            <br />
-            – mom
-          </blockquote>
-        `,
-      }),
-    }
-  },
-  beforeDestroy() {
-    this.editor.destroy()
-  },
-}
+// export default {
+//   components: {
+//     EditorContent,
+//     EditorMenuBar,
+//     Icon,
+//   },
+//   data() {
+//     return {
+//       editor: new Editor({
+//         extensions: [
+//           new Blockquote(),
+//           new BulletList(),
+//           new CodeBlock(),
+//           new HardBreak(),
+//           new Heading({ levels: [1, 2, 3] }),
+//           new HorizontalRule(),
+//           new ListItem(),
+//           new OrderedList(),
+//           new TodoItem(),
+//           new TodoList(),
+//           new Link(),
+//           new Bold(),
+//           new Code(),
+//           new Italic(),
+//           new Strike(),
+//           new Underline(),
+//           new History(),
+//         ],
+//         content: `
+//           <h2>
+//             Hi there,
+//           </h2>
+//           <p>
+//             this is a very <em>basic</em> example of tiptap.
+//           </p>
+//           <pre><code>body { display: none; }</code></pre>
+//           <ul>
+//             <li>
+//               A regular list
+//             </li>
+//             <li>
+//               With regular items
+//             </li>
+//           </ul>
+//           <blockquote>
+//             It's amazing 👏
+//             <br />
+//             – mom
+//           </blockquote>
+//         `,
+//       }),
+//     }
+//   },
+//   beforeDestroy() {
+//     this.editor.destroy()
+//   },
+// }
 </script>
