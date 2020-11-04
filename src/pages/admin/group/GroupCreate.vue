@@ -164,7 +164,7 @@ export default {
       resultD: [],
 
       options: [
-        { value: "X", text: "권한없음", default: "X" },
+        { value: "X", text: "권한없음" },
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
         { value: "RC", text: "읽기/생성" },
@@ -196,9 +196,14 @@ export default {
             "groupStore/selectGroupListBySearchWord",
             result.data
           );
-
           this.resultD = this.$store.getters["groupStore/memberList"];
           console.log(JSON.stringify(this.resultD));
+       
+       //셀렉트 박스 디폴트 값 입력
+       for (var i = 0; i <=this.result.length ; i++ ){
+         this.selected[i]= "X";
+        }
+
         })
         .catch((e) => {
           console.log("error : " + e);
@@ -208,7 +213,7 @@ export default {
       let data = {
         gname: this.user.gname,
         userGroup: this.user.userGroup,
-        auth: this.selected,
+        // auth: this.selected,
         regDate: this.user.regDate,
       };
       console.log(data);
@@ -234,6 +239,7 @@ export default {
       console.log(this.selected[1]);
       console.log(this.selected[2]);
       console.log(this.selected[3]);
+
     },
   },
 };
