@@ -5,7 +5,8 @@
         <div class="col-12">
           <card>
             <template slot="header">
-              <h4 class="card-title">계정 관리</h4>
+              <h3 class="card-title">계정 관리</h3>
+              <p class="card-category">여기는 계정 관리 메뉴 입니다.</p>
             </template>
             <hr>
             <div>
