@@ -35,9 +35,9 @@
                                 </tbody>
                             </table>
                         </form>
-                        <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="list">목록</button>
-                        <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="update">수정</button>
-                        <button class="btn-info btn-fill" variant="primary" style="float:left" v-on:click="del">삭제</button>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="list">목록</b-button>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="update">수정</b-button>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="del">삭제</b-button>
                     </card>
                 </div>
             </div>
@@ -85,6 +85,8 @@ export default {
         },
         update(){
             console.log('deatil_update_click');
+            this.$emit('rename','Content');
+            this.$router.push('/admin/noticeupdate');
         },
         del(){
             console.log('deatil_del_click');  

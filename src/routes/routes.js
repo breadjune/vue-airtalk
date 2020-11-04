@@ -29,6 +29,7 @@ import AdminManagerView from'src/pages/admin/adminManager/AdminManagerView.vue'
 import Notice from 'src/pages/admin/notice/notice.vue'
 import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 import NoticeDetail from 'src/pages/admin/notice/notice_detail.vue'
+import NoticeUpdate from 'src/pages/admin/notice/notice_update.vue'
 
 const routes = [
   {
@@ -144,6 +145,11 @@ const routes = [
         path: 'noticedetail/:seq',
         name : 'NoticeDetail',
         component: NoticeDetail,
+      },
+      {
+        path: 'noticeupdate',
+        name : 'NoticeUpdate',
+        component: NoticeUpdate,
       },
     ]
   },
