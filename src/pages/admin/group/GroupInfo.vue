@@ -3,59 +3,38 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <b-button v-b-toggle.collapse-1 variant="primary">
-            {{ this.$store.getters["groupStore/memberInfo"].authGroupSeq }}
-            {{ this.$store.getters["groupStore/memberInfo"].id }}
-            회원 정보
-          </b-button>
-
-          <b-collapse id="collapse-1">
-            <b-list-group style="text-align: left">
-              <b-list-group-item
-                >아이디:
-                {{ this.$store.getters["groupStore/memberInfo"].authGroupSeq }}
-                </b-list-group-item
-              >
-              <b-list-group-item
-                >이름:
-                {{ this.$store.getters["groupStore/memberInfo"].id }}
-                </b-list-group-item
-              >
-            </b-list-group>
-          </b-collapse>
-
           <card>
             <h3 slot="header" class="card-title">권한 관리 상세</h3>
             <p class="card-category">
               권한 관리 그룹을 확인 및 업데이트해 주십시오.
             </p>
-            <hr />
+            <hr>
             <b-form id="form">
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
-                  <label> 사용자 그룹 </label>
-                  <b-input
+                  <label> 사용자 그룹 <span class="required">*</span></label>
+                  <b-form-input
                     name="userGroup"
                     type="text"
                     placeholder="사용자 그룹"
                     v-model="$route.params.authName"
                   >
-                  </b-input>
+                  </b-form-input>
                 </div>
               </b-row>
 
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
-                  <label> 설명 </label>
-                  <b-input
+                  <label> 설명 <span class="required">*</span> </label>
+                  <b-form-input
                     name="gname"
                     type="text"
                     placeholder="관리자 명"
                     v-model="$route.params.desc"
                   >
-                  </b-input>
+                  </b-form-input>
                 </div>
               </b-row>
               <b-row>
@@ -193,18 +172,14 @@ export default {
           this.resultL = this.result.length;
           console.log(this.result.length);
 
-          this.$store.dispatch(
-            "groupStore/selectGroupListBySearchWord",
-            result.data
-          );
-
+          this.$store.dispatch( "groupStore/selectGroupListBySearchWord",result.data );
           this.resultD = this.$store.getters["groupStore/memberList"];
           console.log(JSON.stringify(this.resultD));
         
-        //셀렉트 박스 디폴트 값 입력
-        for (var i = 0; i <=this.result.length ; i++ ){
-         this.selected[i]= "X";
-        }
+          //셀렉트 박스 디폴트 값 입력
+          for (var i = 0; i <=this.result.length ; i++ ){
+           this.selected[i]= "X";
+          }
         })
         .catch((e) => {
           console.log("error : " + e);
@@ -218,20 +193,31 @@ export default {
         auth: this.selected_user,
       };
 
+      console.log("data 정보 확인 : " + data.gname);
+
       alert("콘솔창 확인 ");
 
-      axios
-        .post("/rest/group/update.json", data)
-        .then((result) => {
-          console.log("result.data : " + result.data);
-          this.result = result.data;
-          alert(result.data);
-        })
-        .catch((e) => {
-          console.log("error : " + e);
-        });
-      this.$emit('rename', 'Content');
-      this.$router.push("/admin/group-list");
+
+      if(data.gname!="" && data.userGroup!=""){
+        axios
+          .post("/rest/group/update.json", data)
+          .then((result) => {
+           console.log("result.data : " + result.data);
+           this.result = result.data;
+            alert(result.data);
+           })
+          .catch((e) => {
+            console.log("error : " + e);
+          });
+        this.$emit('rename', 'Content');
+        this.$router.push("/admin/group-list");
+      }
+      else if(data.gname=="")
+         alert("사용자 그룹을 입력해 주세요");
+
+      else if(data.userGroup=="")
+          alert("설명을 입력해 주세요");
+       
     },
 
     remove() {

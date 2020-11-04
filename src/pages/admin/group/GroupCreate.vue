@@ -3,59 +3,40 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <!-- <b-button v-b-toggle.collapse-1 variant="primary">
-            {{ this.$store.getters["memberStore/memberInfo"].adminId }}
-            {{ this.$store.getters["memberStore/memberInfo"].adminName }}
-            회원 정보
-          </b-button> -->
-          <!-- 
-          <b-collapse id="collapse-1">
-            <b-list-group style="text-align: left">
-              <b-list-group-item
-                >아이디:
-                {{
-                  this.$store.getters["memberStore/memberInfo"].adminId
-                }}</b-list-group-item
-              >
-              <b-list-group-item
-                >이름:
-                {{
-                  this.$store.getters["memberStore/memberInfo"].adminName
-                }}</b-list-group-item
-              >
-            </b-list-group>
-          </b-collapse> -->
-
           <card>
             <h3 slot="header" class="card-title">권한 관리 추가</h3>
             <p class="card-category">권한 관리 그룹을 추가해 주십시오.</p>
-            <hr />
+            <hr>
             <b-form id="form">
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
-                  <label> 사용자 그룹 </label>
-                  <b-input
+                  <label> 사용자 그룹 <span class="required">*</span></label>
+                  <b-form-input
                     name="userGroup"
                     type="text"
                     placeholder="사용자 그룹"
                     v-model="user.userGroup"
+                    :state="groupState"
+                    aria-describedby="input-live-help input-live-feedback"
                   >
-                  </b-input>
+                  </b-form-input>
                 </div>
               </b-row>
 
               <b-row>
                 <div class="col-md-3"></div>
                 <div class="col-md-6 ml-sm-3">
-                  <label> 설명 </label>
-                  <b-input
+                  <label> 설명 <span class="required">*</span></label>
+                  <b-form-input
                     name="gname"
                     type="text"
                     placeholder="관리자 명"
                     v-model="user.gname"
+                    :state="nameState"
+                    aria-describedby="input-live-help input-live-feedback"
                   >
-                  </b-input>
+                  </b-form-input>
                 </div>
               </b-row>
               <b-row>
@@ -78,22 +59,6 @@
                       </tr>
                     </template>
                   </table>
-
-                  <!-- <b-table
-                    striped
-                    ref="selectableTable"
-                    selectable
-                    select-mode="single"
-                    :fields="fields"
-                    :items="this.$store.getters['groupStore/memberList']"
-                  > 
-                    <template #cell(auth_manage)>
-                      <b-form-select
-                        v-model="selected"
-                        :options="options"
-                      ></b-form-select>
-                    </template>
-                  </b-table> -->
                 </div>
               </b-row>
               <b-row>
@@ -152,6 +117,14 @@ import axios from "axios";
 
 export default {
   name: "GroupCreate",
+   computed: {
+      groupState() {
+        return this.user.userGroup.length >= 1 ? true : false
+      },
+      nameState() {
+        return this.user.gname.length >= 1 ? true : false
+      }
+    },
   data() {
     return {
       user: {
@@ -217,8 +190,8 @@ export default {
         regDate: this.user.regDate,
       };
       console.log(data);
-
-      axios
+      if (this.groupState==true && this.nameState==true) {
+        axios
         .post("/rest/group/create.json", data)
         .then((result) => {
           console.log("result.data : " + result.data);
@@ -233,12 +206,21 @@ export default {
         });
       this.$emit("rename", "Content");
       this.$router.push("/admin/group-list");
+      }
+      else if(this.groupState==false){
+        alert("사용자 그룹을 입력해 주세요");
+      }
+      else if(this.nameState==false){
+        alert("설명을 입력해 주세요");
+      }
+
     },
 
     test() {
-      console.log(this.selected[1]);
-      console.log(this.selected[2]);
-      console.log(this.selected[3]);
+
+       for (var i = 0; i <=this.resultL ; i++ ){
+         console.log(this.selected[i]);
+       }
 
     },
   },
