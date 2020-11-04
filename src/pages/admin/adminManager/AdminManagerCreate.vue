@@ -6,7 +6,7 @@
                     <card>
                         <template slot="header">
                             <h4 class="card-title">계정 관리</h4>
-                            <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호 입력 하십시오.</p>
+                            <p class="card-category">계정 생성</p>
                             <hr>
                         </template>
                         <b-form>
