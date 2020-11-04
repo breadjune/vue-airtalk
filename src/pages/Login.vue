@@ -71,11 +71,11 @@
       }
     },
     mounted(){
-      // console.log('auth : ' + this.$session.get('auth'));
-      // if(this.$session.get('auth')) {
-      //   var elem = this.$refs.home
-      //   elem.click()
-      // }
+      console.log('auth : ' + this.$session.get('auth'));
+      if(this.$session.get('auth')) {
+        var elem = this.$refs.home
+        elem.click()
+      }
     },
     methods: {
       onSubmit(evt) {
@@ -88,19 +88,16 @@
             var data = result.data;
             console.log("data : " + JSON.stringify(data));
             // this.$store.commit("loginStore/loginComplete", data)
-            // console.log("auth2 : " + this.$store.getters.getIsAuth);
-            this.$session.start()
+            this.$session.start();
             this.$session.set('name', data.name);
             this.$session.set('level', data.adminGroupSeq);
-            // this.$cookie.set('test', 'hello world', 1);
+            console.log("authToken : " + result.headers.Authorization);
+            this.$cookie.set('auth', result.headers.Authorization);
             if(data.errorCode === '0') {
               this.$session.set('auth', true);
             } else {
               this.$session.set('auth', false);
             }
-            // console.log("session : " + this.$session.get("name"));
-            
-            // this.$router.push('/admin/overview');
             var elem = this.$refs.home
             elem.click()
           } else {

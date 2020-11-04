@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Dashboard</a>
-      <button type="button"
+      <!-- <button type="button"
               class="navbar-toggler navbar-toggler-right"
               :class="{toggled: $sidebar.showSidebar}"
               aria-controls="navigation-index"
@@ -12,9 +12,9 @@
         <span class="navbar-toggler-bar burger-lines"></span>
         <span class="navbar-toggler-bar burger-lines"></span>
         <span class="navbar-toggler-bar burger-lines"></span>
-      </button>
+      </button> -->
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="nav navbar-nav mr-auto">
+        <!-- <ul class="nav navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="#" data-toggle="dropdown">
               <i class="nc-icon nc-palette"></i>
@@ -38,14 +38,14 @@
               <span class="d-lg-block">&nbsp;Search</span>
             </a>
           </li>
-        </ul>
+        </ul> -->
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">
               Account
             </a>
-          </li>
-          <base-dropdown title="Dropdown">
+          </li> -->
+          <!-- <base-dropdown title="Dropdown">
             <a class="dropdown-item" href="#">Action</a>
             <a class="dropdown-item" href="#">Another action</a>
             <a class="dropdown-item" href="#">Something</a>
@@ -53,7 +53,7 @@
             <a class="dropdown-item" href="#">Something</a>
             <div class="divider"></div>
             <a class="dropdown-item" href="#">Separated link</a>
-          </base-dropdown>
+          </base-dropdown> -->
           <li class="nav-item">
             <a @click="movePage('Login')" href='#' class="nav-link">
               Log out
