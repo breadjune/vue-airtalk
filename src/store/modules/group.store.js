@@ -4,6 +4,7 @@ const groupStore = {
     namespaced: true,
     state: {
         memberList: [],
+        adminGroupAuth: [],
         memberInfo: {
             adminName: '',
 
@@ -28,6 +29,9 @@ const groupStore = {
     },
     getters: {
         memberList(state, /*getters*/ ) {
+            return state.memberList;
+        },
+        adminGroupAuth(state, /*getters*/ ) {
             return state.memberList;
         },
         memberInfo(state, /*getters*/ ) {
