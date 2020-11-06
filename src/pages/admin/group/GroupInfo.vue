@@ -17,7 +17,7 @@
                   <b-form-input
                     name="userGroup"
                     type="text"
-                    placeholder="사용자 그룹"
+                    placeholder="내용을 입력하세요"
                     v-model="$route.params.authName"
                   >
                   </b-form-input>
@@ -31,7 +31,7 @@
                   <b-form-input
                     name="gname"
                     type="text"
-                    placeholder="관리자 명"
+                    placeholder="내용을 입력하세요"
                     v-model="$route.params.desc"
                   >
                   </b-form-input>
@@ -50,7 +50,7 @@
                         <td style="width: 50%">
                           <b-form-select
                             v-bind:key="item"
-                            v-model="selected[item]"
+                            v-model="resultA[item-1].auth"
                             :options="options"
                           ></b-form-select>
                         </td>
@@ -133,8 +133,10 @@ export default {
       selected: [],
       resultL: "",
       resultD: [],
+      resultA: [],
+      menuSeq: [],
       options: [
-        { value: "X", text: "권한없음", default: "X" },
+        { value: "X", text: "권한없음" },
         { value: "R", text: "읽기" },
         { value: "RA", text: "읽기/승인" },
         { value: "RC", text: "읽기/생성" },
@@ -152,11 +154,14 @@ export default {
     this.user.authName = this.$route.params.authName;
     this.user.desc = this.$route.params.desc;
     this.user.regDate = this.$route.params.regDate;
-
+   
     console.log("authGroupSeq: " + this.user.authGroupSeq);
     console.log("authName: " + this.user.authName);
     console.log("desc: " + this.user.desc);
-    console.log("regDate: " + this.user.regDate);
+    console.log("regDate: " + this.user.regDate); 
+    
+    this.init2();
+
   },
   methods: {
     movePage: function (event) {
@@ -177,26 +182,49 @@ export default {
           console.log(JSON.stringify(this.resultD));
         
           //셀렉트 박스 디폴트 값 입력
-          for (var i = 0; i <=this.result.length ; i++ ){
-           this.selected[i]= "X";
+          for (var i = 0; i <this.result.length ; i++ ){
+           this.menuSeq[i]= this.resultD[i].menuSeq;
           }
         })
         .catch((e) => {
           console.log("error : " + e);
         });
     },
+    init2: function () {
+      axios
+        .get("/rest/group/modify",{
+          params: {
+             adminGroupSeq: this.user.authGroupSeq,
+          }
+        })
+        .then((result) => {
+          console.log("result.data : " + JSON.stringify(result.data));
+          this.result = result.data;
+          this.resultL = this.result.length;
+          console.log(this.result.length);
+
+          this.$store.dispatch( "groupStore/selectGroupListBySearchWord",result.data );
+          this.resultA = this.$store.getters["groupStore/adminGroupAuth"];
+          console.log(JSON.stringify(this.resultA));
+        })
+        .catch((e) => {
+          console.log("error : " + e);
+        });
+    },
     update() {
+
+        // 셀렉트 박스 값 저장
+          for (var i = 0; i <this.resultL ; i++ ){
+           this.selected[i] = this.resultA[i].auth;
+          }
+
       let data = {
         authGroupSeq: this.$route.params.authGroupSeq,
         gname: this.$route.params.authName,
         userGroup: this.$route.params.desc,
-        auth: this.selected_user,
+        auth: this.selected,
+        menuSeq: this.menuSeq,
       };
-
-      console.log("data 정보 확인 : " + data.gname);
-
-      alert("콘솔창 확인 ");
-
 
       if(data.gname!="" && data.userGroup!=""){
         axios
@@ -225,9 +253,6 @@ export default {
         authGroupSeq: this.user.authGroupSeq,
       };
       console.log(data);
-
-      alert("콘솔창 확인 ");
-
       axios
         .post("/rest/group/remove.json", data)
         .then((result) => {
