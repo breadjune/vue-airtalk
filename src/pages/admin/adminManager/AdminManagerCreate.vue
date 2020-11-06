@@ -6,9 +6,9 @@
                     <card>
                         <template slot="header">
                             <h4 class="card-title">계정 관리</h4>
-                            <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호 입력 하십시오.</p>
+                            <p class="card-category">계정 생성</p>
+                            <hr>
                         </template>
-                        <hr>
                         <b-form>
                             <div>
                                 <label for="adminId">사용자ID</label>
@@ -79,26 +79,22 @@
             }
         },
 
-        // created() {
-        //     this.adminInfo();
-        // },
-
         methods: {
             save() {
-                if (this.phone == null || this.phone == "" || this.phone.length < 10) {
-                  alert("핸드폰 번호를 확인 하세요.");
+                if (this.adminId == null || this.adminId == "" || this.adminId.indexOf('@') <= 0) {
+                    alert("ID를 확인 하세요");
+                }
+                else if (this.phone == null || this.phone == "" || this.phone.length < 10) {
+                    alert("핸드폰 번호를 확인 하세요.");
                 }
                 else if (this.password.length < 10) {
-                  alert("비밀번호는 최소 10자리 이상 입력하세요.");
+                    alert("비밀번호는 최소 10자리 이상 입력하세요.");
                 }
                 else if (this.password != this.passwordCheck) {
                     alert("비밀번호가 일치하지 않습니다.");
                 }
                 else if (this.email == null || this.email == "" || this.email.indexOf('@') <= 0) {
-                  alert("E-mail을 입력란을 확인 하세요.");
-                }
-                else if (this.adminId.indexOf('@') <= 0) {
-                  alert("E-mail 형식으로 작성해야 합니다.");
+                    alert("E-mail을 확인 하세요.");
                 }
                 else {
                     var formData = new FormData();
