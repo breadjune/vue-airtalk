@@ -888,3 +888,19 @@
 .login-btn {
     margin-top: 50px;
 }
+
+.directory {
+    width: 88.5%;
+    border: 0;
+}
+
+.directory > div {
+    float: left;
+}
+
+.directory > div > i {
+    margin-right: 15px;
+}
+.board-toggle > ul > li {
+    margin-left: 1.5rem;
+}

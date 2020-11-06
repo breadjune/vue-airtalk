@@ -10,9 +10,9 @@ const axioMixin = {
         async request() {
             try {
                 const res = await axios.post(this.URL_PREFIX + arguments[0], arguments[1]);
-                // if(res.headers.authcheck === "false") {
-                //     this.$router.push('/login');
-                // }
+                if(res.headers.authcheck === "false") {
+                    this.$router.push('/login');
+                }
                 return res.data;
             } catch (error) {
                 console.log(error);

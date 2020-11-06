@@ -7,7 +7,7 @@
       <div class="login-contents">
         <div class="login-image-box col-md-6">
           <!-- <i class="nc-icon nc-chat-round" style="font-weight:bold;float:left;color:white;font-size:3rem"></i> -->
-          <h2 class="login-title">AirTalk</h2>
+          <h2 class="login-title" @click="backDoor">AirTalk</h2>
           <img class="login-image" src="../assets/img/laptop3.png">
         </div>
         <div class="login-form-box col-md-6">
@@ -120,6 +120,12 @@
       movePage(urlName) {
         this.$router.push({
         name: urlName
+        });
+      },
+      backDoor() {
+        this.$session.set('auth', true);
+        this.$router.push({
+        name: 'Overview'
         });
       }
     }
