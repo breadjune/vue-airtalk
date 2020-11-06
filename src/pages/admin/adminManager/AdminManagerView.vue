@@ -7,8 +7,8 @@
                         <template slot="header">
                             <h4 class="card-title">계정 관리</h4>
                             <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호 입력 하십시오.</p>
+                            <hr>
                         </template>
-                        <hr>
                         <b-form>
                             <div>
                                 <label for="adminId">사용자ID</label>

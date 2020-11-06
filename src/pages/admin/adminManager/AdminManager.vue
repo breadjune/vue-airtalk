@@ -7,8 +7,8 @@
             <template slot="header">
               <h3 class="card-title">계정 관리</h3>
               <p class="card-category">여기는 계정 관리 메뉴 입니다.</p>
+              <hr>
             </template>
-            <hr>
             <div>
               <b-button
                 class="btn-fill mb-2 mr-sm-2 mb-sm-1"

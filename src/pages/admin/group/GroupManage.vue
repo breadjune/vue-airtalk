@@ -38,7 +38,7 @@
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage()"
-                  >목록 추가
+                  >추가
                 </b-button>
               </div>
             </b-form>
