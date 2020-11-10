@@ -232,7 +232,10 @@ export default {
           .then((result) => {
            console.log("result.data : " + result.data);
            this.result = result.data;
-            alert(result.data);
+           if(result.data=="SUCCESS")
+            this.$bvModal.msgBoxOk(result.data + "  정상적으로 처리 되었습니다.");
+           else
+            this.$bvModal.msgBoxOk(result.data + "  실패되었습니다. ");
            })
           .catch((e) => {
             console.log("error : " + e);
@@ -241,10 +244,10 @@ export default {
         this.$router.push("/admin/group-list");
       }
       else if(data.gname=="")
-         alert("사용자 그룹을 입력해 주세요");
+         this.$bvModal.msgBoxOk("사용자 그룹을 입력해 주세요");
 
       else if(data.userGroup=="")
-          alert("설명을 입력해 주세요");
+        this.$bvModal.msgBoxOk("설명을 입력해 주세요");
        
     },
 
@@ -258,7 +261,10 @@ export default {
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
-          alert(result.data);
+           if(result.data=="SUCCESS")
+            this.$bvModal.msgBoxOk(result.data + "  정상적으로 처리 되었습니다.");
+           else
+            this.$bvModal.msgBoxOk(result.data + "  실패되었습니다. ");
         })
         .catch((e) => {
           console.log("error : " + e);

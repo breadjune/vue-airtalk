@@ -74,6 +74,7 @@
                 <b-button
                   variant="primary"
                   class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
+                  v-b-modal.modal-1
                   @click.prevent="movePage"
                 >
                   목록
@@ -178,9 +179,9 @@ export default {
           console.log("result.data : " + result.data);
           this.result = result.data;
           if (result.data == "SUCCESS")
-            alert(result.data + " 정상 처리 되었습니다.");
+            this.$bvModal.msgBoxOk(result.data + " 정상 처리 되었습니다.");
           else
-            alert(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
+            this.$bvModal.msgBoxOk(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
         })
         .catch((e) => {
           console.log("error : " + e);
@@ -189,10 +190,10 @@ export default {
       this.$router.push("/admin/group-list");
       }
       else if(this.groupState==false){
-        alert("사용자 그룹을 입력해 주세요");
+        this.$bvModal.msgBoxOk("사용자 그룹을 입력해 주세요");
       }
       else if(this.nameState==false){
-        alert("설명을 입력해 주세요");
+        this.$bvModal.msgBoxOk("설명을 입력해 주세요");
       }
 
     },
