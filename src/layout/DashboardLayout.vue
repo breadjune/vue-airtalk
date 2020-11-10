@@ -20,7 +20,7 @@
         </a>
       </li> -->
       <li>
-        <a href="#" @click="changeCountents('Admin')" class="nav-link">
+        <a href="#" @click="changeCountents('Member')" class="nav-link">
           <i class="nc-icon nc-circle-09"></i>
           계정 관리
         </a>
@@ -113,12 +113,14 @@
   import Content from './Content.vue'
   import MobileMenu from './MobileMenu.vue'
   import Overview from '../pages/Overview'
-  import Member from '../pages/admin/member/MemberManage.vue'
+  //import Member from '../pages/admin/member/MemberManage.vue'
+  import Member from '../pages/admin/member/Manage.vue'
   import Group from '../pages/admin/group/GroupManage.vue'
   import Menu from '../pages/admin/menu/Menu.vue'
   import Admin from '../pages/admin/adminManager/AdminManager.vue'
-  import file from '../pages/admin/file/boardMain.vue'
   import editor from '../pages/admin/editor/editorMain.vue'
+  // import Admin from '../pages/admin/adminManager/AdminManager.vue'
+  import file from '../pages/admin/file/Manage.vue'
   import Notice from '../pages/admin/notice/notice.vue'
   import NoticeAdd from '../pages/admin/notice/notice_add.vue'
   import NoticeDetail from '../pages/admin/notice/notice_detail.vue'
@@ -141,7 +143,7 @@ var EventBus = new Vue();
       Member,
       Group,
       Menu,
-      Admin,
+      // Admin,
       file,
       editor,
       NoticeAdd,
