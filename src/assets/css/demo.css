@@ -856,8 +856,8 @@
     /* color:white; */
     /* float: left; */
     position: absolute;
-    top: 11.5rem;
-    left: 7.5rem;
+    top: 13.1rem;
+    left: 8rem;
     margin: 1.5rem;
     opacity: 0.4;
 }
@@ -877,7 +877,7 @@
 .login-header {
     font-weight: bold;
     border-bottom:1px solid #ccc;
-    padding-bottom:2rem;
+    padding:2rem 0 2rem 0;
 }
 .input-group-prepend {
     border-right: 1px solid black;
