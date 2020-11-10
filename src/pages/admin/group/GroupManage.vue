@@ -104,14 +104,6 @@ export default {
     },
     onRowSelected(items) {
       console.log("아이템 보기 ==== "+JSON.stringify(items));
-
-      console.log("파라미터 : " + items[0].authGroupSeq);
-      console.log("파라미터 : " + items[0].name);
-      console.log("파라미터 : " + items[0].description);
-      console.log("파라미터 : " + items[0].regDate);
-
-       alert("콘솔창 확인 ");
-
       this.$emit('rename', 'Content');
       this.$router.push({
         name: "GroupInfo",

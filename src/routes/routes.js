@@ -14,8 +14,8 @@ import Maps from 'src/pages/Maps.vue'
 import Notifications from 'src/pages/Notifications.vue'
 import Upgrade from 'src/pages/Upgrade.vue'
 
-import MemberManage from 'src/pages/admin/member/MemberManage.vue'
-import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
+// import MemberManage from 'src/pages/admin/member/MemberManage.vue'
+// import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
 import GroupManage from 'src/pages/admin/group/GroupManage.vue'
 import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
@@ -27,10 +27,20 @@ import AdminManager from'src/pages/admin/adminManager/AdminManager.vue'
 import AdminManagerView from'src/pages/admin/adminManager/AdminManagerView.vue'
 import AdminManagerCreate from'src/pages/admin/adminManager/AdminManagerCreate.vue'
 
+import MemberManage from'src/pages/admin/member/Manage.vue'
+import MemberView from'src/pages/admin/member/View.vue'
+import MemberCreate from'src/pages/admin/member/Create.vue'
+
 import Notice from 'src/pages/admin/notice/notice.vue'
 import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 import NoticeDetail from 'src/pages/admin/notice/notice_detail.vue'
 import NoticeUpdate from 'src/pages/admin/notice/notice_update.vue'
+
+import EditorMain from 'src/pages/admin/editor/editorMain.vue'
+import EditorInfo from 'src/pages/admin/editor/editorInfo.vue'
+import EditorCreate from 'src/pages/admin/editor/editorCreate.vue'
+
+
 
 const routes = [
   {
@@ -51,16 +61,16 @@ const routes = [
         name: 'Overview',
         component: Overview,
       },
-      {
-        path: 'member-list',
-        name: 'Member',
-        component: MemberManage,
-      },
-      {
-        path: 'member-view',
-        name: 'MemberInfo',
-        component: MemberInfo
-      },
+      // {
+      //   path: 'member-list',
+      //   name: 'Member',
+      //   component: MemberManage,
+      // },
+      // {
+      //   path: 'member-view',
+      //   name: 'MemberInfo',
+      //   component: MemberInfo
+      // },
       {
         path: 'group-list',
         name: 'Group',
@@ -78,19 +88,19 @@ const routes = [
         component: GroupCreate
       },
       {
-        path: 'admin-list',
-        name: 'Admin',
-        component: AdminManager
+        path: 'member-list',
+        name: 'MemberManage',
+        component: MemberManage
       },
       {
-        path: 'admin-info',
-        name: 'AdminInfo',
-        component: AdminManagerView
+        path: 'member-info',
+        name: 'MemberView',
+        component: MemberView
       },
       {
-        path: 'admin-create',
-        name: 'AdminCreate',
-        component: AdminManagerCreate
+        path: 'member-create',
+        name: 'MemberCreate',
+        component: MemberCreate
       },
       /*{
         path: 'user-register',
@@ -156,6 +166,21 @@ const routes = [
         path: 'noticeupdate',
         name : 'NoticeUpdate',
         component: NoticeUpdate,
+      },
+      {
+        path: 'editorMain',
+        name : 'EditorMain',
+        component: EditorMain,
+      },
+      {
+        path: 'editorInfo',
+        name : 'EditorInfo',
+        component: EditorInfo,
+      },
+      {
+        path: 'editorCreate',
+        name : 'EditorCreate',
+        component: EditorCreate,
       },
     ]
   },

@@ -19,6 +19,7 @@ import App from './App.vue'
 import Axios from 'axios'
 import VueSession from 'vue-session'
 import VueCookie from 'vue-cookie'
+import './assets/sass/main.scss';
 
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'

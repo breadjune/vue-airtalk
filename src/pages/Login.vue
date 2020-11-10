@@ -7,7 +7,7 @@
       <div class="login-contents">
         <div class="login-image-box col-md-6">
           <!-- <i class="nc-icon nc-chat-round" style="font-weight:bold;float:left;color:white;font-size:3rem"></i> -->
-          <h2 class="login-title">AirTalk</h2>
+          <h2 class="login-title" @click="backDoor">AirTalk</h2>
           <img class="login-image" src="../assets/img/laptop3.png">
         </div>
         <div class="login-form-box col-md-6">
@@ -81,7 +81,7 @@
       onSubmit(evt) {
         evt.preventDefault();
         console.log(JSON.stringify(this.form));
-        const res = axios.post(`/rest/auth/login`, this.form).then((result) => {
+        const res = axios.post(`/rest/auth/login.json`, this.form).then((result) => {
           console.log("response : " + JSON.stringify(result));
           console.log("status : " + result.status);
           if(result.status === 200 && result.data != null ) {
@@ -91,8 +91,8 @@
             this.$session.start();
             this.$session.set('name', data.name);
             this.$session.set('level', data.adminGroupSeq);
-            console.log("authToken : " + result.headers.Authorization);
-            this.$cookie.set('auth', result.headers.Authorization);
+            console.log("authToken : " + result.headers.authorization);
+            this.$cookie.set('auth', result.headers.authorization);
             if(data.errorCode === '0') {
               this.$session.set('auth', true);
             } else {
@@ -120,6 +120,12 @@
       movePage(urlName) {
         this.$router.push({
         name: urlName
+        });
+      },
+      backDoor() {
+        this.$session.set('auth', true);
+        this.$router.push({
+        name: 'Overview'
         });
       }
     }
