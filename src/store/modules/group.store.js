@@ -27,10 +27,10 @@ const groupStore = {
         },
     },
     getters: {
-        memberList(state, /*getters*/ ) {
+        memberList(state /*getters*/ ) {
             return state.memberList;
         },
-        memberInfo(state, /*getters*/ ) {
+        memberInfo(state /*getters*/ ) {
             return state.memberInfo;
         },
     },

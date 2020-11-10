@@ -7,9 +7,10 @@
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
       </sidebar-link> -->
+      <ul>
       <li>
         <a href="#" @click="changeCountents('Overview')" class="nav-link">
-          <i class="nc-icon nc-chart-pie-35"></i>
+          <em class="nc-icon nc-chart-pie-35"></em>
           Dashboard
         </a>
       </li>
@@ -21,7 +22,7 @@
       </li> -->
       <li>
         <a href="#" @click="changeCountents('Admin')" class="nav-link">
-          <i class="nc-icon nc-circle-09"></i>
+          <em class="nc-icon nc-circle-09"></em>
           계정 관리
         </a>
       </li>
@@ -33,13 +34,13 @@
       </li> -->
       <li>
         <a href="#" @click="changeCountents('Group')" class="nav-link">
-          <i class="nc-icon nc-layers-3"></i>
+          <em class="nc-icon nc-layers-3"></em>
           권한 관리
         </a>
       </li>
       <li>
         <a href="#" @click="changeCountents('Notice')" class="nav-link">
-          <i class="nc-icon nc-layers-3"></i>
+          <em class="nc-icon nc-layers-3"></em>
           공지 게시판
         </a>
       </li>
@@ -68,6 +69,7 @@
         </sidebar-link>
       </template>
       -->
+      </ul>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
