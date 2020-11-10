@@ -32,6 +32,12 @@ import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 import NoticeDetail from 'src/pages/admin/notice/notice_detail.vue'
 import NoticeUpdate from 'src/pages/admin/notice/notice_update.vue'
 
+import EditorMain from 'src/pages/admin/editor/editorMain.vue'
+import EditorInfo from 'src/pages/admin/editor/editorInfo.vue'
+import EditorCreate from 'src/pages/admin/editor/editorCreate.vue'
+
+
+
 const routes = [
   {
     path: '/',
@@ -156,6 +162,21 @@ const routes = [
         path: 'noticeupdate',
         name : 'NoticeUpdate',
         component: NoticeUpdate,
+      },
+      {
+        path: 'editorMain',
+        name : 'EditorMain',
+        component: EditorMain,
+      },
+      {
+        path: 'editorInfo',
+        name : 'EditorInfo',
+        component: EditorInfo,
+      },
+      {
+        path: 'editorCreate',
+        name : 'EditorCreate',
+        component: EditorCreate,
       },
     ]
   },

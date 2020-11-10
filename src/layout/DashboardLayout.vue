@@ -118,7 +118,7 @@
   import Menu from '../pages/admin/menu/Menu.vue'
   import Admin from '../pages/admin/adminManager/AdminManager.vue'
   import file from '../pages/admin/file/boardMain.vue'
-  import editor from '../pages/admin/editor/boardMain.vue'
+  import editor from '../pages/admin/editor/editorMain.vue'
   import Notice from '../pages/admin/notice/notice.vue'
   import NoticeAdd from '../pages/admin/notice/notice_add.vue'
   import NoticeDetail from '../pages/admin/notice/notice_detail.vue'
