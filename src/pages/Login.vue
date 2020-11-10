@@ -81,7 +81,7 @@
       onSubmit(evt) {
         evt.preventDefault();
         console.log(JSON.stringify(this.form));
-        const res = axios.post(`/rest/auth/login`, this.form).then((result) => {
+        const res = axios.post(`/rest/auth/login.json`, this.form).then((result) => {
           console.log("response : " + JSON.stringify(result));
           console.log("status : " + result.status);
           if(result.status === 200 && result.data != null ) {
