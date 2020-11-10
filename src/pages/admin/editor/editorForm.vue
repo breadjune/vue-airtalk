@@ -154,6 +154,7 @@
 
 <script>
 import Icon from "src/components/Icon/index.vue";
+import '@/assets/sass/main.scss';
 import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Blockquote,

@@ -79,6 +79,14 @@
                 >
                   목록
                 </b-button>
+                
+                <app-my-modal
+                   :title="title"
+                   :visible.sync="visible">
+                     <div>
+                        {{modalData}}
+                   </div>
+                  </app-my-modal>
               </div>
               <div class="clearfix"></div>
             </b-form>
@@ -94,9 +102,13 @@
 const groupStore = "groupStore";
 
 import axios from "axios";
-
+import Modal from '@/layout/Modal.vue'
 export default {
   name: "GroupCreate",
+  components: {
+    appMyModal: Modal,
+
+    },
    computed: {
       groupState() {
         return this.user.userGroup.length >= 1 ? true : false
@@ -107,15 +119,27 @@ export default {
     },
   data() {
     return {
+      visible: false,
+
       user: {
         userGroup: "",
         gname: "",
         regDate: "",
       },
+      msg:{
+          success: "정상 처리되었습니다.",
+          fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+          groupName: "사용자 그룹을 입력해 주세요.",
+          desc: "설명을 입력해 주세요",
+
+      },
       selected: [],
+      resultS: "",
       resultL: "",
       resultD: [],
       menuSeq: [],
+      modalData: "",
+      title:"권한 관리 게시판",
 
       options: [
         { value: "X", text: "권한없음" },
@@ -132,6 +156,14 @@ export default {
   mounted() {
     this.init();
   },
+  watch:{
+    visible(){  //모달이 닫히면 false 체크
+        if(this.visible==false && this.resultS=="S"){
+          this.$emit("rename", "Content");
+          this.$router.push("/admin/group-list");
+        }
+    }
+  },
   methods: {
     movePage: function (event) {
       this.$emit("rename", "Content");
@@ -139,7 +171,7 @@ export default {
     },
     init: function () {
       axios
-        .get("/rest/group/create")
+        .get("/rest/group/menuList.json")
         .then((result) => {
           console.log("result.data : " + JSON.stringify(result.data));
           this.result = result.data;
@@ -178,22 +210,31 @@ export default {
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
-          if (result.data == "SUCCESS")
-            this.$bvModal.msgBoxOk(result.data + " 정상 처리 되었습니다.");
-          else
-            this.$bvModal.msgBoxOk(result.data + " 저장 실패 하였습니다. 정보를 확인해주세요.");
+          if (result.data == "SUCCESS"){
+            this.title= result.data;
+            this.modalData= this.msg.success;
+            this.visible = !this.visible;
+            this.resultS= "S";
+          }
+          else{
+            this.title= result.data;
+            this.modalData= this.msg.fail;
+            this.visible = !this.visible;
+            this.resultS= "F";
+          }
         })
         .catch((e) => {
           console.log("error : " + e);
         });
-      this.$emit("rename", "Content");
-      this.$router.push("/admin/group-list");
+  
       }
       else if(this.groupState==false){
-        this.$bvModal.msgBoxOk("사용자 그룹을 입력해 주세요");
+        this.modalData = this.msg.groupName;
+        this.visible = !this.visible;
       }
       else if(this.nameState==false){
-        this.$bvModal.msgBoxOk("설명을 입력해 주세요");
+        this.modalData = this.msg.desc;
+        this.visible = !this.visible;
       }
 
     },

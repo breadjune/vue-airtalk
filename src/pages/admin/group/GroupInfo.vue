@@ -99,6 +99,14 @@
                   삭제
                 </b-button>
               </div>
+                  <app-my-modal
+                   :title="title"
+                   :visible.sync="visible">
+                     <div>
+                        {{modalData}}
+                   </div>
+                  </app-my-modal>
+
               <div class="clearfix"></div>
             </b-form>
           </card>
@@ -111,18 +119,31 @@
 
 <script>
 import axios from "axios";
-
+import Modal from '@/layout/Modal.vue'
 const groupStore = "groupStore";
 
 export default {
   name: "GroupInfo",
+   components: {
+    appMyModal: Modal,
+
+    },
   data() {
     return {
+      visible: false,
+
       user: {
         authGroupSeq: "",
         authName: "",
         desc: "",
         regDate: "",
+      },
+      msg:{
+          success: "정상 처리되었습니다.",
+          fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+          groupName: "사용자 그룹을 입력해 주세요.",
+          desc: "설명을 입력해 주세요",
+
       },
       fields: ["Menu_name", "show_details"],
       items: [
@@ -132,9 +153,12 @@ export default {
       ],
       selected: [],
       resultL: "",
+      resultS: "" ,
       resultD: [],
       resultA: [],
       menuSeq: [],
+      modalData: "",
+      title:"권한 관리 게시판",
       options: [
         { value: "X", text: "권한없음" },
         { value: "R", text: "읽기" },
@@ -146,6 +170,14 @@ export default {
         { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
       ],
     };
+  },  
+  watch:{
+    visible(){  //모달이 닫히면 false 체크
+        if(this.visible==false && this.resultS=="S"){
+          this.$emit("rename", "Content");
+          this.$router.push("/admin/group-list");
+        }
+    }
   },
 
   mounted() {
@@ -170,7 +202,7 @@ export default {
     },
     init: function () {
       axios
-        .get("/rest/group/create")
+        .get("/rest/group/menuList.json")
         .then((result) => {
           console.log("result.data : " + JSON.stringify(result.data));
           this.result = result.data;
@@ -192,7 +224,7 @@ export default {
     },
     init2: function () {
       axios
-        .get("/rest/group/modify",{
+        .get("/rest/group/view.json",{
           params: {
              adminGroupSeq: this.user.authGroupSeq,
           }
@@ -232,23 +264,31 @@ export default {
           .then((result) => {
            console.log("result.data : " + result.data);
            this.result = result.data;
-           if(result.data=="SUCCESS")
-            this.$bvModal.msgBoxOk(result.data + "  정상적으로 처리 되었습니다.");
-           else
-            this.$bvModal.msgBoxOk(result.data + "  실패되었습니다. ");
+            if (result.data == "SUCCESS"){
+            this.title= result.data;
+            this.modalData= this.msg.success;
+            this.visible = !this.visible;
+            this.resultS= "S";
+          }
+          else{
+            this.title= result.data;
+            this.modalData= this.msg.fail;
+            this.visible = !this.visible;
+            this.resultS= "F";
+          }
            })
           .catch((e) => {
             console.log("error : " + e);
           });
-        this.$emit('rename', 'Content');
-        this.$router.push("/admin/group-list");
       }
-      else if(data.gname=="")
-         this.$bvModal.msgBoxOk("사용자 그룹을 입력해 주세요");
-
-      else if(data.userGroup=="")
-        this.$bvModal.msgBoxOk("설명을 입력해 주세요");
-       
+      else if(data.gname==""){
+        this.modalData = this.msg.groupName;
+        this.visible = !this.visible;
+      }
+      else if(data.userGroup==""){
+        this.modalData = this.msg.desc;
+        this.visible = !this.visible;
+      }
     },
 
     remove() {
@@ -257,21 +297,26 @@ export default {
       };
       console.log(data);
       axios
-        .post("/rest/group/remove.json", data)
+        .post("/rest/group/delete.json", data)
         .then((result) => {
           console.log("result.data : " + result.data);
           this.result = result.data;
-           if(result.data=="SUCCESS")
-            this.$bvModal.msgBoxOk(result.data + "  정상적으로 처리 되었습니다.");
-           else
-            this.$bvModal.msgBoxOk(result.data + "  실패되었습니다. ");
+           if (result.data == "SUCCESS"){
+            this.title= result.data;
+            this.modalData= this.msg.success;
+            this.visible = !this.visible;
+            this.resultS= "S";
+          }
+          else{
+            this.title= result.data;
+            this.modalData= this.msg.fail;
+            this.visible = !this.visible;
+            this.resultS= "F";
+          }
         })
         .catch((e) => {
           console.log("error : " + e);
         });
-
-      this.$emit('rename', 'Content');
-      this.$router.push("/admin/group-list");
     },
   },
 };
