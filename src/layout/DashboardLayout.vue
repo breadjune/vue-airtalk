@@ -91,7 +91,7 @@
       -->
     </side-bar>
     <div class="main-panel">
-      <top-navbar></top-navbar>
+      <top-navbar v-bind="title"></top-navbar>
 
       <!-- <dashboard-content @click="toggleSidebar">
 
@@ -130,7 +130,10 @@ var EventBus = new Vue();
   export default {
     data() {
       return {
-        name: 'Overview'
+        name: 'Overview',
+        title: {
+          name: 'Dashboard'
+        }
       }
     },
     components: {
@@ -162,8 +165,7 @@ var EventBus = new Vue();
             this.receiveText = text;
         },
       rename(name) {
-        console.log('Dashboard_rename');
-        console.log('naeme : ' + name);
+        console.log('name : ' + name);
         this.name = name
       },
       changeCountents(name) {

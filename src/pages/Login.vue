@@ -6,7 +6,6 @@
     <b-row class="login-row justify-content-md-center" align-v="center">
       <div class="login-contents">
         <div class="login-image-box col-md-6">
-          <!-- <i class="nc-icon nc-chat-round" style="font-weight:bold;float:left;color:white;font-size:3rem"></i> -->
           <h2 class="login-title" @click="backDoor">AirTalk</h2>
           <img class="login-image" src="../assets/img/laptop3.png">
         </div>
@@ -27,7 +26,7 @@
                   <b-input-group-prepend is-text>
                     <i class="nc-icon nc-lock-circle-open" style="font-weight:bold;"></i>
                   </b-input-group-prepend>
-                  <b-form-input id="input-pw" v-model="form.password" placeholder="Enter Password" required value="test123"></b-form-input>
+                  <b-form-input id="input-pw" v-model="form.password" type="password" placeholder="Enter Password" required value="test123"></b-form-input>
                 </b-input-group>
               </b-form-group>
               <div class="login-btn text-center mt-6">
@@ -37,20 +36,6 @@
           </b-form>
         </div>
       </div>
-        <!-- <b-form class="login-form" @submit="onSubmit" @reset="onReset" v-if="show">
-            <p class="h4 text-center mb-4">Sign in</p>
-              <b-form-group id="input-group-1" label="Email:" label-for="input-email">
-                <b-form-input id="input-email" v-model="form.email" type="email" placeholder="Enter email" required></b-form-input>
-              </b-form-group>
-              <br/>
-              <b-form-group id="input-group-2" label="Password:" label-for="input-pw">
-                <b-form-input id="input-pw" v-model="form.password" placeholder="Enter Password" required></b-form-input>
-              </b-form-group>
-              <div class="login-btn text-center mt-6">
-                <b-button type="submit" variant="primary" class="login-submit">Login</b-button>
-                <b-button type="reset" variant="danger" class="login-reset">Reset</b-button>
-              </div>
-        </b-form> -->
     </b-row>
   </b-container>
   <!-- Default form login -->

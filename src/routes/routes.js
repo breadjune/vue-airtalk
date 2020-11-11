@@ -40,7 +40,9 @@ import EditorMain from 'src/pages/admin/editor/editorMain.vue'
 import EditorInfo from 'src/pages/admin/editor/editorInfo.vue'
 import EditorCreate from 'src/pages/admin/editor/editorCreate.vue'
 
-
+import FileManage from 'src/pages/admin/file/Manage.vue'
+import FileCreate from 'src/pages/admin/file/Create.vue'
+import FileView from 'src/pages/admin/file/View.vue'
 
 const routes = [
   {
@@ -61,16 +63,6 @@ const routes = [
         name: 'Overview',
         component: Overview,
       },
-      // {
-      //   path: 'member-list',
-      //   name: 'Member',
-      //   component: MemberManage,
-      // },
-      // {
-      //   path: 'member-view',
-      //   name: 'MemberInfo',
-      //   component: MemberInfo
-      // },
       {
         path: 'group-list',
         name: 'Group',
@@ -101,6 +93,21 @@ const routes = [
         path: 'member-create',
         name: 'MemberCreate',
         component: MemberCreate
+      },
+      {
+        path: 'file-list',
+        name: 'File',
+        component: FileManage
+      },
+      {
+        path: 'file-create',
+        name: 'FileCreate',
+        component: FileCreate
+      },
+      {
+        path: 'file-view',
+        name: 'FileView',
+        component: FileView
       },
       /*{
         path: 'user-register',

@@ -856,7 +856,7 @@
     /* color:white; */
     /* float: left; */
     position: absolute;
-    top: 13.1rem;
+    top: 12.5rem;
     left: 8rem;
     margin: 1.5rem;
     opacity: 0.4;
@@ -864,7 +864,7 @@
 .login-image {
     width: 23rem;
     opacity: 1;
-    margin-top: 3.7rem;
+    margin-top: 3rem;
     /* position: absolute;
     right: 1rem;
     top: 6rem; */
@@ -903,4 +903,9 @@
 }
 .board-toggle > ul > li {
     margin-left: 1.5rem;
+}
+
+/* 파일 첨부 버튼 내용 수정 */
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: '파일 선택';
 }

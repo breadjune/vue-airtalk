@@ -8,10 +8,14 @@
       </slot>
     </thead>
     <tbody>
-    <tr v-for="(item, index) in data" :key="index">
-      <slot :row="item">
-        <td v-for="column in columns" :key="column">{{itemValue(item, column)}}</td>
-      </slot>
+    <tr v-for="(item, index) in data" :key="index" @click="rowSelected(item)">
+      <!-- <ul v-if="hasColumn(index, column)"> -->
+        <slot :row="item">
+          <td v-for="column in columns" 
+              :key="column"
+          >{{itemValue(item, column)}}</td>
+        </slot>
+      <!-- </ul> -->
     </tr>
     </tbody>
   </table>
@@ -22,7 +26,7 @@
     props: {
       headers: Array,
       columns: Array,
-      data: Array
+      data: Array,
     },
     methods: {
       hasValue (item, column) {
@@ -30,6 +34,10 @@
       },
       itemValue (item, column) {
         return item[column.toLowerCase()]
+      },
+      rowSelected (item) {
+        this.$emit("rowSelected", item);
+        console.log("invoke RowSelected!");
       }
     }
   }

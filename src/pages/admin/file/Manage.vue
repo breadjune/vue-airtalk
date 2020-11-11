@@ -15,8 +15,24 @@
             <l-table class="table-hover table-striped"
                      :headers="row.headers"
                      :columns="row.columns"
-                     :data="row.data">
+                     :data="row.data"
+                     @rowSelected="onRowSelected"
+            >
             </l-table>
+            <br>
+            <div>
+              <b-button
+                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                variant="primary"
+                @click="movePage()"
+              >추가
+              </b-button>
+              <b-button
+                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                variant="success"
+              >다운로드
+              </b-button>
+            </div>
           </card>
         </div>
 
@@ -32,40 +48,40 @@
   import axioMixin from "@/components/axioMixin"
 
   const dataStore = "dataStore"
-// import func from '../../../../vue-temp/vue-editor-bridge'
-
-  const tableHeaders = ['no', '제목', '작성자', '등록일']
-  const tableColumns = ['seq', 'title', 'writer', 'regdate']
-  const tableData = [{
-    seq: 1,
-    title: '파일업로드 타이틀 1',
-    writer: '작성자 1',
-    regdate: '2020-11-06 09:10'
-  },
-  {
-    seq: 2,
-    title: '파일업로드 타이틀 2',
-    writer: '작성자 2',
-    regdate: '2020-11-06 09:10'
-  },
-  {
-    seq: 3,
-    title: '파일업로드 타이틀 3',
-    writer: '작성자 3',
-    regdate: '2020-11-06 09:10'
-  },
-  {
-    seq: 4,
-    title: '파일업로드 타이틀 4',
-    writer: '작성자 4',
-    regdate: '2020-11-06 09:10'
-  },
-  {
-    seq: 5,
-    title: '파일업로드 타이틀 5',
-    writer: '작성자 5',
-    regdate: '2020-11-06 09:10'
-  }]
+  const tableHeaders = ['no', '제목', '작성자', '등록일',]
+  const tableColumns = ['seq', 'title', 'writer', 'regDate']
+  // const tableData = [
+  //   {
+  //   seq: 1,
+  //   title: "test1",
+  //   writer: "test1",
+  //   regdate: "test1",
+  //   },
+  //   {
+  //   seq: 2,
+  //   title: "test2",
+  //   writer: "test2",
+  //   regdate: "test2",
+  //   },
+  //   {
+  //   seq: 3,
+  //   title: "test3",
+  //   writer: "test3",
+  //   regdate: "test3",
+  //   },
+  //   {
+  //   seq: 4,
+  //   title: "test4",
+  //   writer: "test4",
+  //   regdate: "test4",
+  //   },
+  //   {
+  //   seq: 5,
+  //   title: "test5",
+  //   writer: "test5",
+  //   regdate: "test5",
+  //   },
+  // ]
   export default {
     components: {
       LTable,
@@ -79,6 +95,7 @@
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: []
+          // data: [...tableData]
         },
         form: {
           keyword: '',
@@ -93,26 +110,22 @@
       init: async function () {
         var res = await this.request("/rest/file/search.json", this.form);
         console.log("file board data : " + JSON.stringify(res));
-        var array = new Array;
-        var data = new Object;
-        for(var i=0; i < res.length; i++) {
-          data.seq = JSON.stringify(res[i].seq).replace(/\"/g, "");
-          data.title = JSON.stringify(res[i].title).replace(/\"/g, '');
-          data.writer = JSON.stringify(res[i].writer).replace(/\"/g, '');
-          data.regDate = JSON.stringify(res[i].regDate).replace(/\"/g, '');
-
-          console.log("json data column : " + JSON.stringify(data.writer));
-
-          array.push(data);
-        }
-
-        // data.seq = res.seq
-        // data.title = res.map(x=>x.title);
-        // data.writer = res.map(x=>x.writer);
-        // data.regDate = res.map(x=>x.regDate);
-
-        console.log("file board data : " + JSON.stringify(array));
-        //this.$store.dispatch("dataStore/selectList", data);
+        //   data.seq = JSON.stringify(res[i].seq).replace(/\"/g, "");
+        this.row.data = res;
+      },
+      onRowSelected(items) {
+        console.log("items "+JSON.stringify(items));
+        this.$emit('rename', 'Content');
+        this.$router.push({
+          name:"FileView",
+          params: items
+        })
+      },
+      movePage() {
+        this.$emit('rename', 'Content');
+        this.$router.push({
+          name:"FileCreate",
+        });
       }
     }
   }

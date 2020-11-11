@@ -12,6 +12,7 @@ const axioMixin = {
                 const res = await axios.post(this.URL_PREFIX + arguments[0], arguments[1]);
                 if(res.headers.authcheck === "false") {
                     this.$router.push('/login');
+                    this.$session.set('auth', false);
                 }
                 return res.data;
             } catch (error) {

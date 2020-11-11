@@ -1,116 +1,108 @@
 <template>
-<div class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-         
-<b-button v-b-toggle.collapse-1 variant="primary">
-  {{ this.$store.getters['memberStore/memberInfo'].adminId}} 
-  ({{ this.$store.getters['memberStore/memberInfo'].adminName }})
-  </b-button>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <card>
+                        <template slot="header">
+                            <h4 class="card-title">파일 게시판</h4>
+                            <p class="card-category">파일 게시판 수정</p>
+                            <hr>
+                        </template>
     
-             <b-collapse id="collapse-1">
-        <b-list-group style="text-align:left;">
-          <b-list-group-item>아이디: {{ this.$store.getters['memberStore/memberInfo'].adminId }}</b-list-group-item>
-          <b-list-group-item>이름: {{ this.$store.getters['memberStore/memberInfo'].adminName }}</b-list-group-item>
-        </b-list-group>
-    </b-collapse>
+                        <b-form>
+                            <div>
+                                <label for="seq">No:</label>
+                                <b-input id="seq" name="seq" type="text" v-model="seq" readonly></b-input>
+                            </div>
+                            <div>
+                                <label for="title">제목</label>
+                                <b-input id="title" name="title" type="text" v-model="title" maxlength="100"></b-input>
+                            </div>
+                            <div>
+                                <label for="writer">작성자</label>
+                                <b-input id="writer" name="writer" type="text" v-model="writer" maxlength="20"></b-input>
+                            </div>
+                            <div>
+                                <label for="contents">내용</label>
+                                <b-form-textarea id="contents" name="contents" type="text" v-model="contents"></b-form-textarea>
+                            </div>
+                            <div>
+                                <label for="phone">파일 다운로드</label>
+                                <b-input id="fileName" name="fileName" type="text" v-model="fileName"></b-input>
+                            </div>
 
-          <card>
-            <h4 slot="header" class="card-title">Edit Profile</h4>
-            <form>
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input type="text"
-                            label="아이디"
-                            :disabled="true"
-                            placeholder="Id"
-                            v-model="user.company">
-                  </base-input>
+                        </b-form>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="list">목록</b-button>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="update">수정</b-button>
+                        <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="remove">삭제</b-button>
+                    </card>
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input type="text"
-                            label="이름"
-                            placeholder="Name"
-                            v-model="user.firstName">
-                  </base-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input type="text"
-                            label="전화번호"
-                            placeholder="Phone"
-                            v-model="user.address">
-                  </base-input>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <base-input type="text"
-                            label="이메일"
-                            placeholder="Email"
-                            v-model="user.adminId">
-                  </base-input>
-                </div>
-              </div>
-              
-              <div class="text-center">
-                <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="updateProfile">
-                  Update Profile
-                </button>
-              </div>
-              <div class="clearfix"></div>
-            </form>
-          </card>
-
-
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
-
-
 <script>
-
-const memberStore = 'memberStore'
-
+import axios from 'axios'
 export default {
-  name: 'MemberInfo',
-  data() {
-    return {
-      user: {
-          adminId: this.$store.getters['memberStore/memberInfo'].adminId,
-          firstName: 'Mike',
-          company: 'Light dashboard',
-          username: 'michael23',
-          lastName: 'Andrew',
-          address: 'Melbourne, Australia'
-      },
-      form: {
-          adminId: ''
+    data() {
+        return {
+            seq : '',
+            title : '',
+            writer : '',
+            contents : 'none',
+            file : ''
         }
-      }
-      
-  },
-  mounted() {
-    this.form.adminId = this.$route.params.adminId
-    this.getInitPageData()
-    console.log('MemberInfo: ' + this.form.adminId);
-  },
-  methods: {
-    async getInitPageData() {
-      var data = await this.request('/admin/member/getMemberInfoBySeq.json', this.form)
-      this.$store.dispatch("memberStore/getMemberInfoBySeq", data)
+    },
+    mounted() {
+        this.seq = this.$route.params.seq;
+        this.title = this.$route.params.title;
+        this.writer = this.$route.params.writer;
+        this.contents = this.$route.params.contents;
+        this.file = this.$route.params.file;
+    },
+    // computed : {
+    //     notice_seq : function(){
+    //         axios.get('/rest/notice/getnotice',{params: {
+    //           seq : this.$route.params.seq
+    //         }}).then((res) => {
+    //             console.log('rest_api_getnotice');
+    //             this.seq = res.data.boardSeq;
+    //             this.title = res.data.title;
+    //             this.contents = res.data.contents;
+    //             this.id = res.data.adminId;
+    //             this.file = res.data.flagFile;
+
+    //             console.log("api : result = : " + this,this.id);
+    //         }).catch(function(res){
+    //                 console.log('error_notice_detail_rest_getnotice');
+    //                 console.log(res);
+    //         });
+
+    //         return this.$route.params.seq;
+    //     }
+    // },
+    methods : {
+        list(){
+            this.$emit('rename','Content');
+            this.$router.push({
+                name: "File"
+            });
+        },
+        update(){
+            console.log('Update API invoked.');
+            this.$emit('rename','Content');
+            var res = this.request("/rest/file/update.json", this.form);
+
+
+        },
+        remove(){
+            console.log('Delete API invoked.');
+            var res = this.request("/rest/file/delete.json", this.form);
+
+
+        },
+
     }
-  }
 }
 </script>
-<style>
-</style>
