@@ -28,7 +28,7 @@ const groupStore = {
         },
     },
     getters: {
-        memberList(state, /*getters*/ ) {
+        memberList(state /*getters*/ ) {
             return state.memberList;
         },
         adminGroupAuth(state, /*getters*/ ) {

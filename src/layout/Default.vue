@@ -2,37 +2,7 @@
   <div class="wrapper">
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <a href=# @click="movePage('Login')" ref="loginBtn" style="display:none">link</a>
-      <li>
-        <a href="#" @click="movePage('Overview')" class="nav-link">
-          <i class="nc-icon nc-chart-pie-35"></i>
-          Dashboard
-        </a>
-      </li>
-      <li>
-        <a href="#" @click="movePage('Member')" class="nav-link">
-          <i class="nc-icon nc-circle-09"></i>
-          회원 관리
-        </a>
-      </li>
-      <li>
-        <a href="#" @click="movePage('Admin')" class="nav-link">
-          <i class="nc-icon nc-circle-09"></i>
-          계정 관리
-        </a>
-      </li>
-      <li>
-        <a href="#" @click="movePage('Menu')" class="nav-link">
-          <i class="nc-icon nc-notes"></i>
-          메뉴 관리
-        </a>
-      </li>
-      <li>
-        <a href="#" @click="movePage('Group')" class="nav-link">
-          <i class="nc-icon nc-layers-3"></i>
-          권한 관리
-        </a>
-      </li>
+      
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>

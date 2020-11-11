@@ -7,9 +7,10 @@
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
       </sidebar-link> -->
+      <ul>
       <li>
         <a href="#" @click="changeCountents('Overview')" class="nav-link">
-          <i class="nc-icon nc-chart-pie-35"></i>
+          <em class="nc-icon nc-chart-pie-35"></em>
           Dashboard
         </a>
       </li>
@@ -89,6 +90,7 @@
         </sidebar-link>
       </template>
       -->
+      </ul>
     </side-bar>
     <div class="main-panel">
       <top-navbar v-bind="title"></top-navbar>
