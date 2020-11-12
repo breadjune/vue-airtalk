@@ -44,6 +44,10 @@ import FileManage from 'src/pages/admin/file/Manage.vue'
 import FileCreate from 'src/pages/admin/file/Create.vue'
 import FileView from 'src/pages/admin/file/View.vue'
 
+import UserManage from 'src/pages/service/user/Manage.vue'
+import UserView from 'src/pages/service/user/View.vue'
+import UserCreate from 'src/pages/service/user/Create.vue'
+
 const routes = [
   {
     path: '/',
@@ -191,6 +195,26 @@ const routes = [
       },
     ]
   },
+  {
+     path: '/service',
+    component: DashboardLayout,
+    children: [
+      {
+        path: 'userManage',
+        name : 'UserManage',
+        component: UserManage,
+      },
+      {
+        path: 'userView',
+        name : 'UserView',
+        component: UserView,
+      },
+  
+    
+    ]
+  },
+ 
+   
   // { path: '*', component: NotFound }
 ]
 

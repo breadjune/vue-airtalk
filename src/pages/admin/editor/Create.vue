@@ -38,11 +38,13 @@ export default {
       }
     },
     methods :{
-        parentsMethod: function(title,html) {
+        parentsMethod: function(title,html,adminId) {
                     this.formData.title=title;
                     this.formData.html=html;
+                    this.formData.adminId=adminId;
                     console.log("받은 데이터 : " + this.formData.title);
                     console.log("받은 데이터2 : " + this.formData.html);
+                    console.log("받은 데이터3 : " + this.formData.adminId);
             },
 
         add(){
@@ -51,6 +53,7 @@ export default {
             let data = {
                 title: this.formData.title,
                 content: this.formData.html,
+                adminId: this.formData.adminId,
             };
 
             console.log(data);

@@ -37,10 +37,10 @@
   </div>
 </template>
 <script>
-  import LTable from 'src/components/Table.vue'
+  import LTable from '@/layout/Table.vue'
   import Card from 'src/components/Cards/Card.vue'
   import Search from '../../../layout/Search.vue'
-  import editorTable from './editorTable.vue'
+  // import editorTable from './editorTable.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
   const tableHeaders = ['no', '제목', '작성자', '등록일']
@@ -85,7 +85,7 @@
       LTable,
       Card,
       Search,
-      editorTable,
+      // editorTable,
     },
     mixins: [axioMixin],
     data () {

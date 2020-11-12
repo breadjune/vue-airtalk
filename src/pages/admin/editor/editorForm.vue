@@ -3,7 +3,7 @@
     <b-form id="form">
      <div>
         <label>작성자</label>
-        <b-input id="amdinId" name="adminId" type="text" readonly></b-input>
+        <b-input id="amdinId" name="adminId" type="text" v-model="adminId" readonly></b-input>
      </div>
       <div >
         <label>제목</label>
@@ -198,7 +198,7 @@ export default {
   data() {
     return {
           title:"",
-          adminId:"",
+          adminId:"TEST123",
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -258,11 +258,11 @@ export default {
   watch: {
         title(){
             console.log(this.title);
-            this.$emit('childs-event', this.title, this.editor.getHTML());
+            this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
             },
         html(){
               console.log(this.editor.getHTML());
-              this.$emit('childs-event', this.title,this.editor.getHTML());
+              this.$emit('childs-event', this.title,this.editor.getHTML(),this.adminId);
 
         }
          },

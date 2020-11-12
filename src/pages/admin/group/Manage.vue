@@ -45,15 +45,25 @@
             <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
             
             <b-table
+              id="my-table"
               striped
               hover
               selectable
               select-mode="single"
               :fields="fields"
               :items="this.$store.getters['groupStore/memberList']"
+              :per-page="perPage"
+              :current-page="currentPage"
               @row-selected="onRowSelected"
             ></b-table>
-          
+            <!-- 페이징 처리 테스트-->
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+            ></b-pagination>
+
             <!-- </div> -->
           </card>
         </div>
@@ -80,6 +90,8 @@ export default {
   mixins: [axioMixin],
   data() {
     return {
+      perPage: 3,
+      currentPage: 1,
       fields: [
         { key: "authGroupSeq", label: "관리자 ID", sortable: true,},
         { key: "name",label: "관리자 명", sortable: false, },
@@ -95,7 +107,12 @@ export default {
         { value: "adminName", text: "이름" },
       ],
     };
-  },
+  }, 
+  computed: {
+      rows() {
+        return this.$store.getters['groupStore/memberList'].length
+      }
+    },
   methods: {
     init: async function () {
       var data = await this.request("/rest/group/search.json", this.form);
