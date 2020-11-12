@@ -9,7 +9,7 @@
                             <p class="card-category">여기는 글쓰기 게시판 추가화면 입니다.</p>
                             <hr>
                         </template>
-                        <editorForm></editorForm>
+                        <editorForm @childs-event="parentsMethod"></editorForm>
                         <div style="display:inline;">
                             <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="add">등록</b-button>
                             <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="cancel">취소</b-button>
@@ -22,17 +22,50 @@
 </template>
 <script>
 import editorForm from './editorForm.vue'
+import axios from 'axios'
 
 export default {
     components : {
         'editorForm' : editorForm
     },
+    data() {
+      return {
+          formData:{ 
+                adminId: "",
+                title: "",
+                html: "",
+          },
+      }
+    },
     methods :{
+        parentsMethod: function(title,html) {
+                    this.formData.title=title;
+                    this.formData.html=html;
+                    console.log("받은 데이터 : " + this.formData.title);
+                    console.log("받은 데이터2 : " + this.formData.html);
+            },
+
         add(){
-            console.log('notice_add.vue - add()');
+            console.log(this.formData.title);
+
+            let data = {
+                title: this.formData.title,
+                content: this.formData.html,
+            };
+
+            console.log(data);
+         axios
+         .post("/rest/editor/create.json", data)
+         .then((result) => {
+              console.log("result.data : " + result.data);
+              this.result = result.data;
+          })
+         .catch((e) => {
+           console.log("error : " + e);
+         });
+
         },
         cancel(){
-            console.log('notice_add.vue - cancel()');
             this.$emit('rename','Content');
             this.$router.push('/admin/editorMain');
         }

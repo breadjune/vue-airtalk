@@ -17,9 +17,9 @@ import Upgrade from 'src/pages/Upgrade.vue'
 // import MemberManage from 'src/pages/admin/member/MemberManage.vue'
 // import MemberInfo from 'src/pages/admin/member/MemberInfo.vue'
 
-import GroupManage from 'src/pages/admin/group/GroupManage.vue'
-import GroupInfo from 'src/pages/admin/group/GroupInfo.vue'
-import GroupCreate from 'src/pages/admin/group/GroupCreate.vue'
+import GroupManage from 'src/pages/admin/group/Manage.vue'
+import GroupInfo from 'src/pages/admin/group/View.vue'
+import GroupCreate from 'src/pages/admin/group/Create.vue'
 
 import Menu from 'src/pages/admin/menu/Menu.vue'
 
@@ -36,9 +36,9 @@ import NoticeAdd from 'src/pages/admin/notice/notice_add.vue'
 import NoticeDetail from 'src/pages/admin/notice/notice_detail.vue'
 import NoticeUpdate from 'src/pages/admin/notice/notice_update.vue'
 
-import EditorMain from 'src/pages/admin/editor/editorMain.vue'
-import EditorInfo from 'src/pages/admin/editor/editorInfo.vue'
-import EditorCreate from 'src/pages/admin/editor/editorCreate.vue'
+import EditorMain from 'src/pages/admin/editor/Manage.vue'
+import EditorInfo from 'src/pages/admin/editor/View.vue'
+import EditorCreate from 'src/pages/admin/editor/Create.vue'
 
 import FileManage from 'src/pages/admin/file/Manage.vue'
 import FileCreate from 'src/pages/admin/file/Create.vue'

@@ -7,7 +7,7 @@
      </div>
       <div >
         <label>제목</label>
-        <b-input id="title" name="title" type="text"></b-input>
+        <b-input id="title" name="title" type="text" v-model="title"></b-input>
       </div>
       <div>
           <label>내용</label>
@@ -144,10 +144,16 @@
 
           <editor-content class="editor__content" :editor="editor" />
         </div>
-</card>
+      </card>
       </div>
-
+      
     </b-form>
+    <div class="col">
+        <h2>HTML</h2>
+        <pre>
+        {{ html }}
+      </pre>
+      </div>
     <hr />
   </div>
 </template>
@@ -191,6 +197,8 @@ export default {
   },
   data() {
     return {
+          title:"",
+          adminId:"",
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -211,7 +219,8 @@ export default {
           new Underline(),
           new History(),
         ],
-        content: `
+        content:
+        `
           <h2>
             Hi there,
           </h2>
@@ -233,12 +242,30 @@ export default {
             – mom
           </blockquote>
         `,
+        
       }),
-    };
+    };  
   },
   beforeDestroy() {
     this.editor.destroy();
   },
+  computed: {
+      html() {
+        if (!this.editor) return "";
+        return this.editor.getHTML();
+    }
+  },
+  watch: {
+        title(){
+            console.log(this.title);
+            this.$emit('childs-event', this.title, this.editor.getHTML());
+            },
+        html(){
+              console.log(this.editor.getHTML());
+              this.$emit('childs-event', this.title,this.editor.getHTML());
+
+        }
+         },
 };
 </script>
 
@@ -253,9 +280,9 @@ export default {
   top: -0.05rem;
   fill: currentColor;
 
-  // &.has-align-fix {
-  // 	top: -.1rem;
-  // }
+  &.has-align-fix {
+  	top: -.1rem;
+  }
 
   &__svg {
     display: inline-block;
