@@ -33,9 +33,10 @@
         return item[column.toLowerCase()] !== 'undefined'
       },
       itemValue (item, column) {
-        return item[column.toLowerCase()]
+        return item[column]
       },
       rowSelected (item) {
+        console.log("item : " + item[0]);
         this.$emit("rowSelected", item);
         console.log("invoke RowSelected!");
       }

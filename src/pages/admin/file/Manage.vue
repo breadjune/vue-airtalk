@@ -50,38 +50,38 @@
   const dataStore = "dataStore"
   const tableHeaders = ['no', '제목', '작성자', '등록일',]
   const tableColumns = ['seq', 'title', 'writer', 'regDate']
-  // const tableData = [
-  //   {
-  //   seq: 1,
-  //   title: "test1",
-  //   writer: "test1",
-  //   regdate: "test1",
-  //   },
-  //   {
-  //   seq: 2,
-  //   title: "test2",
-  //   writer: "test2",
-  //   regdate: "test2",
-  //   },
-  //   {
-  //   seq: 3,
-  //   title: "test3",
-  //   writer: "test3",
-  //   regdate: "test3",
-  //   },
-  //   {
-  //   seq: 4,
-  //   title: "test4",
-  //   writer: "test4",
-  //   regdate: "test4",
-  //   },
-  //   {
-  //   seq: 5,
-  //   title: "test5",
-  //   writer: "test5",
-  //   regdate: "test5",
-  //   },
-  // ]
+  const tableData = [
+    {
+      seq: 1,
+      title: "test1",
+      writer: "test1",
+      regDate: "test1",
+    },
+    {
+      seq: 2,
+      title: "test2",
+      writer: "test2",
+      regDate: "test2",
+    },
+    {
+      seq: 3,
+      title: "test3",
+      writer: "test3",
+      regDate: "test3",
+    },
+    {
+      seq: 4,
+      title: "test4",
+      writer: "test4",
+      regDate: "test4",
+    },
+    {
+      seq: 5,
+      title: "test5",
+      writer: "test5",
+      regDate: "test5",
+    },
+  ]
   export default {
     components: {
       LTable,
