@@ -4,49 +4,33 @@
       <div class="row">
         <div class="col-12">
           <card class="strpied-tabled-with-hover"
-                body-classes="table-full-width table-responsive"
+                body-classes="table-responsive"
           >
             <template slot="header">
-              <h4 class="card-title">Striped Table with Hover</h4>
-              <p class="card-category">Here is a subtitle for this table</p>
+              <h3 class="card-title">알림 관리</h3>
+              <p class="card-category">알림 메시지 목록 조회 게시판</p>
+              <hr>
             </template>
-            <l-table class="table-hover table-striped"
-                     :columns="table1.columns"
-                     :data="table1.data">
-            </l-table>
-          </card>
-
-        </div>
-
-        <div class="col-12">
-          <card class="card-plain">
-            <template slot="header">
-              <h4 class="card-title">Table on Plain Background</h4>
-              <p class="card-category">Here is a subtitle for this table</p>
-            </template>
-            <div class="table-responsive">
-              <l-table class="table-hover"
-                       :columns="table2.columns"
-                       :data="table2.data">
+            <search v-bind="search" @btnClick="searchData"></search>
+            <div style="overflow:auto">
+              <l-table class="table-hover table-striped"
+                      :headers="row.headers"
+                      :columns="row.columns"
+                      :data="row.data"
+                      @rowSelected="onRowSelected"
+              >
               </l-table>
             </div>
+            <br>
+            <div>
+              <b-pagination
+                v-model="page.currentPage"
+                :total-rows="page.totalPage"
+                :per-page="page.perPage"
+                aria-controls="my-table"
+              ></b-pagination>
+            </div>
           </card>
-        </div>
-
-        <div class="col-12">
-          <card class="strpied-tabled-with-hover"
-                body-classes="table-full-width table-responsive"
-          >
-            <template slot="header">
-              <h4 class="card-title">Small table</h4>
-              <p class="card-category">Here is a subtitle for this table</p>
-            </template>
-            <l-table class="table-hover table-striped table-sm"
-                     :columns="table1.columns"
-                     :data="table1.data">
-            </l-table>
-          </card>
-
         </div>
 
       </div>
@@ -54,59 +38,92 @@
   </div>
 </template>
 <script>
-  import LTable from 'src/components/Table.vue'
+  import LTable from '../../../layout/Table.vue'
   import Card from 'src/components/Cards/Card.vue'
-  const tableColumns = ['Id', 'Name', 'Salary', 'Country', 'City']
-  const tableData = [{
-    id: 1,
-    name: 'Dakota Rice',
-    salary: '$36.738',
-    country: 'Niger',
-    city: 'Oud-Turnhout'
-  },
-  {
-    id: 2,
-    name: 'Minerva Hooper',
-    salary: '$23,789',
-    country: 'Curaçao',
-    city: 'Sinaai-Waas'
-  },
-  {
-    id: 3,
-    name: 'Sage Rodriguez',
-    salary: '$56,142',
-    country: 'Netherlands',
-    city: 'Baileux'
-  },
-  {
-    id: 4,
-    name: 'Philip Chaney',
-    salary: '$38,735',
-    country: 'Korea, South',
-    city: 'Overland Park'
-  },
-  {
-    id: 5,
-    name: 'Doris Greene',
-    salary: '$63,542',
-    country: 'Malawi',
-    city: 'Feldkirchen in Kärnten'
-  }]
+  import Search from '../../../layout/Search.vue'
+  import PageLink from '../../../layout/Pagination.vue'
+
+  import axios from 'axios'
+  import axioMixin from "@/components/axioMixin"
+
+  const dataStore = "dataStore"
+  const tableHeaders = ['no.', '사용자 ID', '내용', '서비스 코드', '위도', '경도', '건물 명', '발송 예약시간', '등록시간', '수정시간']
+  const tableColumns = ['seq', 'userId', 'message', 'code', 'latitude', 'longitude', 'bdNm', 'reservDate', 'regDate', 'modDate']
+
   export default {
     components: {
       LTable,
-      Card
+      Card,
+      Search,
+      PageLink
     },
+    mixins: [axioMixin],
     data () {
       return {
-        table1: {
-          columns: [...tableColumns],
-          data: [...tableData]
+        page: {
+          currentPage: 1,
+          perPage: 7,
+          totalPage: 0
         },
-        table2: {
+        row: {
+          headers: [...tableHeaders],
           columns: [...tableColumns],
-          data: [...tableData]
+          data: []
+          // data: [...tableData]
+        },
+        form: {
+          keyword: '',
+          type: '',
+          start: '1',
+          length: ''
+        },
+        search: {
+          options: [
+            {value: "default", text: tableHeaders[1]},
+            {value: tableColumns[3], text: tableHeaders[3]}
+          ]
         }
+      }
+    },
+    mounted() {
+    },
+    computed: {
+      rows() {
+        return this.row.data.length
+      }
+    },
+    methods: {
+      async searchData(form) {
+        console.log("search form data : " + form.searchWord);
+        if(form.searchWord === null || form.searchWord === "") {
+          alert("검색어를 입력하세요.")
+        } else {
+          this.form.keyword = form.searchWord;
+          this.form.type = form.searchType;
+
+          var response = await this.request("/restapi/alarm/list", this.form);
+          console.log("alarm Data : " + JSON.stringify(response));
+
+          this.page.totalPage = response.length;
+          this.row.data = response;
+
+
+        }
+        
+      },
+      onRowSelected(items) {
+        console.log("items "+JSON.stringify(items));
+        this.$emit('rename', 'Content');
+        this.$router.push({
+          name:"FileView",
+          params: items
+        })
+      },
+      movePage() {
+        this.$emit('rename', 'Content');
+        this.$router.push({
+          name:"FileCreate",
+        });
       }
     }
   }

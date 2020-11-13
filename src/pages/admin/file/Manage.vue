@@ -49,34 +49,34 @@
 
   const dataStore = "dataStore"
   const tableHeaders = ['no', '제목', '작성자', '등록일',]
-  const tableColumns = ['seq', 'title', 'writer', 'regDate']
+  const tableColumns = ['boardSeq', 'title', 'writer', 'regDate']
   const tableData = [
     {
-      seq: 1,
+      boardSeq: 1,
       title: "test1",
       writer: "test1",
       regDate: "test1",
     },
     {
-      seq: 2,
+      boardSeq: 2,
       title: "test2",
       writer: "test2",
       regDate: "test2",
     },
     {
-      seq: 3,
+      boardSeq: 3,
       title: "test3",
       writer: "test3",
       regDate: "test3",
     },
     {
-      seq: 4,
+      boardSeq: 4,
       title: "test4",
       writer: "test4",
       regDate: "test4",
     },
     {
-      seq: 5,
+      boardSeq: 5,
       title: "test5",
       writer: "test5",
       regDate: "test5",
