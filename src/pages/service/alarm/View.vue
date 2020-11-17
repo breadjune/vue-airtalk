@@ -8,10 +8,10 @@
           >
             <template slot="header">
               <h3 class="card-title">알림 관리</h3>
-              <p class="card-category">알림 메시지 목록 조회 게시판</p>
+              <p class="card-category">알림 메시지 목록 상세 조회</p>
               <hr>
             </template>
-            <search v-bind="search" @btnClick="searchData"></search>
+            <!-- <search v-bind="search" @btnClick="searchData"></search> -->
             <div style="overflow:auto">
               <l-table class="table-hover table-striped"
                       :headers="row.headers"
@@ -41,22 +41,19 @@
 <script>
   import LTable from '../../../layout/Table.vue'
   import Card from 'src/components/Cards/Card.vue'
-  import Search from '../../../layout/Search.vue'
-  // import PageLink from '../../../layout/Pagination.vue'
-
-  import axios from 'axios'
+//   import Search from '../../../layout/Search.vue'
+  
   import axioMixin from "@/components/axioMixin"
 
   const dataStore = "dataStore"
-  const tableHeaders = ['no.', '사용자 ID', '내용', '서비스 코드', '위도', '경도', '건물 명', '발송 예약시간', '등록시간', '수정시간']
-  const tableColumns = ['seq', 'userId', 'message', 'code', 'latitude', 'longitude', 'bdNm', 'reservDate', 'regDate', 'modDate']
+  const tableHeaders = ['no.', '수신자 ID', '전화번호', '수신여부', '수신시간']
+  const tableColumns = ['alarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
 
   export default {
     components: {
       LTable,
       Card,
-      Search,
-      // PageLink
+    //   Search,
     },
     mixins: [axioMixin],
     data () {
@@ -73,61 +70,51 @@
           // data: [...tableData]
         },
         form: {
-          keyword: '',
-          type: '',
+        //   keyword: '',
+        //   type: '',
           start: '0',
           length: ''
         },
-        search: {
-          options: [
-            {value: "default", text: tableHeaders[1]},
-            {value: tableColumns[3], text: tableHeaders[3]}
-          ]
-        }
+        // search: {
+        //   options: [
+        //     {value: "default", text: tableHeaders[1]},
+        //     {value: tableColumns[3], text: tableHeaders[3]}
+        //   ]
+        // }
       }
     },
     computed: {
       rows() {
-        return this.row.data.length
+        return this.row.data.length * this.form.start;
       }
     },
     methods: {
       async handle(page) {
-        console.log("page : " + page);
-        console.log("current Page : " + this.page.currentPage);
         this.form.start = String(page-1);
-        var response = await this.request("/restapi/alarm/list", this.form);
+        var response = await this.request("/restapi/alarmRecv/list", this.form);
         this.row.data = response;
       },
-      async searchData(form) {
-        if(form.searchWord === null || form.searchWord === "") {
-          alert("검색어를 입력하세요.")
-        } else {
-          this.form.keyword = form.searchWord;
-          if(form.searchType == "default") {this.form.type = "userId";}
-          else {this.form.type = form.searchType;}
-          this.form.start = "0";
-          this.form.length = String(this.page.perPage);
+      async view(form) {
+        this.form.start = "0";
+        this.form.length = String(this.page.perPage);
 
-          console.log("search : " + this.form.keyword);
-          console.log("type : " + this.form.type);
-          console.log("start : " + this.form.start);
-          console.log("length : " + this.form.length);
+    //   console.log("search : " + this.form.keyword);
+    //   console.log("type : " + this.form.type);
+    //   console.log("start : " + this.form.start);
+    //   console.log("length : " + this.form.length);
 
-          this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
+        this.page.totalPage = await this.request("/restapi/alarmRecv/count", this.form);
 
-          var response = await this.request("/restapi/alarm/list", this.form);
-          console.log("alarm Data : " + JSON.stringify(response));
+        var response = await this.request("/restapi/alarmRecv/list", this.form);
+        console.log("alarm Data : " + JSON.stringify(response));
 
-          this.row.data = response;
-
-        } 
+        this.row.data = response;
       },
       onRowSelected(items) {
         console.log("items "+JSON.stringify(items));
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"AlarmView",
+          name:"FileView",
           params: items
         })
       },
