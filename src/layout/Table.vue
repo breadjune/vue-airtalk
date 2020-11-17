@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table" style="white-space:nowrap">
     <thead>
       <slot name="columns">
         <tr>
