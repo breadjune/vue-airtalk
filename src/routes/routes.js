@@ -209,6 +209,11 @@ const routes = [
         name : 'UserView',
         component: UserView,
       },
+      {
+        path: 'userCreate',
+        name : 'UserCreate',
+        component: UserCreate,
+      },
   
     
     ]
