@@ -48,6 +48,10 @@ import UserManage from 'src/pages/service/user/Manage.vue'
 import UserView from 'src/pages/service/user/View.vue'
 import UserCreate from 'src/pages/service/user/Create.vue'
 
+import CodeManage from 'src/pages/service/code/Manage.vue'
+import CodeView from 'src/pages/service/code/View.vue'
+import CodeCreate from 'src/pages/service/code/Create.vue'
+
 const routes = [
   {
     path: '/',
@@ -213,6 +217,21 @@ const routes = [
         path: 'userCreate',
         name : 'UserCreate',
         component: UserCreate,
+      },
+      {
+        path: 'codeManage',
+        name : 'CodeManage',
+        component: CodeManage,
+      },
+      {
+        path: 'codeView',
+        name : 'CodeView',
+        component: CodeView,
+      },
+      {
+        path: 'codeCreate',
+        name : 'CodeCreate',
+        component: CodeCreate,
       },
   
     
