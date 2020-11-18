@@ -17,7 +17,7 @@
                   <b-input-group-prepend is-text>
                     <i class="nc-icon nc-single-02" style="font-weight:bold;"></i>
                   </b-input-group-prepend>
-                  <b-form-input id="input-email" v-model="form.email" type="email" placeholder="Enter email" required value="test@test.com"></b-form-input>
+                  <b-form-input id="input-email" v-model="form.email" type="email" placeholder="Enter email" required :value="email"></b-form-input>
                 </b-input-group>
               </b-form-group>
               <br/>
@@ -26,7 +26,7 @@
                   <b-input-group-prepend is-text>
                     <i class="nc-icon nc-lock-circle-open" style="font-weight:bold;"></i>
                   </b-input-group-prepend>
-                  <b-form-input id="input-pw" v-model="form.password" type="password" placeholder="Enter Password" required value="test123"></b-form-input>
+                  <b-form-input id="input-pw" v-model="form.password" type="password" placeholder="Enter Password" required :value="password"></b-form-input>
                 </b-input-group>
               </b-form-group>
               <div class="login-btn text-center mt-6">
@@ -49,8 +49,8 @@
     data() {
       return {
         form: {
-          email: '',
-          password: ''
+          email: 'test@i-mobilepark.com',
+          password: 'test123'
         },
         show: true
       }

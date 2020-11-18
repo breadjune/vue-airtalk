@@ -905,6 +905,10 @@
     margin-left: 1.5rem;
 }
 
+.nullData {
+    display: none;
+}
+
 /* 파일 첨부 버튼 내용 수정 */
 .custom-file-input:lang(en) ~ .custom-file-label::after {
     content: '파일 선택';

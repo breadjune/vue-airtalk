@@ -48,6 +48,9 @@ import UserManage from 'src/pages/service/user/Manage.vue'
 import UserView from 'src/pages/service/user/View.vue'
 import UserCreate from 'src/pages/service/user/Create.vue'
 
+import AlarmManage from 'src/pages/service/alarm/Manage.vue'
+import AlarmView from 'src/pages/service/alarm/View.vue'
+
 const routes = [
   {
     path: '/',
@@ -214,8 +217,16 @@ const routes = [
         name : 'UserCreate',
         component: UserCreate,
       },
-  
-    
+      {
+        path: 'alarmManage',
+        name: 'AlarmManage',
+        component: AlarmManage
+      },
+      {
+        path: 'alarmView',
+        name: 'AlarmView',
+        component: AlarmView
+      }
     ]
   },
  

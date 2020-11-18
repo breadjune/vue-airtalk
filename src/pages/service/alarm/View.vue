@@ -17,12 +17,12 @@
                       :headers="row.headers"
                       :columns="row.columns"
                       :data="row.data"
-                      @rowSelected="onRowSelected"
               >
               </l-table>
             </div>
             <br>
             <div>
+              <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="movePage">목록</b-button>
               <b-pagination
                 v-model="page.currentPage"
                 :total-rows="page.totalPage"
@@ -47,7 +47,7 @@
 
   const dataStore = "dataStore"
   const tableHeaders = ['no.', '수신자 ID', '전화번호', '수신여부', '수신시간']
-  const tableColumns = ['alarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
+  const tableColumns = ['AlarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
 
   export default {
     components: {
@@ -70,8 +70,7 @@
           // data: [...tableData]
         },
         form: {
-        //   keyword: '',
-        //   type: '',
+          seq: '',
           start: '0',
           length: ''
         },
@@ -82,6 +81,10 @@
         //   ]
         // }
       }
+    },
+    mounted() {
+      this.form.seq = String(this.$route.params.seq);
+      this.view();
     },
     computed: {
       rows() {
@@ -94,34 +97,20 @@
         var response = await this.request("/restapi/alarmRecv/list", this.form);
         this.row.data = response;
       },
-      async view(form) {
+      async view() {
         this.form.start = "0";
         this.form.length = String(this.page.perPage);
-
-    //   console.log("search : " + this.form.keyword);
-    //   console.log("type : " + this.form.type);
-    //   console.log("start : " + this.form.start);
-    //   console.log("length : " + this.form.length);
-
-        this.page.totalPage = await this.request("/restapi/alarmRecv/count", this.form);
+        console.log("seq Data : " + this.form.seq);
 
         var response = await this.request("/restapi/alarmRecv/list", this.form);
         console.log("alarm Data : " + JSON.stringify(response));
 
         this.row.data = response;
       },
-      onRowSelected(items) {
-        console.log("items "+JSON.stringify(items));
-        this.$emit('rename', 'Content');
-        this.$router.push({
-          name:"FileView",
-          params: items
-        })
-      },
       movePage() {
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"FileCreate",
+          name:"AlarmManage",
         });
       }
     }

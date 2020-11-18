@@ -21,6 +21,7 @@
               >
               </l-table>
             </div>
+            <div :class="{nullData: row.default}" ref="nullData" style="text-align:center">데이터가 없습니다.</div>
             <br>
             <div>
               <b-pagination
@@ -67,6 +68,7 @@
           totalPage: 0
         },
         row: {
+          default: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: []
@@ -109,12 +111,9 @@
           this.form.start = "0";
           this.form.length = String(this.page.perPage);
 
-          console.log("search : " + this.form.keyword);
-          console.log("type : " + this.form.type);
-          console.log("start : " + this.form.start);
-          console.log("length : " + this.form.length);
-
           this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
+
+          if(this.page.totalPage !== 0) this.row.default = true;
 
           var response = await this.request("/restapi/alarm/list", this.form);
           console.log("alarm Data : " + JSON.stringify(response));
