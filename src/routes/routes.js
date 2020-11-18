@@ -51,6 +51,10 @@ import UserCreate from 'src/pages/service/user/Create.vue'
 import AlarmManage from 'src/pages/service/alarm/Manage.vue'
 import AlarmView from 'src/pages/service/alarm/View.vue'
 
+import CodeManage from 'src/pages/service/code/Manage.vue'
+import CodeView from 'src/pages/service/code/View.vue'
+import CodeCreate from 'src/pages/service/code/Create.vue'
+
 const routes = [
   {
     path: '/',
@@ -226,7 +230,24 @@ const routes = [
         path: 'alarmView',
         name: 'AlarmView',
         component: AlarmView
-      }
+      },
+      {
+        path: 'codeManage',
+        name : 'CodeManage',
+        component: CodeManage,
+      },
+      {
+        path: 'codeView',
+        name : 'CodeView',
+        component: CodeView,
+      },
+      {
+        path: 'codeCreate',
+        name : 'CodeCreate',
+        component: CodeCreate,
+      },
+  
+    
     ]
   },
  

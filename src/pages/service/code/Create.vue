@@ -5,30 +5,18 @@
             <div class="col-12">
                 <card>
                   <template slot="header">
-                    <h4 class="card-title">사용자 관리</h4>
-                      <p class="card-category">* 사용자를 추가하십시오.</p>
+                    <h4 class="card-title">서비스 코드 관리</h4>
+                      <p class="card-category">* 서비스 코드를 추가하십시오.</p>
                         <hr>
                         </template>
                         <b-form>
                             <div>
-                                <label for="adminId">사용자ID</label>
-                                <b-input id="amdinId" name="adminId" type="text" v-model="id" ></b-input>
+                                <label for="code">Code</label>
+                                <b-input id="code" name="code" type="text" v-model="code" ></b-input>
                             </div>
                             <div>
-                                <label for="adminName">사용자명</label>
-                                <b-input id="adminName" name="adminName" type="text" v-model="name" ></b-input>
-                            </div>
-                            <div>
-                                <label for="password">비밀번호</label>
-                                <b-input id="password" name="password" type="password" v-model="password" maxlength="20"></b-input>
-                            </div>
-                            <div>
-                                <label for="passwordCheck">비밀번호 확인</label>
-                                <b-input id="passwordCheck" name="passwordCheck" type="password" v-model="passwordCheck"  maxlength="20"></b-input>
-                            </div>
-                            <div>
-                                <label for="phone">H.P</label>
-                                <b-input id="phone" name="phone" type="text" v-model="hpNo" maxlength="11"></b-input>
+                                <label for="codeName">Code 이름</label>
+                                <b-input id="codeName" name="codeName" type="text" v-model="codeName" ></b-input>
                             </div>
                             <div>
                                 <label for="regDate">등록일</label>
@@ -67,65 +55,48 @@
             return {
                 visible: false,
                 
-                id: "", 
-                name: "",
-                password: "",
-                hpNo: "",
+                code: "", 
+                codeName: "",
                 regDate: "",
-                passwordCheck: "",
                 modalData: "",
-                title:"사용자 관리",
+                title:"서비스 코드 관리",
                 resultS: "",
                 msg:{
                     success: "정상 처리되었습니다.",
                     fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
-                    phone: "핸드폰 번호를 확인 하세요.",
-                    passMax: "비밀번호는 최소 10자리 이상 입력하세요.",
-                    passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
+                    code: "code 를 확인 하세요.",
+                    codeName: "code 이름을 입력하세요.",
 
                  },
             }
         },
 
         watch: {
-            // phone에 숫자가 아닌 다른 문자가 들어올 경우 삭제 처리
-            hpNo: function(){
-                return this.hpNo = this.hpNo.replace(/[^0-9]/g, '');
-            },
-        
             visible(){  //모달이 닫히면 false 체크
                 if(this.visible==false && this.resultS=="S"){
                     this.$emit("rename", "Content");
-                    this.$router.push("/service/userManage");
+                    this.$router.push("/service/codeManage");
                 }
              }
         },
         methods: {
-
             save() {
-                if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
-                      this.modalData = this.msg.phone;
+                if (this.code == null || this.code == "") {
+                      this.modalData = this.msg.code;
                       this.visible = !this.visible;
                 }
-                else if (this.password.length < 10) {
-                   this.modalData = this.msg.passMax;
+                else if (this.codeName == null || this.codeName == "") {
+                   this.modalData = this.msg.codeName;
                    this.visible = !this.visible;
-                }
-                else if (this.password != this.passwordCheck) {
-                    this.modalData = this.msg.passCheck;
-                    this.visible = !this.visible;
                 }
                 else {
                    let data ={
-                    id: this.id,
-                    name: this.name,
-                    password: this.password,
-                    hpNo: this.hpNo,
+                    code: this.code,
+                    codeName: this.codeName,
                    };
                 
-                    axios.post("/restapi/user/create.json", data).then((result) =>  {
+                    axios.post("/restapi/svcCode/create.json", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
-                        console.log("responce 결과 : " + result.data);
                         if(result.data.result == 'SUCCESS') {
                             this.title= result.data.result;
                             this.modalData= this.msg.success;
@@ -133,7 +104,7 @@
                             this.resultS= "S";
                         }
                         else {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.fail;
                             this.visible = !this.visible;
                             this.resultS= "F";
@@ -143,7 +114,7 @@
                 },
             list() {
                 this.$emit('rename', 'Content');
-                this.$router.push("/service/userManage");
+                this.$router.push("/service/codeManage");
             }
         }
     }

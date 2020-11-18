@@ -8,10 +8,10 @@
           >
             <template slot="header">
               <h3 class="card-title">사용자 관리</h3>
-              <p class="card-category">이곳은 사용자 관지 페이지 입니다.</p>
+              <p class="card-category">이곳은 사용자 관리 페이지 입니다.</p>
               <hr>
             </template>
-            <search></search>
+            <search v-bind="search" @btnClick="searchData"></search>
             <l-table class="table-hover table-striped"
                      id="my-table"
                      :headers="row.headers"
@@ -23,12 +23,13 @@
             >
             </l-table>
 
-              <b-pagination
-              v-model="currentPage"
-              :total-rows="rows"
-              :per-page="perPage"
-              aria-controls="my-table"
-            ></b-pagination>
+             <b-pagination
+                v-model="page.currentPage"
+                :total-rows="page.totalPage"
+                :per-page="page.perPage"
+                @change="handle"
+                aria-controls="my-table"
+              ></b-pagination>
             
               <div>
                 <b-button
@@ -52,43 +53,8 @@
   import Search from '../../../layout/Search.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
-  const tableHeaders = [ '사용자 ID', '이름', '핸드폰 번호' ,'등록일']
-  const tableColumns = [ 'id', 'name', 'hpNo' ,'regDate']
-  // const tableData = [{
-  //   chkbox: '',
-  //   number: 1,
-  //   title: '테스트1',
-  //   writer: '작성자 1',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //  chkbox: '',
-  //   number: 2,
-  //   title: '파일업로드 타이틀 2',
-  //   writer: '작성자 2',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 3,
-  //   title: '파일업로드 타이틀 3',
-  //   writer: '작성자 3',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 4,
-  //   title: '파일업로드 타이틀 4',
-  //   writer: '작성자 4',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 5,
-  //   title: '파일업로드 타이틀 5',
-  //   writer: '작성자 5',
-  //   regdate: '2020-11-06 09:10'
-  // }]
+  const tableHeaders = [ 'NO','사용자 ID', '이름', '핸드폰 번호' ,'등록일']
+  const tableColumns = [ 'seq','id', 'name', 'hpNo' ,'regDate']
   export default {
     components: {
       LTable,
@@ -98,18 +64,28 @@
     mixins: [axioMixin],
     data () {
       return {
-        perPage: 3,
-        currentPage: 1,
+      page: {
+          currentPage: 1,
+          perPage: 2,
+          totalPage: 0
+        },
         row: {
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: [],
-          // data: [...tableData],
         },
       form: {
-             keyword: '',
-             type: ''
-          }
+          keyword: '',
+          type: '',
+          start: '0',
+          length: ''
+          },
+      search: {
+        options: [
+            {value: "default", text: tableHeaders[1]},
+            {value: tableColumns[2], text: tableHeaders[2]}
+          ]
+        }
       }
     },
      computed: {
@@ -124,7 +100,48 @@
         init: async function () {
         var res = await this.request("/restapi/user/list", this.form);
         console.log("User data : " + JSON.stringify(res));
+       
+        //seq 추가
+        for (var i = 0; i <res.length ; i++ ){
+          res[i]['seq'] = i+1; 
+          console.log("User data : " + JSON.stringify(res[i]));
+        } 
         this.row.data = res;
+      },
+      async handle(page) {
+        console.log("page : " + page);
+        console.log("current Page : " + this.page.currentPage);
+        this.form.start = String(page-1);
+        var response = await this.request("/restapi/user/search", this.form);
+        this.row.data = response;
+      },
+      async searchData(form) {
+        if(form.searchWord === null || form.searchWord === "") {
+          alert("검색어를 입력하세요.")
+        } else {
+          this.form.keyword = form.searchWord;
+          if(form.searchType == "default") {this.form.type = "id";}
+          else {this.form.type = form.searchType;}
+          this.form.start = "0";
+          this.form.length = String(this.page.perPage);
+
+          console.log("search : " + this.form.keyword);
+          console.log("type : " + this.form.type);
+          console.log("start : " + this.form.start);
+          console.log("length : " + this.form.length);
+
+          this.page.totalPage = await this.request("/restapi/user/count", this.form);
+
+          var response = await this.request("/restapi/user/search", this.form);
+          console.log("alarm Data : " + JSON.stringify(response));
+         //seq 추가
+         for (var i = 0; i <response.length ; i++ ){
+            response[i]['seq'] = i+1; 
+            console.log("Code data : " + JSON.stringify(response[i]));
+         } 
+          this.row.data = response;
+
+        } 
       },
       onRowSelected(items) {
         console.log("items "+JSON.stringify(items));

@@ -16,7 +16,7 @@
                             </div>
                             <div>
                                 <label for="adminName">사용자명</label>
-                                <b-input id="adminName" name="adminName" type="text" v-model="name" readonly></b-input>
+                                <b-input id="adminName" name="adminName" type="text" v-model="name" :disabled="pwPhoneEmail ? '' : disabled"></b-input>
                             </div>
                             <div>
                                 <label for="password">비밀번호</label>
@@ -38,9 +38,16 @@
                             <div class="text-center">
                                 <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
                                 <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
-                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()">삭제</b-button>
+                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnModify">삭제</b-button>
                                 <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">목록</b-button>
                             </div>
+                                <app-my-modal
+                                     :title="title"
+                                      :visible.sync="visible">
+                                     <div>
+                                      {{modalData}}
+                                     </div> 
+                               </app-my-modal>      
                         </b-form>
                     </card>
                 </div>
@@ -51,8 +58,13 @@
 
 <script>
     import axios from "axios"
-    
+    import Modal from '@/layout/Modal.vue'
+
     export default {
+         components: {
+          appMyModal: Modal,
+
+         },
         data() {
             return {
                 visible: false,
@@ -73,12 +85,10 @@
                 resultS: "",
                 msg:{
                     success: "정상 처리되었습니다.",
-                    fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+                    fail: "실패 하였습니다. ",
                     phone: "핸드폰 번호를 확인 하세요.",
                     passMax: "비밀번호는 최소 10자리 이상 입력하세요.",
                     passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
-
-
                  },
             }
         },
@@ -139,13 +149,11 @@
                 
                     axios.post("/restapi/user/update.json", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
-                        if(result.data == 'SUCCESS') {
+                        if(result.data.result == 'SUCCESS') {
                             this.title= result.data;
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/service/userManage");
                         }
                         else {
                             this.title= result.data;
@@ -165,15 +173,17 @@
                     console.log(this.id);
                     axios.post("/restapi/user/delete.json", data)
                             .then((result) => {
-                        if(result.data == "SUCCESS") {
-                            alert("정상 삭제 되었습니다.");
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/service/userManage");
+                        if(result.data.result == "SUCCESS") {
+                            this.title= result.data;
+                            this.modalData= this.msg.success;
+                            this.visible = !this.visible;
+                            this.resultS= "S";
                         }
                         else {
-                            alert("삭제 실패 하였습니다.");
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/service/userManage");
+                            this.title= result.data;
+                            this.modalData= this.msg.fail;
+                            this.visible = !this.visible;
+                            this.resultS= "F";
                         }
                     });
                 }
