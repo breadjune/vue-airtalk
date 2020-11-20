@@ -36,20 +36,20 @@ cp -R $VUE_HOME/dist/* $SPRING_HOME/src/main/resources/static
 
 ## :hash: 설정
 ###### vue
-의존성 설치.
-`npm install`.
-라이브 dev 실행 (화면만 확인 가능 API 호출 X).
-`npm run dev`.
-빌드.
-`npm run build`.
-단위 테스트.
-`npm run unit`.
-.
+\- 의존성 설치 
+- `npm install`
+\- 라이브 dev 실행 (화면만 확인 가능 API 호출 X) 
+- `npm run dev`
+\- 빌드
+- `npm run build`
+\- 단위 테스트.
+- `npm run unit`
+
 ###### spring
-빌드.
-`./gradlew build`.
-실행
-`./gradlew bootrun`.
+\- 빌드.
+- `./gradlew build`
+\- 실행
+- `./gradlew bootrun`
 
 [CHANGELOG]: ./CHANGELOG.md
 [LICENSE]: ./LICENSE.md
