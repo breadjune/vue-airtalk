@@ -99,7 +99,7 @@
         console.log("current Page : " + this.page.currentPage);
         this.form.start = String(page-1);
         var response = await this.request("/restapi/alarm/list", this.form);
-        this.row.data = response;
+        this.row.data = Array(response.result);
       },
       async searchData(form) {
         if(form.searchWord === null || form.searchWord === "") {
@@ -117,9 +117,9 @@
           else this.row.default = false
 
           var response = await this.request("/restapi/alarm/list", this.form);
-          console.log("alarm Data : " + JSON.stringify(response));
+          console.log("alarm Data : " + JSON.stringify(response.result));
 
-          this.row.data = response;
+          this.row.data = Array(response.result);
 
         } 
       },

@@ -97,7 +97,7 @@
       async handle(page) {
         this.form.start = String(page-1);
         var response = await this.request("/restapi/alarmRecv/list", this.form);
-        this.row.data = response;
+        this.row.data = Array(response.result);
       },
       async view() {
         this.form.start = "0";
@@ -105,13 +105,13 @@
         console.log("seq Data : " + this.form.seq);
 
         var response = await this.request("/restapi/alarmRecv/list", this.form);
-        console.log("alarm Data : " + JSON.stringify(response));
+        console.log("alarm Data : " + JSON.stringify(response.result));
 
-        this.page.totalPage = response.length;
+        this.page.totalPage = response.total_cnt;
         if(this.page.totalPage !==0) this.row.default = true;
         else this.row.default = false;
-        console.log("length : " + response.length);
-        this.row.data = response;
+        console.log("length : " + response.total_cnt);
+        this.row.data = Array(response.result);
       },
       movePage() {
         this.$emit('rename', 'Content');
