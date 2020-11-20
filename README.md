@@ -1,43 +1,55 @@
-# [Vue Light Bootstrap Dashboard](http://vuejs.creative-tim.com/vue-light-bootstrap-dashboard) [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
+# [AirTalk Admin](http://172.23.16.23:8080) [![version][version-badge]][CHANGELOG] [![license][license-badge]][LICENSE]
 
-> Admin dashboard based on light bootstrap dashboard UI template + vue-router
+> airTalk 관리자 페이지 빌드 및 실행 방법 설명 
 
-This project is a vue version of [Light bootstrap dashboard](https://www.creative-tim.com/product/light-bootstrap-dashboard)
-designed for vue js. The dashboard includes Bootstrap 4, vue-router, chartist, google-maps and several other plugins/components.
+이 프로젝트는 vue + spring 으로 개발된 프로젝트입니다.Light Bootstrap Dashboard 기반으로 제작 되었으며, vue-router, vuex, vue-cookie 등 여러 플러그인/구성 요소가 포합됩니다. [Light bootstrap dashboard](https://www.creative-tim.com/product/light-bootstrap-dashboard)
 
-Check the [Live Demo here](http://vuejs.creative-tim.com/vue-light-bootstrap-dashboard).
+## :new: 시작
 
-![](public/Dashboard.PNG)
-## :rocket: Getting started
+1. 프로젝트 다운로드
+2. node.js 설치 확인 (https://nodejs.org/en/) installed
+3. `npm install` 입력 (`package.json` 디펜던시 항목 다운로드)
+4. `npm run dev` 명령으로 실행 확인 
+5. build.sh 수정
+```bash
+#ex) VUE_HOME=/Users/home/vscode/vue-airtalk
+export VUE_HOME={home경로}/{vue project 경로}
+#ex) SPRING_HOME=/Users/home/vscode/airtalk
+export SPRING_HOME={home경로}/{spring project 경로}
 
-Vue Light Bootstrap Dashboard is built on top of Bootstrap 4, Vuejs and Vue-router. To get started do the following steps:
-1. Download the project
-2. Make sure you have node.js (https://nodejs.org/en/) installed
-3. Type `npm install` in the source folder where `package.json` is located
-4. Type `npm run dev` to start the development server
+cd $VUE_HOME/src/components
+sed -e 's/http:\/\/localhost:8080//g' axioMixin.js > axioMixin.js.temp
+mv axioMixin.js.temp    axioMixin.js
 
-The repo uses [vue-cli](https://github.com/vuejs/vue-cli) scaffolding which takes care of the development setup with webpack and all the necessary modern tools to make web development faster and easier.
+# vue compile
+cd $VUE_HOME
+npm run build
 
-## [Documentation](https://demos.creative-tim.com/vue-light-bootstrap-dashboard/documentation/#/buttons)
+# vue compiled file copy for deploy
+cd $VUE_HOME/dist
+cp -R $VUE_HOME/dist/* $SPRING_HOME/src/main/resources/static
+``` 
+6. airtalk 프로젝트(spring)으로 이동 후 `static` 경로 확인
+ - `cd ../airtalk/src/main/resources/static`
+7. gradle 실행
+ - `./gradlew bootrun`
 
-## :cloud: Build Setup
-
-### install dependencies
+## :hash: 설정
+###### vue
+의존성 설치
 `npm install`
-### serve with hot reload at localhost:8000
+라이브 dev 실행 (화면만 확인 가능 API 호출 X)
 `npm run dev`
-### build for production with minification
+빌드
 `npm run build`
-### run unit tests
+단위 테스트
 `npm run unit`
-### run and watch unit tests
-`npm run unit:watch`
 
-## :clipboard: Contribution guide
-* `npm install` or `yarn install`
-* Please don't use jQuery or jQuery based plugins since there are many pure Vue alternatives
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+###### spring
+빌드
+`./gradlew build`
+실행
+`./gradlew bootrun`
 
 [CHANGELOG]: ./CHANGELOG.md
 [LICENSE]: ./LICENSE.md
