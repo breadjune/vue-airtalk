@@ -7,10 +7,13 @@
 ## :new: 시작
 
 1. 프로젝트 다운로드
+ - vue 프로젝트 : `https://github.com/mobilepark/vue-airtalk.git`
+ - spring 프로젝트 : `https://github.com/mobilepark/airtalk.git`
 2. node.js 설치 확인 (https://nodejs.org/en/) installed
 3. `npm install` 입력 (`package.json` 디펜던시 항목 다운로드)
 4. `npm run dev` 명령으로 실행 확인 
-5. build.sh 수정
+5. build.sh 경로 수정
+
 ```bash
 #ex) VUE_HOME=/Users/home/vscode/vue-airtalk
 export VUE_HOME={home경로}/{vue project 경로}
@@ -28,11 +31,11 @@ npm run build
 # vue compiled file copy for deploy
 cd $VUE_HOME/dist
 cp -R $VUE_HOME/dist/* $SPRING_HOME/src/main/resources/static
+
+# Server run
+cd $SPRING_HOME
+./gradlew bootrun
 ``` 
-6. airtalk 프로젝트(spring)으로 이동 후 `static` 경로 확인
- - `cd ../airtalk/src/main/resources/static`
-7. gradle 실행
- - `./gradlew bootrun`
 
 ## :hash: 설정
 #### vue
