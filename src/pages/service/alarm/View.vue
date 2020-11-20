@@ -20,6 +20,7 @@
               >
               </l-table>
             </div>
+            <div :class="{nullData: row.default}" ref="nullData" style="text-align:center">데이터가 없습니다.</div>
             <br>
             <div>
               <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="movePage">목록</b-button>
@@ -47,7 +48,7 @@
 
   const dataStore = "dataStore"
   const tableHeaders = ['no.', '수신자 ID', '전화번호', '수신여부', '수신시간']
-  const tableColumns = ['AlarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
+  const tableColumns = ['alarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
 
   export default {
     components: {
@@ -64,6 +65,7 @@
           totalPage: 0
         },
         row: {
+          default: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: []
@@ -105,6 +107,10 @@
         var response = await this.request("/restapi/alarmRecv/list", this.form);
         console.log("alarm Data : " + JSON.stringify(response));
 
+        this.page.totalPage = response.length;
+        if(this.page.totalPage !==0) this.row.default = true;
+        else this.row.default = false;
+        console.log("length : " + response.length);
         this.row.data = response;
       },
       movePage() {

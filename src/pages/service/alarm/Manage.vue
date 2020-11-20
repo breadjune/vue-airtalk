@@ -114,6 +114,7 @@
           this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
 
           if(this.page.totalPage !== 0) this.row.default = true;
+          else this.row.default = false
 
           var response = await this.request("/restapi/alarm/list", this.form);
           console.log("alarm Data : " + JSON.stringify(response));
