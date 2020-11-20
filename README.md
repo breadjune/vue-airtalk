@@ -36,6 +36,8 @@ cp -R $VUE_HOME/dist/* $SPRING_HOME/src/main/resources/static
 cd $SPRING_HOME
 ./gradlew bootrun
 ``` 
+6. build.sh 실행
+- `./build.sh`
 
 ## :hash: 설정
 #### vue
