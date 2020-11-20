@@ -72,7 +72,7 @@
           // data: [...tableData]
         },
         form: {
-          seq: '',
+          alarm_seq: '',
           start: '0',
           length: ''
         },
@@ -85,7 +85,7 @@
       }
     },
     mounted() {
-      this.form.seq = String(this.$route.params.seq);
+      this.form.alarm_seq = String(this.$route.params.seq);
       this.view();
     },
     computed: {
@@ -97,7 +97,7 @@
       async handle(page) {
         this.form.start = String(page-1);
         var response = await this.request("/restapi/alarmRecv/list", this.form);
-        this.row.data = Array(response.result);
+        this.row.data = response.result;
       },
       async view() {
         this.form.start = "0";
@@ -111,7 +111,7 @@
         if(this.page.totalPage !==0) this.row.default = true;
         else this.row.default = false;
         console.log("length : " + response.total_cnt);
-        this.row.data = Array(response.result);
+        this.row.data = response.result;
       },
       movePage() {
         this.$emit('rename', 'Content');
