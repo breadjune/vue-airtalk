@@ -147,7 +147,7 @@
                     hpNo: this.hpNo,
                    };
                 
-                    axios.post("/restapi/user/update.json", data).then((result) =>  {
+                    axios.post("/restapi/user/modify", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data.result == 'SUCCESS') {
                             this.title= result.data;
@@ -171,7 +171,7 @@
                     };
                 if(confirm("삭제 하시겠습니까?") == true) {
                     console.log(this.id);
-                    axios.post("/restapi/user/delete.json", data)
+                    axios.post("/restapi/user/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
                             this.title= result.data;

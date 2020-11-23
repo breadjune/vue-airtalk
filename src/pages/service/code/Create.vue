@@ -95,7 +95,7 @@
                     codeName: this.codeName,
                    };
                 
-                    axios.post("/restapi/svcCode/create.json", data).then((result) =>  {
+                    axios.post("/restapi/svcCode/create", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data.result == 'SUCCESS') {
                             this.title= result.data.result;

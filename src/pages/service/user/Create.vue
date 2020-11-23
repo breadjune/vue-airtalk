@@ -123,7 +123,7 @@
                     hpNo: this.hpNo,
                    };
                 
-                    axios.post("/restapi/user/create.json", data).then((result) =>  {
+                    axios.post("/restapi/user/signup", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         console.log("responce 결과 : " + result.data);
                         if(result.data.result == 'SUCCESS') {

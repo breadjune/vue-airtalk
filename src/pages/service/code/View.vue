@@ -92,7 +92,7 @@
                     };
                 if(confirm("삭제 하시겠습니까?") == true) {
                     console.log(this.code);
-                    axios.post("/restapi/svcCode/delete.json", data)
+                    axios.post("/restapi/svcCode/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
                             this.title= result.data.result;

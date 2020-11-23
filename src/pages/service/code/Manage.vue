@@ -21,17 +21,24 @@
                      :current-page="currentPage"
                      @rowSelected="onRowSelected"
             >
+          <!-- <template #cell(show_details)>
+             <b-button size="sm" @click="test" class="mr-2">
+           {{ row.detailsShowing ? 'Hide' : 'Show'}} 삭제
+           </b-button>
+          </template> -->
             </l-table>
+            <div v-if="row.noData" style="text-align:center; height:100px">데이터가 없습니다.
+            </div>
               <div>   
-              <b-pagination
+              <b-pagination 
+                v-show="row.default"
                 v-model="page.currentPage"
                 :total-rows="page.totalPage"
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
               ></b-pagination>
-                 <b-button
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                 <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage()"
                   >추가
@@ -49,7 +56,7 @@
   import Search from '../../../layout/Search.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
-  const tableHeaders = [ 'NO','Code', 'Code 이름', '등록일' ]
+  const tableHeaders = [ 'NO','Code', 'Code 이름', '등록일']
   const tableColumns = [ 'seq','code', 'codeName', 'regDate']
   export default {
     components: {
@@ -66,6 +73,8 @@
           totalPage: 0
         },
         row: {
+          default: false,
+          noData: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: [],
@@ -96,52 +105,49 @@
         init: async function () {
         var res = await this.request("/restapi/svcCode/list", this.form);
         console.log("Cdoe data : " + JSON.stringify(res));
-       
         //seq 추가
-        for (var i = 0; i <res.length ; i++ ){
-        res[i]['seq'] = i+1; 
-        console.log("Code data : " + JSON.stringify(res[i]));
-        } 
+        for (var i = 0; i <res.length ; i++ )
+        {res[i]['seq'] = i+1;} 
         this.row.data = res;
       },
-        async handle(page) {
+    //페이지 핸들
+      async handle(page) {
         console.log("page : " + page);
         console.log("current Page : " + this.page.currentPage);
         this.form.start = String(page-1);
         var response = await this.request("/restapi/svcCode/search", this.form);
-         //seq 추가
-        for (var i = 0; i <response.length ; i++ ){
-        response[i]['seq'] = (4*page)-3+i; 
-        console.log("Code data : " + JSON.stringify(response[i]));
-        } 
+        //seq 추가
+        for (var i = 0; i <response.length ; i++ )
+        {response[i]['seq'] = (4*page)-3+i; } 
         this.row.data = response;
-      },
-       async searchData(form) {
+        },
+      async searchData(form) {
         if(form.searchWord === null || form.searchWord === "") {
           alert("검색어를 입력하세요.")
-        } else {
+        }
+        else {
           this.form.keyword = form.searchWord;
           if(form.searchType == "default") {this.form.type = "code";}
           else {this.form.type = form.searchType;}
           this.form.start = "0";
           this.form.length = String(this.page.perPage);
-
-          console.log("search : " + this.form.keyword);
-          console.log("type : " + this.form.type);
-          console.log("start : " + this.form.start);
-          console.log("length : " + this.form.length);
-
           this.page.totalPage = await this.request("/restapi/svcCode/count", this.form);
 
+          //데이터 없음 화면 및 페이징 UI 변경
+          if(this.page.totalPage !== 0) {
+            this.row.default = true;
+            this.row.noData = false
+          }
+          else {
+            this.row.default = false;
+            this.row.noData = true;
+          }
           var response = await this.request("/restapi/svcCode/search", this.form);
           console.log("alarm Data : " + JSON.stringify(response));
          //seq 추가
-         for (var i = 0; i <response.length ; i++ ){
-            response[i]['seq'] = i+1; 
-            console.log("Code data : " + JSON.stringify(response[i]));
-         } 
-          this.row.data = response;
-
+          for (var i = 0; i <response.length ; i++ )
+          { response[i]['seq'] = i+1; } 
+        this.row.data = response;
         } 
       },
       onRowSelected(items) {
