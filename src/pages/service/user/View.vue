@@ -150,13 +150,13 @@
                     axios.post("/restapi/user/modify", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data.result == 'SUCCESS') {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
                         }
                         else {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.fail;
                             this.visible = !this.visible;
                             this.resultS= "F";

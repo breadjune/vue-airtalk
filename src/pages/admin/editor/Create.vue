@@ -62,6 +62,8 @@ export default {
          .then((result) => {
               console.log("result.data : " + result.data);
               this.result = result.data;
+              this.$emit('rename','Content');
+              this.$router.push('/admin/editorMain');
           })
          .catch((e) => {
            console.log("error : " + e);

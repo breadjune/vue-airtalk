@@ -7,7 +7,7 @@
      </div>
       <div >
         <label>제목</label>
-        <b-input id="title" name="title" type="text" v-model="title"></b-input>
+        <b-input id="title" name="title" type="text" v-model="title" :disabled="trueChk ? '' : disabled"></b-input>
       </div>
       <div>
           <label>내용</label>
@@ -139,6 +139,10 @@
               <button class="menubar__button" @click="commands.redo">
                 <img class="icon" src="@/assets/img/icons/redo.svg" alt="" />
               </button>
+
+               <button class="menubar__button" @click="showImagePrompt(commands.image)">
+                <img class="icon" src="@/assets/img/icons/image.svg" alt="" />
+              </button>
             </div>
           </editor-menu-bar>
 
@@ -180,6 +184,7 @@ import {
   Strike,
   Underline,
   History,
+  Image,
 } from "tiptap-extensions";
 import svgSpriteLoader from "src/helpers/svg-sprite-loader";
 
@@ -197,8 +202,11 @@ export default {
   },
   data() {
     return {
-          title:"",
-          adminId:"TEST123",
+      editorSeq: "",
+      title: "",
+      adminId: "",
+      regDate: "",
+      trueChk: true,
       editor: new Editor({
         extensions: [
           new Blockquote(),
@@ -218,29 +226,11 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
+          new Image(),
         ],
         content:
         `
-          <h2>
-            Hi there,
-          </h2>
-          <p>
-            this is a very <em>basic</em> example of tiptap.
-          </p>
-          <pre><code>body { display: none; }</code></pre>
-          <ul>
-            <li>
-              A regular list
-            </li>
-            <li>
-              With regular items
-            </li>
-          </ul>
-          <blockquote>
-            It's amazing 👏
-            <br />
-            – mom
-          </blockquote>
+          
         `,
         
       }),
@@ -248,6 +238,14 @@ export default {
   },
   beforeDestroy() {
     this.editor.destroy();
+  },
+  mounted() {
+            this.editorSeq = this.$route.params.editorSeq;
+            this.title = this.$route.params.title;
+            this.adminId = this.$route.params.adminId;
+            this.regDate= this.$route.params.regDate;
+            this.editor.setContent(this.$route.params.contents);
+            this.trueChk= this.$route.params.readOn;
   },
   computed: {
       html() {
@@ -266,6 +264,14 @@ export default {
 
         }
          },
+   methods: {
+       showImagePrompt(command) {
+         const src = prompt('Enter the url of your image here')
+         if (src !== null) {
+            command({ src })
+          }
+        },
+   },
 };
 </script>
 

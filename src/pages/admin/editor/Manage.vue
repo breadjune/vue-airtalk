@@ -21,6 +21,7 @@
             </l-table>
             
               <div>
+                <br>
                 <b-button
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
@@ -114,7 +115,16 @@
       onRowSelected(items) {
         console.log("items "+JSON.stringify(items));
         this.$emit('rename', 'Content');
-        this.$router.push("/admin/editorInfo");
+        this.$router.push({
+        name: "EditorInfo",
+        params: {
+          editorSeq: items.editorSeq,
+          title: items.title,
+          adminId: items.adminId,
+          regDate: items.regDate,
+          contents: items.contents, 
+        },
+      });
       },
       movePage() {
         this.$emit('rename', 'Content');
