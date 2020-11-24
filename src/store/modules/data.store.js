@@ -3,15 +3,17 @@ console.log("data.store.js");
 const dateStore = {
     namespaced: true,
     state: {
-        List: [],
-        Auth: [],
-        Info: {
-            Name: '',
+        list: [],
+        auth: [],
+        info: {
+            name: '',
+            total: 0,
+            currentPage: 1,
         },
     },
     mutations: {
-        selectList(state, payload) {
-            state.List = payload;
+        insertList(state, payload) {
+            state.list = payload;
         },
         failSelectMemberListBySearchWord( /*state, payload*/ ) {
             console.log('ERROR!');
@@ -22,27 +24,27 @@ const dateStore = {
         failUpdateMember( /*state, payload*/ ) {
             console.log('ERROR!');
         },
-        getInfo(state, payload) {
-            state.Info = payload;
+        insertTotal(state, payload) {
+            state.Info.total = payload;
         },
     },
     getters: {
-        memberList(state, /*getters*/ ) {
-            return state.Info;
+        getList(state, /*getters*/ ) {
+            return state.list;
         },
         adminGroupAuth(state, /*getters*/ ) {
-            return state.Auth;
+            return state.auth;
         },
-        memberInfo(state, /*getters*/ ) {
-            return state.Info;
+        getInfo(state, /*getters*/ ) {
+            return state.info;
         },
     },
     actions: {
-        selectList({ commit, /*state*/ }) {
-            commit('selectList', arguments[1]);
+        insertList({ commit, /*state*/ }) {
+            commit('insertList', arguments[1]);
         },
-        getInfo({ commit, /*state*/ }) {
-            commit('getInfo', arguments[1]);
+        insertTotal({ commit, /*state*/ }) {
+            commit('insertTotal', arguments[1]);
         }
     }
 }

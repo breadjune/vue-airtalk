@@ -18,6 +18,7 @@
                       :columns="row.columns"
                       :data="row.data"
                       @rowSelected="onRowSelected"
+                      @sortList="onSortList"
               >
               </l-table>
             </div>
@@ -75,8 +76,10 @@
           // data: [...tableData]
         },
         form: {
-          keyword: '',
-          type: '',
+          // keyword: '',
+          user_id: '',
+          code: '',
+          reserv_date: '',
           start: '0',
           length: ''
         },
@@ -85,6 +88,10 @@
             {value: "default", text: tableHeaders[1]},
             {value: tableColumns[3], text: tableHeaders[3]}
           ]
+        },
+        sorting: {
+          col: '',
+          type: 'asc'
         }
       }
     },
@@ -105,9 +112,12 @@
         if(form.searchWord === null || form.searchWord === "") {
           alert("검색어를 입력하세요.")
         } else {
-          this.form.keyword = form.searchWord;
-          if(form.searchType == "default") {this.form.type = "userId";}
-          else {this.form.type = form.searchType;}
+          // this.form.keyword = form.searchWord;
+          if(form.searchType == "default") {this.form.user_id = form.searchWord;}
+          else if(form.searchType == "code") {this.form.code = form.searchWord;}
+          else if(form.searchType == "reservDate") {this.form.reserv_date = form.searchWord;}
+          // else {this.form.type = form.searchType;}
+
           this.form.start = "0";
           this.form.length = String(this.page.perPage);
 
@@ -136,6 +146,12 @@
         this.$router.push({
           name:"FileCreate",
         });
+      },
+      onSortList(key, type) {
+        this.sorting.col = key;
+        this.sorting.type = type;
+
+        this.row.data = _.orderBy(this.row.data, key, this.sorting.type);
       }
     }
   }

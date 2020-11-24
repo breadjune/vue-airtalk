@@ -28,7 +28,6 @@
                 v-model="page.currentPage"
                 :total-rows="page.totalPage"
                 :per-page="page.perPage"
-                @change="handle"
                 aria-controls="my-table"
               ></b-pagination>
             </div>
@@ -72,9 +71,7 @@
           // data: [...tableData]
         },
         form: {
-          alarm_seq: '',
-          start: '0',
-          length: ''
+          alarm_seq: ''
         },
         // search: {
         //   options: [
@@ -94,15 +91,13 @@
       }
     },
     methods: {
-      async handle(page) {
-        this.form.start = String(page-1);
-        var response = await this.request("/restapi/alarmRecv/list", this.form);
-        this.row.data = response.result;
-      },
+      // async handle(page) {
+      //   this.form.start = String(page-1);
+      //   var response = await this.request("/restapi/alarmRecv/list", this.form);
+      //   this.row.data = response.result;
+      // },
       async view() {
-        this.form.start = "0";
-        this.form.length = String(this.page.perPage);
-        console.log("seq Data : " + this.form.seq);
+        console.log("seq Data : " + this.form.alarm_seq);
 
         var response = await this.request("/restapi/alarmRecv/list", this.form);
         console.log("alarm Data : " + JSON.stringify(response.result));
