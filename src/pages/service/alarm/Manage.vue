@@ -11,16 +11,28 @@
               <p class="card-category">알림 메시지 목록 조회 게시판</p>
               <hr>
             </template>
-            <search v-bind="search" @btnClick="searchData"></search>
+            <search :options="options" @keywordSearch="searchData"></search>
             <div style="overflow:auto">
-              <l-table class="table-hover table-striped"
+              <!-- <l-table class="table-hover table-striped"
                       :headers="row.headers"
                       :columns="row.columns"
                       :data="row.data"
                       @rowSelected="onRowSelected"
                       @sortList="onSortList"
               >
-              </l-table>
+              </l-table> -->
+              <b-table
+                id="table"
+                striped
+                hover
+                selectable
+                select-mode="single"
+                :fields="fields"
+                :items="row.data"
+                :per-page="page.perPage"
+                :current-page="page.currentPage"
+                @row-selected="onRowSelected"
+              ></b-table>
             </div>
             <div :class="{nullData: row.default}" ref="nullData" style="text-align:center">데이터가 없습니다.</div>
             <br>
@@ -50,8 +62,8 @@
   import axioMixin from "@/components/axioMixin"
 
   const dataStore = "dataStore"
-  const tableHeaders = ['no.', '사용자 ID', '내용', '서비스 코드', '위도', '경도', '건물 명', '발송 예약시간', '등록시간', '수정시간']
-  const tableColumns = ['seq', 'userId', 'message', 'code', 'latitude', 'longitude', 'bdNm', 'reservDate', 'regDate', 'modDate']
+  // const tableHeaders = ['no.', '사용자 ID', '내용', '서비스 코드', '위도', '경도', '건물 명', '발송 예약시간', '등록시간', '수정시간']
+  // const tableColumns = ['seq', 'userId', 'message', 'code', 'latitude', 'longitude', 'bdNm', 'reservDate', 'regDate', 'modDate']
 
   export default {
     components: {
@@ -63,6 +75,18 @@
     mixins: [axioMixin],
     data () {
       return {
+        fields: [
+          { key: "seq", label: "NO.", sortable: true},
+          { key: "userId", label: "사용자 ID", sortable: true},
+          { key: "message", label: "내용", sortable: true},
+          { key: "code", label: "서비스 코드", sortable: true},
+          { key: "latitude", label: "위도", sortable: true},
+          { key: "longitude", label: "경도", sortable: true},
+          { key: "bdNm", label: "건물 명", sortable: true},
+          { key: "reservDate", label: "발송 예약시간", sortable: true},
+          { key: "regDate", label: "등록시간", sortable: true},
+          { key: "modDate", label: "수정시간", sortable: true}
+        ],
         page: {
           currentPage: 1,
           perPage: 7,
@@ -70,29 +94,21 @@
         },
         row: {
           default: false,
-          headers: [...tableHeaders],
-          columns: [...tableColumns],
+          // headers: [...tableHeaders],
+          // columns: [...tableColumns],
           data: []
-          // data: [...tableData]
         },
         form: {
-          // keyword: '',
           user_id: '',
           code: '',
           reserv_date: '',
           start: '0',
           length: ''
         },
-        search: {
-          options: [
-            {value: "default", text: tableHeaders[1]},
-            {value: tableColumns[3], text: tableHeaders[3]}
-          ]
-        },
-        sorting: {
-          col: '',
-          type: 'asc'
-        }
+        options: [
+          { value: "userId", text: "사용자 ID"},
+          { value: "code", text: "서비스 코드"}
+        ]
       }
     },
     computed: {
@@ -113,23 +129,29 @@
           alert("검색어를 입력하세요.")
         } else {
           // this.form.keyword = form.searchWord;
-          if(form.searchType == "default") {this.form.user_id = form.searchWord;}
+          console.log("form : " + JSON.stringify(form));
+          if(form.searchType == "userId") {this.form.user_id = form.searchWord;}
           else if(form.searchType == "code") {this.form.code = form.searchWord;}
-          else if(form.searchType == "reservDate") {this.form.reserv_date = form.searchWord;}
+          // else if(form.searchType == "reservDate") {this.form.reserv_date = form.searchWord;}
           // else {this.form.type = form.searchType;}
 
           this.form.start = "0";
           this.form.length = String(this.page.perPage);
 
-          this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
+          console.log("this form : " + JSON.stringify(this.form));
+
+          // this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
+
+          var response = await this.request("/restapi/alarm/list", this.form);
+          console.log("response Data : " + JSON.stringify(response));
+
+          this.row.data = response.result;
+          this.page.totalPage = response.total_cnt;
+
+          console.log("this Data : " + JSON.stringify(this.row.data));
 
           if(this.page.totalPage !== 0) this.row.default = true;
           else this.row.default = false
-
-          var response = await this.request("/restapi/alarm/list", this.form);
-          console.log("alarm Data : " + JSON.stringify(response.result));
-
-          this.row.data = response.result;
 
         } 
       },
@@ -147,12 +169,6 @@
           name:"FileCreate",
         });
       },
-      onSortList(key, type) {
-        this.sorting.col = key;
-        this.sorting.type = type;
-
-        this.row.data = _.orderBy(this.row.data, key, this.sorting.type);
-      }
     }
   }
 </script>

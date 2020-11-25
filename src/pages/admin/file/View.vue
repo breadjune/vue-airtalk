@@ -37,6 +37,8 @@
             <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="update">수정</b-button>
             <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="remove">삭제</b-button>
           </card>
+          <comment></comment>
+
         </div>
       </div>
     </div>
@@ -44,6 +46,7 @@
 </template>
 <script>
 import axioMixin from "@/components/axioMixin"
+import comment from '../../../layout/Comment.vue'
 export default {
   data() {
     return {
@@ -55,6 +58,9 @@ export default {
         fileName : ''
       }
     }
+  },
+  components: {
+    comment
   },
   mixins: [axioMixin],
   mounted() {

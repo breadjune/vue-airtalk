@@ -9,22 +9,32 @@
     </thead>
     <tbody>
     <tr v-for="(item, index) in data" :key="index" @click="rowSelected(item)">
-      <!-- <ul v-if="hasColumn(index, column)"> -->
         <slot :row="item">
           <td v-for="column in columns" 
               :key="column"
           >{{itemValue(item, column)}}</td>
         </slot>
-      <!-- </ul> -->
     </tr>
     </tbody>
   </table>
+  <!-- <b-table
+    id="table"
+    striped
+    hover
+    selectable
+    select-mode="single"
+    :fields="fields"
+    :items="this.$store.getter['dataStore/getList']"
+    :per-page="perPage"
+    :current-page="currentPage"
+    @row-selected="onRowSelected"
+    ><b-table> -->
 </template>
 <script>
   export default {
     name: 'l-table',
     props: {
-      headers: Array,
+      fields: Array,
       columns: Array,
       data: Array,
     },

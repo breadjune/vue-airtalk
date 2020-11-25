@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <!-- <div class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -38,73 +38,61 @@
 
       </div>
     </div>
-  </div>
+  </div> -->
+  <board
+    :title="title"
+    :subTitle="subTitle"
+    :fields="fields"
+    :data="data"
+    :pageSet="pageSet"
+    :options="options"
+    @onPageSelected="pageSelected"
+    @onKeywordSearched="keywordSearched"
+    @onRowSelected="rowSelected"
+  ></board>
 </template>
 <script>
-  import LTable from '../../../layout/Table.vue'
-  import Card from 'src/components/Cards/Card.vue'
-  import Search from '../../../layout/Search.vue'
-
+  import board from "../../../layout/Board.vue"
   import axioMixin from "@/components/axioMixin"
 
   const dataStore = "dataStore"
   const tableHeaders = ['no', '제목', '작성자', '등록일',]
   const tableColumns = ['boardSeq', 'title', 'writer', 'regDate']
-  const tableData = [
-    {
-      boardSeq: 1,
-      title: "test1",
-      writer: "test1",
-      regDate: "test1",
-    },
-    {
-      boardSeq: 2,
-      title: "test2",
-      writer: "test2",
-      regDate: "test2",
-    },
-    {
-      boardSeq: 3,
-      title: "test3",
-      writer: "test3",
-      regDate: "test3",
-    },
-    {
-      boardSeq: 4,
-      title: "test4",
-      writer: "test4",
-      regDate: "test4",
-    },
-    {
-      boardSeq: 5,
-      title: "test5",
-      writer: "test5",
-      regDate: "test5",
-    },
-  ]
   export default {
     components: {
-      LTable,
-      Card,
-      Search
+      board
     },
-    mixins: [axioMixin],
     data () {
       return {
-        row: {
-          headers: [...tableHeaders],
-          columns: [...tableColumns],
-          data: []
-          // data: [...tableData]
-        },
-        form: {
-          keyword: '',
-          type: ''
-        }
+        title: '데모 게시판',
+        subTitle: '게시판 설명 란 입니다.',
+        fields: [
+          { key: "seq", label: "NO.", sortable: true},
+          { key: "title", label: "제목", sortable: true},
+          { key: "writer", label: "작성자", sortable: true},
+          { key: "regDate", label: "등록일", sortable: true},
+        ],
+        data: [
+          { seq: 1, title: "test1", writer: "test1", regDate: "2020.11.24 13:30"},
+          { seq: 2, title: "test2", writer: "test2", regDate: "2020.11.24 13:30"},
+          { seq: 3, title: "test3", writer: "test3", regDate: "2020.11.24 13:30"},
+          { seq: 4, title: "test4", writer: "test4", regDate: "2020.11.24 13:30"},
+          { seq: 5, title: "test5", writer: "test5", regDate: "2020.11.24 13:30"},
+          { seq: 6, title: "test6", writer: "test6", regDate: "2020.11.24 13:30"},
+          { seq: 7, title: "test7", writer: "test7", regDate: "2020.11.24 13:30"},
+          { seq: 8, title: "test8", writer: "test8", regDate: "2020.11.24 13:30"},
+          { seq: 9, title: "test9", writer: "test9", regDate: "2020.11.24 13:30"}
+        ],
+        pageSet: { currentPage: 1, pageRows: 7, totalRows: 9 },
+        options: [
+          { value: "title", text: "제목"},
+          { value: "writer", text: "작성자"}
+        ]
+      
       }
     },
     mounted() {
-      this.init();
+      // this.init();
     },
     methods: {
       init: async function () {
@@ -113,7 +101,11 @@
         //   data.seq = JSON.stringify(res[i].seq).replace(/\"/g, "");
         this.row.data = res;
       },
-      onRowSelected(items) {
+      pageSelected(page) {
+        console.log("page : " + page);
+        this.pageSet.currentPage = page;
+      },
+      rowSelected(items) {
         console.log("items "+JSON.stringify(items));
         this.$emit('rename', 'Content');
         this.$router.push({
@@ -126,6 +118,10 @@
         this.$router.push({
           name:"FileCreate",
         });
+      },
+      keywordSearched(form) {
+        console.log("search type : " + form.searchType);
+        console.log("search keyword : " + form.searchWord);
       }
     }
   }
