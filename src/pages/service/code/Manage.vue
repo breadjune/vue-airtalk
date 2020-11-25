@@ -27,6 +27,7 @@
            </b-button>
           </template> -->
             </l-table>
+            <br>
             <div v-if="row.noData" style="text-align:center; height:100px">데이터가 없습니다.
             </div>
               <div>   
@@ -143,7 +144,7 @@
             this.row.noData = true;
           }
           var response = await this.request("/restapi/svcCode/search", this.form);
-          console.log("alarm Data : " + JSON.stringify(response));
+          console.log("code Data : " + JSON.stringify(response));
          //seq 추가
           for (var i = 0; i <response.length ; i++ )
           { response[i]['seq'] = i+1; } 

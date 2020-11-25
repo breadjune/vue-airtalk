@@ -53,7 +53,7 @@
 <script>
 import LTable from "@/layout/Table.vue";
 import Card from "src/components/Cards/Card.vue";
-import Search from "../../../layout/Search.vue";
+import Search from "@/layout/Search.vue";
 import axios from "axios";
 import axioMixin from "@/components/axioMixin";
 const tableHeaders = ["NO", "사용자 ID", "이름", "핸드폰 번호", "등록일"];
@@ -69,7 +69,7 @@ export default {
     return {
       page: {
         currentPage: 1,
-        perPage: 2,
+        perPage: 4,
         totalPage: 0,
       },
       row: {
@@ -80,7 +80,7 @@ export default {
         data: [],
       },
       form: {
-        keyword: "null",
+        keyword: "",
         type: "all",
         start: "0",
         length: "",
@@ -105,17 +105,14 @@ export default {
     init: async function () {
       // var res = await this.request("/restapi/user/list", this.form);
       // console.log("User data : " + JSON.stringify(res));
-      this.page.totalPage = await this.request(
-        "/restapi/user/count",
-        this.form
-      );
+      this.page.totalPage = await this.request("/restapi/user/count",this.form);
       console.log("카운트" + this.page.totalPage);
       this.form.length = String(this.page.perPage);
 
       var res = await this.request("/restapi/user/search", this.form);
       //seq 추가 (등차 수열 적용해야함)
       for (var i = 0; i < res.length; i++) {
-        res[i]["seq"] = i + 1;
+        res[i]["seq"] = i+1; 
         console.log("User data : " + JSON.stringify(res[i]));
       }
       this.row.data = res;
@@ -125,6 +122,11 @@ export default {
       console.log("current Page : " + this.page.currentPage);
       this.form.start = String(page - 1);
       var response = await this.request("/restapi/user/search", this.form);
+      //seq 추가 (등차 수열 적용해야함)
+      for (var i = 0; i < response.length; i++) {
+        response[i]["seq"] = (4*page)-3+i;
+        console.log("User data : " + JSON.stringify(response[i]));
+      }
       this.row.data = response;
     },
     async searchData(form) {
@@ -133,17 +135,16 @@ export default {
       } else {
         this.form.keyword = form.searchWord;
         if (form.searchType == "default") {
-          this.form.type = "id";
+          console.log(form.searchType);
+          this.form.type = "userId";
         } else {
           this.form.type = form.searchType;
         }
         this.form.start = "0";
         this.form.length = String(this.page.perPage);
 
-        this.page.totalPage = await this.request(
-          "/restapi/user/count",
-          this.form
-        );
+        this.page.totalPage = await this.request("/restapi/user/count",this.form);
+        
         //데이터 없음 화면 및 페이징 UI 변경
         if (this.page.totalPage !== 0) {
           this.row.default = true;
@@ -152,14 +153,14 @@ export default {
           this.row.default = false;
           this.row.noData = true;
         }
-        var response = await this.request("/restapi/user/search", this.form);
-        console.log("alarm Data : " + JSON.stringify(response));
-        //seq 추가
-        for (var i = 0; i < response.length; i++) {
-          response[i]["seq"] = i + 1;
-          console.log("Code data : " + JSON.stringify(response[i]));
-        }
-        this.row.data = response;
+         var response = await this.request("/restapi/user/search", this.form);
+          console.log("User Data : " + JSON.stringify(response));
+          //seq 추가
+          for (var i = 0; i < response.length; i++) {
+            response[i]["seq"] = i+1;
+            console.log("User data : " + JSON.stringify(response[i]));
+          }
+         this.row.data = response;
       }
     },
     onRowSelected(items) {
