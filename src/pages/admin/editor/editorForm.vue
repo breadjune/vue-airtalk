@@ -299,9 +299,11 @@ export default {
         },
         save(){
             console.log(' save()');
-            this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
-
-
+            this.$emit('childs-event',this.editorSeq, this.title, this.editor.getHTML(),this.adminId ,);
+        },
+        del(){
+            console.log(' del()');
+            this.$emit('childs-eventDel', this.editorSeq);
         },
           cancel(){
             console.log(' cancel()');

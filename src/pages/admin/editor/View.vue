@@ -9,8 +9,17 @@
                             <p class="card-category">여기는 글쓰기 게시판 상세화면 입니다.</p>
                             <hr>
                         </template>
-                        <editorForm @childs-event="parentsMethod"></editorForm>
+                        <editorForm @childs-event="save"
+                                    @childs-eventDel="del"
+                        ></editorForm>
                     </card>
+                     <app-my-modal
+                        :title="title"
+                        :visible.sync="visible">
+                        <div>
+                            {{modalData}}
+                        </div> 
+                    </app-my-modal>      
                 </div>
             </div>
         </div>
@@ -19,25 +28,47 @@
 <script>
 import editorForm from './editorForm.vue'
 import axios from 'axios'
+import Modal from '@/layout/Modal.vue'
 
 export default {
     components : {
-         'editorForm' : editorForm
+         'editorForm' : editorForm,
+          appMyModal: Modal,
     }, 
     data () {
       return {
+          visible: false,
+
+        formData:{ 
+                adminId:'',
+                title: "",
+                html: "",
+          },
             editorSeq: "",
-            title: "",
-            adminId: "",
             regDate: "",
             contents: "",
             createChk: false,
+            modalData: "",
+            title:"글쓰기 게시판",
+            resultS: "",
+            msg:{
+                success: "정상 처리되었습니다.",
+                fail: "실패 하였습니다. ",
+             },
       form: {
              keyword: '',
              type: ''
           }
       }
     },
+    watch: {
+            visible(){  //모달이 닫히면 false 체크
+                if(this.visible==false && this.resultS=="S"){
+                    this.$emit("rename", "Content");
+                    this.$router.push("/admin/editorMain");
+                }
+             }
+        },
     mounted() {
             this.editorSeq = this.$route.params.editorSeq;
             this.title = this.$route.params.title;
@@ -60,36 +91,25 @@ export default {
                 },
             });
         },
-        parentsMethod: function(title,html,adminId) {
-                    this.formData.title=title;
-                    this.formData.html=html;
-                    this.formData.adminId=adminId;
-                    console.log("받은 데이터 : " + this.formData.title);
-                    console.log("받은 데이터2 : " + this.formData.html);
-                    console.log("받은 데이터3 : " + this.formData.adminId);
-                    this.save();
-            },
-
-        save() {
-            console.log("저장 버튼  ");
-                 if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
-                      this.modalData = this.msg.phone;
-                      this.visible = !this.visible;
-                }
-                else if (this.password.length < 10) {
-                   this.modalData = this.msg.passMax;
-                   this.visible = !this.visible;
-                }
-                else if (this.password != this.passwordCheck) {
-                    this.modalData = this.msg.passCheck;
-                    this.visible = !this.visible;
-                }
-                else {
+        save: function(editorSeq,title,html,adminId) {
+                //  if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
+                //       this.modalData = this.msg.phone;
+                //       this.visible = !this.visible;
+                // }
+                // else if (this.password.length < 10) {
+                //    this.modalData = this.msg.passMax;
+                //    this.visible = !this.visible;
+                // }
+                // else if (this.password != this.passwordCheck) {
+                //     this.modalData = this.msg.passCheck;
+                //     this.visible = !this.visible;
+                // }
+                // else {
                    let data ={
-                    id: this.id,
-                    name: this.name,
-                    password: this.password,
-                    hpNo: this.hpNo,
+                        editorSeq: editorSeq,
+                        adminId: adminId,
+                        title: title,
+                        content: html,
                    };
                 
                     axios.post("/restapi/editor/modify", data).then((result) =>  {
@@ -107,24 +127,24 @@ export default {
                             this.resultS= "F";
                         }
                     });
-                }
+                // }
             },
-         del() {
+         del: function(editorSeq) {
                 let data ={
-                editorSeq: this.editorSeq,
+                        editorSeq: editorSeq,
                     };
                 if(confirm("삭제 하시겠습니까?") == true) {
-                    console.log(this.id);
+                    console.log(this.editorSeq);
                     axios.post("/restapi/editor/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
                         }
                         else {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.fail;
                             this.visible = !this.visible;
                             this.resultS= "F";

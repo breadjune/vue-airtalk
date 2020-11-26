@@ -46,41 +46,7 @@
   import axioMixin from "@/components/axioMixin"
   const tableHeaders = ['no', '제목', '작성자', '등록일']
   const tableColumns = ['editorSeq', 'title', 'adminId', 'regDate']
-  // const tableData = [{
-  //   chkbox: '',
-  //   number: 1,
-  //   title: '테스트1',
-  //   writer: '작성자 1',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //  chkbox: '',
-  //   number: 2,
-  //   title: '파일업로드 타이틀 2',
-  //   writer: '작성자 2',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 3,
-  //   title: '파일업로드 타이틀 3',
-  //   writer: '작성자 3',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 4,
-  //   title: '파일업로드 타이틀 4',
-  //   writer: '작성자 4',
-  //   regdate: '2020-11-06 09:10'
-  // },
-  // {
-  //   chkbox: '',
-  //   number: 5,
-  //   title: '파일업로드 타이틀 5',
-  //   writer: '작성자 5',
-  //   regdate: '2020-11-06 09:10'
-  // }]
+
   export default {
     components: {
       LTable,
