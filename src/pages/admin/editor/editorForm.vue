@@ -1,19 +1,19 @@
 <template>
   <div>
-    <b-form id="form">
+    <b-form id="form" @submit.prevent="{commands, cancel}">
      <div>
         <label>작성자</label>
         <b-input id="amdinId" name="adminId" type="text" v-model="adminId" readonly></b-input>
      </div>
       <div >
         <label>제목</label>
-        <b-input id="title" name="title" type="text" v-model="title" :disabled="trueChk ? '' : disabled"></b-input>
+        <b-input id="title" name="title" type="text" v-model="title" :disabled="btnModify ? '' : disabled "></b-input>
       </div>
       <div>
           <label>내용</label>
        <card>
         <div class="editor">
-          <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+          <editor-menu-bar :editor="editor" v-show="btnSave" v-slot="{ commands, isActive }">
             <div class="menubar">
               <button
                 class="menubar__button"
@@ -159,6 +159,12 @@
       </pre>
       </div>
     <hr />
+      <div style="display:inline;">
+                                <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
+                                <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
+                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnModify">삭제</b-button>
+                                <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="cancel()">목록</b-button>
+        </div>
   </div>
 </template>
 
@@ -206,8 +212,11 @@ export default {
       title: "",
       adminId: "",
       regDate: "",
-      trueChk: true,
+      btnModify: true,                // 수정 버튼 표시 or 숨김
+      btnSave: false,                 // 저장, 삭제 버튼 표시 or 숨김
+      createChk: true,
       editor: new Editor({
+        editable: false,
         extensions: [
           new Blockquote(),
           new BulletList(),
@@ -245,7 +254,10 @@ export default {
             this.adminId = this.$route.params.adminId;
             this.regDate= this.$route.params.regDate;
             this.editor.setContent(this.$route.params.contents);
-            this.trueChk= this.$route.params.readOn;
+            this.createChk= this.$route.params.createChk;
+            
+             if(this.createChk==true)
+              this.modify();
   },
   computed: {
       html() {
@@ -254,22 +266,47 @@ export default {
     }
   },
   watch: {
-        title(){
-            console.log(this.title);
-            this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
-            },
-        html(){
-              console.log(this.editor.getHTML());
-              this.$emit('childs-event', this.title,this.editor.getHTML(),this.adminId);
+        // title(){
+        //     console.log(this.title);
+        //     this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
+        //     },
+        // html(){
+        //       console.log(this.editor.getHTML());
+        //       this.$emit('childs-event', this.title,this.editor.getHTML(),this.adminId);
 
+        //   },
+        createChk(){
+              console.log(this.createChk);
+              if(this.createChk==true)
+              this.modify();
         }
+
          },
    methods: {
        showImagePrompt(command) {
-         const src = prompt('Enter the url of your image here')
+         const src = prompt('이미지 URL을 입력하여 주십시오.');
          if (src !== null) {
             command({ src })
-          }
+         }
+
+        },
+          modify() {
+            this.btnModify = false;
+            this.btnSave = true;
+            this.editor.setOptions({
+               editable: true,
+             })
+        },
+        save(){
+            console.log(' save()');
+            this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
+
+
+        },
+          cancel(){
+            console.log(' cancel()');
+            this.$emit('rename','Content');
+            this.$router.push('/admin/editorMain');
         },
    },
 };

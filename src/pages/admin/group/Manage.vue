@@ -9,39 +9,7 @@
               <p class="card-category">여기는 권한을 관리하는 곳입니다.</p>
               <hr>
             </template>
-            <b-form inline>
-              <!-- <b-form-select
-                id="inline-form-custom-select-pref"
-                class="mb-2 mr-sm-2 mb-sm-0"
-                v-model="form.searchType"
-                :options="options"
-              ></b-form-select>
-              <div class="mt-3">
-                <strong>{{ form.searchType }}</strong>
-              </div>
-              <b-form-input
-                class="mb-2 mr-sm-2 mb-sm-0"
-                id="adminName"
-                name="adminName"
-                v-model="form.searchWord"
-              ></b-form-input>
-              <div>
-                <b-button
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
-                  variant="primary"
-                  @click="groupList()"
-                  >목록 출력
-                </b-button>
-              </div> -->
-              <div>
-                <b-button
-                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
-                  variant="primary"
-                  @click="movePage()"
-                  >추가
-                </b-button>
-              </div>
-            </b-form>
+              <search v-bind="search" @btnClick="searchData"></search>
             <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
             
             <b-table
@@ -63,7 +31,16 @@
               :per-page="perPage"
               aria-controls="my-table"
             ></b-pagination>
-
+          <b-form inline>
+              <div>
+                <b-button
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                  variant="primary"
+                  @click="movePage()"
+                  >추가
+                </b-button>
+              </div>
+            </b-form>
             <!-- </div> -->
           </card>
         </div>
@@ -76,7 +53,7 @@
 <script>
 import LTable from "src/components/Table.vue";
 import Card from "src/components/Cards/Card.vue";
-
+import Search from '@/layout/Search.vue'
 import Table from "src/pages/admin/group/GroupTable.vue";
 import axioMixin from "@/components/axioMixin";
 
@@ -86,6 +63,7 @@ export default {
   // name: "GroupManage",
   components: {
     Card,
+    Search,
   },
   mixins: [axioMixin],
   data() {

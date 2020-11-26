@@ -9,13 +9,7 @@
                             <p class="card-category">여기는 글쓰기 게시판 상세화면 입니다.</p>
                             <hr>
                         </template>
-                        <editorForm></editorForm>
-                        <div style="display:inline;">
-                                <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
-                                <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
-                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnModify">삭제</b-button>
-                                <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="cancel()">목록</b-button>
-                        </div>
+                        <editorForm @childs-event="parentsMethod"></editorForm>
                     </card>
                 </div>
             </div>
@@ -37,8 +31,7 @@ export default {
             adminId: "",
             regDate: "",
             contents: "",
-            btnModify: false,                // 수정 버튼 표시 or 숨김
-            btnSave: false,                 // 저장, 삭제 버튼 표시 or 숨김
+            createChk: false,
       form: {
              keyword: '',
              type: ''
@@ -51,7 +44,6 @@ export default {
             this.adminId = this.$route.params.adminId;
             this.regDate= this.$route.params.regDate;
             this.contents= this.$route.params.contents;
-            
             this.init();
         },
     methods :{
@@ -63,21 +55,60 @@ export default {
                 title: this.title,
                 adminId: this.adminId,
                 regDate: this.regDate,
-                contents: this.contents, 
-                readOn: this.btnModify,
+                contents: this.contents,
+                createChk: this.createChk, 
                 },
             });
         },
-        modify() {
-            this.btnModify = false;
-            this.btnSave = true;
+        parentsMethod: function(title,html,adminId) {
+                    this.formData.title=title;
+                    this.formData.html=html;
+                    this.formData.adminId=adminId;
+                    console.log("받은 데이터 : " + this.formData.title);
+                    console.log("받은 데이터2 : " + this.formData.html);
+                    console.log("받은 데이터3 : " + this.formData.adminId);
+                    this.save();
+            },
 
-         },
-
-        save(){
-            console.log('notice_add.vue - add()');
-
-        },
+        save() {
+            console.log("저장 버튼  ");
+                 if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
+                      this.modalData = this.msg.phone;
+                      this.visible = !this.visible;
+                }
+                else if (this.password.length < 10) {
+                   this.modalData = this.msg.passMax;
+                   this.visible = !this.visible;
+                }
+                else if (this.password != this.passwordCheck) {
+                    this.modalData = this.msg.passCheck;
+                    this.visible = !this.visible;
+                }
+                else {
+                   let data ={
+                    id: this.id,
+                    name: this.name,
+                    password: this.password,
+                    hpNo: this.hpNo,
+                   };
+                
+                    axios.post("/restapi/editor/modify", data).then((result) =>  {
+                        // 정상 처리 될 경우 리스트 화면으로 이동
+                        if(result.data.result == 'SUCCESS') {
+                            this.title= result.data.result;
+                            this.modalData= this.msg.success;
+                            this.visible = !this.visible;
+                            this.resultS= "S";
+                        }
+                        else {
+                            this.title= result.data.result;
+                            this.modalData= this.msg.fail;
+                            this.visible = !this.visible;
+                            this.resultS= "F";
+                        }
+                    });
+                }
+            },
          del() {
                 let data ={
                 editorSeq: this.editorSeq,
@@ -104,11 +135,6 @@ export default {
                     return false;
                 }
             },
-        cancel(){
-            console.log('notice_add.vue - cancel()');
-            this.$emit('rename','Content');
-            this.$router.push('/admin/editorMain');
-        },
     }
 }
 </script>

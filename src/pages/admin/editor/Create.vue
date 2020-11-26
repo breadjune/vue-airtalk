@@ -11,8 +11,8 @@
                         </template>
                         <editorForm @childs-event="parentsMethod"></editorForm>
                         <div style="display:inline;">
-                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="add">등록</b-button>
-                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="cancel">취소</b-button>
+                            <!-- <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="add">등록</b-button>
+                            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="cancel">취소</b-button> -->
                         </div>
                     </card>
                 </div>
@@ -30,14 +30,26 @@ export default {
     },
     data() {
       return {
+          createChk: true,
           formData:{ 
-                adminId: "",
+                adminId:'',
                 title: "",
                 html: "",
           },
       }
     },
+     mounted() {
+            this.init();
+        },
     methods :{
+         init(){
+            this.$router.push({
+            name: "EditorCreate",
+            params: {
+                createChk: this.createChk,
+                },
+            });
+        },
         parentsMethod: function(title,html,adminId) {
                     this.formData.title=title;
                     this.formData.html=html;
@@ -45,6 +57,7 @@ export default {
                     console.log("받은 데이터 : " + this.formData.title);
                     console.log("받은 데이터2 : " + this.formData.html);
                     console.log("받은 데이터3 : " + this.formData.adminId);
+                    this.add();
             },
 
         add(){
@@ -58,9 +71,10 @@ export default {
 
             console.log(data);
          axios
-         .post("/rest/editor/create.json", data)
+         .post("/restapi/editor/create.json", data)
          .then((result) => {
               console.log("result.data : " + result.data);
+              alert("result.data : " + result.data);
               this.result = result.data;
               this.$emit('rename','Content');
               this.$router.push('/admin/editorMain');

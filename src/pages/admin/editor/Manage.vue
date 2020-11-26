@@ -91,6 +91,7 @@
     mixins: [axioMixin],
     data () {
       return {
+        createChk: true,
         row: {
           headers: [...tableHeaders],
           columns: [...tableColumns],
@@ -108,7 +109,7 @@
     },
     methods: {
         init: async function () {
-        var res = await this.request("/rest/editor/search.json", this.form);
+        var res = await this.request("/restapi/editor/search.json", this.form);
         console.log("editor data : " + JSON.stringify(res));
         this.row.data = res;
       },
@@ -123,12 +124,19 @@
           adminId: items.adminId,
           regDate: items.regDate,
           contents: items.contents, 
+          createChk: false,
         },
       });
       },
       movePage() {
         this.$emit('rename', 'Content');
-        this.$router.push("/admin/editorCreate");
+         this.$router.push({
+          name: "EditorCreate",
+            params: {
+              adminId: this.$session.get("name"),
+              createChk: this.createChk,
+        },
+      });
       }
     },
   }
