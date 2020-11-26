@@ -30,7 +30,6 @@
                 :fields="fields"
                 :items="row.data"
                 :per-page="page.perPage"
-                :current-page="page.currentPage"
                 @row-selected="onRowSelected"
               ></b-table>
             </div>
@@ -46,8 +45,7 @@
               ></b-pagination>
             </div>
           </card>
-        </div>
-
+        </div>    
       </div>
     </div>
   </div>
@@ -94,16 +92,11 @@
         },
         row: {
           default: false,
-          // headers: [...tableHeaders],
-          // columns: [...tableColumns],
           data: []
         },
         form: {
-          user_id: '',
-          code: '',
-          reserv_date: '',
-          start: '0',
-          length: ''
+          type: '',
+          keyword: '',
         },
         options: [
           { value: "userId", text: "사용자 ID"},
@@ -118,31 +111,27 @@
     },
     methods: {
       async handle(page) {
-        console.log("page : " + page);
-        console.log("current Page : " + this.page.currentPage);
-        this.form.start = String(page-1);
-        var response = await this.request("/restapi/alarm/list", this.form);
+        var formData = this.form;
+        formData.start = String(page-1);
+        formData.length = String(this.page.perPage);
+        var response = await this.request("/restapi/alarm/list", formData);
+        console.log("response Data : " + JSON.stringify(response));
         this.row.data = response.result;
+        console.log("this Data : " + JSON.stringify(this.row.data));
       },
       async searchData(form) {
+        console.log("form : " + JSON.stringify(form));
         if(form.searchWord === null || form.searchWord === "") {
           alert("검색어를 입력하세요.")
         } else {
-          // this.form.keyword = form.searchWord;
-          console.log("form : " + JSON.stringify(form));
-          if(form.searchType == "userId") {this.form.user_id = form.searchWord;}
-          else if(form.searchType == "code") {this.form.code = form.searchWord;}
-          // else if(form.searchType == "reservDate") {this.form.reserv_date = form.searchWord;}
-          // else {this.form.type = form.searchType;}
+ 
+          this.form.type = form.searchType;
+          this.form.keyword = form.searchWord;
+          var formData = this.form;
+          formData.start = "0";
+          formData.length = String(this.page.perPage);
 
-          this.form.start = "0";
-          this.form.length = String(this.page.perPage);
-
-          console.log("this form : " + JSON.stringify(this.form));
-
-          // this.page.totalPage = await this.request("/restapi/alarm/count", this.form);
-
-          var response = await this.request("/restapi/alarm/list", this.form);
+          var response = await this.request("/restapi/alarm/list", formData);
           console.log("response Data : " + JSON.stringify(response));
 
           this.row.data = response.result;

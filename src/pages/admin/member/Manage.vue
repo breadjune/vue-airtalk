@@ -9,14 +9,6 @@
               <p class="card-category">여기는 계정 관리 메뉴 입니다.</p>
               <hr>
             </template>
-            <div>
-              <b-button
-                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
-                variant="primary"
-                @click="create()">
-                추가
-              </b-button>
-            </div>
             <b-table
                 striped
                 hover
@@ -27,6 +19,14 @@
                 :items="items"
                 @row-selected="onRowSelected">
               </b-table>
+              <div>
+                <b-button
+                  class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                  variant="primary"
+                  @click="create()">
+                  추가
+                </b-button>
+            </div>
           </card>
         </div>
       </div>

@@ -110,7 +110,9 @@
         this.$emit('rename', 'Content');
         this.$router.push({
           name:"FileView",
-          params: items
+          params: {
+            row: items
+          }
         })
       },
       movePage() {

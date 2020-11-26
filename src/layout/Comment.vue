@@ -9,6 +9,7 @@
           <p class="uname"><b>{{item.userId}}</b></p>
           <p class="mdate">{{item.modDate}}</p>
           <p class="comment" v-html="item.comment">{{item.comment}}</p>
+          <hr>
         <!-- {{item.userId}} -->
       </slot>
     </div>
@@ -54,7 +55,9 @@
   color: rgb(153,153,153);
 }
 .comment {
-  border: 1px solid;
+  border: 1.5px solid;
+  height: 100px;
   border-radius: 5px;
+  border-color: rgb(153,153,153);
 }
 </style>

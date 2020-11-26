@@ -37,13 +37,13 @@
                 class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="primary"
                 @click="movePage()"
-              >추가
+              >작성
               </b-button>
-              <b-button
+              <!-- <b-button
                 class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="success"
               >다운로드
-              </b-button>
+              </b-button> -->
               <!--pagination(default) -->
               <b-pagination
                 v-model="pageSet.currentPage"

@@ -12,7 +12,7 @@
 
             <b-form>
               <div>
-                <label for="seq">No:</label>
+                <label for="seq">{{name}}</label>
                 <b-input id="seq" name="seq" type="text" v-model="form.seq" readonly></b-input>
               </div>
               <div>
@@ -50,7 +50,7 @@ import comment from '../../../layout/Comment.vue'
 export default {
   data() {
     return {
-      form: []
+      form: {}
     }
   },
   components: {
@@ -58,10 +58,8 @@ export default {
   },
   mixins: [axioMixin],
   mounted() {
-    this.form = this.$route.params.row[0];
-    console.log("this.params : " + JSON.stringify(this.$route.params.row));
-    console.log("this.form : " + JSON.stringify(this.form));
-
+    this.form= this.$route.params;
+    console.log("this form : " + this.form);
   },
   methods : {
     list(){
