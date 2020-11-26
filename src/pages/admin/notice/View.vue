@@ -13,8 +13,8 @@ import LForm from '../../../layout/Form.vue'
 export default {
   data() {
     return {
-      title: '파일 게시판 등록',
-      subTitle: '파일 게시판 등록 데모 페이지 입니다.',
+      title: '공지 게시판 등록',
+      subTitle: '공지 게시판 등록 데모 페이지 입니다.',
       form: []
     }
   },

@@ -24,8 +24,8 @@
     },
     data () {
       return {
-        title: '파일 게시판',
-        subTitle: '파일 게시판 데모 페이지 입니다.',
+        title: '공지 게시판',
+        subTitle: '공지 게시판 데모 페이지 입니다.',
         fields: [
           { key: "seq", label: "NO.", sortable: true},
           { key: "title", label: "제목", sortable: true},

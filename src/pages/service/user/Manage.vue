@@ -35,6 +35,7 @@
               :per-page="page.perPage"
               @change="handle"
               aria-controls="my-table"
+              style="float:right"
             ></b-pagination>
             <div>
               <b-button

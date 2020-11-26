@@ -9,7 +9,7 @@
               <p class="card-category">여기는 권한을 관리하는 곳입니다.</p>
               <hr>
             </template>
-              <search v-bind="search" @btnClick="searchData"></search>
+              <search :options="options" @keywordSearch="init"></search>
             <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
             
             <b-table
@@ -30,6 +30,7 @@
               :total-rows="rows"
               :per-page="perPage"
               aria-controls="my-table"
+              style="float:right"
             ></b-pagination>
           <b-form inline>
               <div>

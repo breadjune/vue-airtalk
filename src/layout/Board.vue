@@ -30,6 +30,7 @@
                 :current-page="pageSet.currentPage"
                 @row-selected="onRowSelected"
             ></b-table>
+            <p v-if="upload">it's work!!</p>
             <br>
             <div>
               <!--button 공통 컴포넌트 구현 필요 -->
@@ -78,6 +79,7 @@
       return {}
     },
     props: {
+        upload: Boolean,
         title: String,
         subTitle: String,
         fields: Array,

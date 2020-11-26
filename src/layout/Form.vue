@@ -5,14 +5,14 @@
         <div class="col-12">
           <card>
             <template slot="header">
-              <h4 class="card-title">파일 게시판</h4>
-              <p class="card-category">파일 게시판 수정</p>
+              <h4 class="card-title">{{title}}</h4>
+              <p class="card-category">{{subTitle}}</p>
               <hr>
             </template>
 
             <b-form>
               <div>
-                <label for="seq">{{name}}</label>
+                <label for="seq">NO.</label>
                 <b-input id="seq" name="seq" type="text" v-model="form.seq" readonly></b-input>
               </div>
               <div>
@@ -27,63 +27,55 @@
                 <label for="contents">내용</label>
                 <b-form-textarea id="contents" name="contents" type="text" v-model="form.contents"></b-form-textarea>
               </div>
-              <div>
+              <div v-if="upload">
                 <label for="phone">파일 다운로드</label>
                 <b-input id="fileName" name="fileName" type="text" v-model="form.fileName"></b-input>
               </div>
             </b-form>
             <br>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="list">목록</b-button>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="update">수정</b-button>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" v-on:click="remove">삭제</b-button>
+            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
+            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="warning" style="float:left" @click="update">수정</b-button>
+            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" style="float:left" @click="down">다운로드</b-button>
+            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
           </card>
           <comment></comment>
-
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import axioMixin from "@/components/axioMixin"
-import comment from '../../../layout/Comment.vue'
+import comment from './Comment.vue'
 export default {
   data() {
     return {
-      form: {}
     }
   },
   components: {
     comment
   },
-  mixins: [axioMixin],
+  props: {
+    title: String,
+    subTitle: String,
+    form: Object,
+    upload: false
+  },
   mounted() {
-    this.form= this.$route.params;
-    console.log("this form : " + this.form);
+    // this.form= this.$route.params[0].row;
+    // console.log("this form : " + JSON.stringify(this.form));
   },
   methods : {
     list(){
-      this.$emit('rename','Content');
-      this.$router.push({
-          name: "File"
-      });
+      this.$emit('onlist', true);
     },
     update(){
-      console.log('Update API invoked.');
-      var res = this.request("/rest/file/update.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
-      this.$emit('rename','Content');
-      this.$router.push({
-          name: "File"
-      });
+      this.$emit('onUpdate',true);
+    },
+    down(){
+      this.$emit('onDown',true);
     },
     remove(){
-      console.log('Delete API invoked.');
-      var res = this.request("/rest/file/delete.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
-      this.$router.push({
-          name: "File"
-      });
+      this.$emit('onRemove',true);
     },
   }
 }
