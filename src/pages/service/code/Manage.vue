@@ -8,7 +8,6 @@
           >
             <template slot="header">
               <h3 class="card-title">서비스 코드 관리</h3>
-              <p class="card-category">이곳은 서비스 코드 관리 페이지 입니다.</p>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
@@ -38,9 +37,9 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="float:right; position:relative; left:-43%;"
+                style="float:right; position:relative; left:-42%;"
               ></b-pagination>
-                 <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                 <b-button class="btn btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage()"
                   >추가
@@ -58,7 +57,7 @@
   import Search from '../../../layout/Search.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
-  const tableHeaders = [ 'NO','Code', 'Code 이름', '등록일']
+  const tableHeaders = [ 'NO.','Code', 'Code 이름', '등록일']
   const tableColumns = [ 'seq','code', 'codeName', 'regDate']
   export default {
     components: {
@@ -173,16 +172,16 @@
 </script>
 <style TYPE="text/css">
 
-body, #my-table {
+/* body, #my-table {
   font-size: 11pt; 
   font-family: "맑은 고딕";
   
   }
+  */
+
   #my-table > thead > tr > th {
-    font-size: 13pt; 
     font-weight: bold;
-    color: black;
-    font-family: "맑은 고딕";
   }
+ 
 
 </style>

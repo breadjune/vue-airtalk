@@ -8,7 +8,6 @@
           >
             <template slot="header">
               <h3 class="card-title">알림 관리</h3>
-              <p class="card-category">알림 메시지 목록 조회 게시판</p>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>

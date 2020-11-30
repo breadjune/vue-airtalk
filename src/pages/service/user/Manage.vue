@@ -9,8 +9,7 @@
           >
             <template slot="header">
               <h3 class="card-title">사용자 관리</h3>
-              <p class="card-category">이곳은 사용자 관리 페이지 입니다.</p>
-              <hr />
+              <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
             <l-table
@@ -24,7 +23,7 @@
               @rowSelected="onRowSelected"
             >
             </l-table>
-
+             <br>
             <div v-if="row.noData" style="text-align: center; height: 100px">
               데이터가 없습니다.
             </div>
@@ -35,11 +34,11 @@
               :per-page="page.perPage"
               @change="handle"
               aria-controls="my-table"
-              style="float:right; position:relative; left:-43%;"
+              style="float:right; position:relative; left:-42%;"
             ></b-pagination>
             <div>
               <b-button
-                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                class=" btn btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="primary"
                 @click="movePage()"
                 >추가
@@ -57,7 +56,7 @@ import Card from "src/components/Cards/Card.vue";
 import Search from "@/layout/Search.vue";
 import axios from "axios";
 import axioMixin from "@/components/axioMixin";
-const tableHeaders = ["NO", "사용자 ID", "이름", "핸드폰 번호", "등록일"];
+const tableHeaders = ["NO.", "사용자 ID", "이름", "핸드폰 번호", "등록일"];
 const tableColumns = ["seq", "userId", "name", "hpNo", "regDate"];
 export default {
   components: {

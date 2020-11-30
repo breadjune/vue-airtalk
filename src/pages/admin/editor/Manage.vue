@@ -8,7 +8,6 @@
           >
             <template slot="header">
               <h3 class="card-title">글쓰기 게시판</h3>
-              <p class="card-category">여기는 글을 쓸수 있는 게시판 입니다.</p>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
@@ -19,6 +18,16 @@
                      @rowSelected="onRowSelected"
             >
             </l-table>
+            <br>
+            <b-pagination 
+                v-show="row.default"
+                v-model="page.currentPage"
+                :total-rows="page.totalPage"
+                :per-page="page.perPage"
+                @change="handle"
+                aria-controls="my-table"
+                style="float:right; position:relative; left:-42%;"
+              ></b-pagination>
             
               <div>
                 <br>
@@ -58,7 +67,14 @@
     data () {
       return {
         createChk: true,
+         page: {
+          currentPage: 1,
+          perPage: 4,
+          totalPage: 0
+        },
         row: {
+          default: false,
+          noData: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: [],

@@ -6,7 +6,6 @@
           <card>
             <template slot="header">
               <h3 class="card-title">권한 관리</h3>
-              <p class="card-category">여기는 권한을 관리하는 곳입니다.</p>
               <hr>
             </template>
               <search :options="options" @keywordSearch="searchData"></search>
@@ -30,7 +29,7 @@
               :total-rows="rows"
               :per-page="perPage"
               aria-controls="my-table"
-              style="float:right"
+              style="float:right; position:relative; left:-42%;"
             ></b-pagination>
           <b-form inline>
               <div>
