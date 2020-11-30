@@ -172,12 +172,11 @@
 </script>
 <style TYPE="text/css">
 
-/* body, #my-table {
-  font-size: 11pt; 
-  font-family: "맑은 고딕";
-  
+#my-table {
+  font-size: 0.8rem;
+  height: calc(1.5em + 0.75rem + 4px);
   }
-  */
+
 
   #my-table > thead > tr > th {
     font-weight: bold;
