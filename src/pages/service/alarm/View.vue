@@ -13,12 +13,20 @@
             </template>
             <!-- <search v-bind="search" @btnClick="searchData"></search> -->
             <div style="overflow:auto">
-              <l-table class="table-hover table-striped"
+              <!-- <l-table class="table-hover table-striped"
                       :headers="row.headers"
                       :columns="row.columns"
                       :data="row.data"
               >
-              </l-table>
+              </l-table> -->
+              <b-table
+                id="receiver_table"
+                striped
+                :fields="fields"
+                :items="row.data"
+                :current-page="page.currentPage"
+                :per-page="page.perPage"
+              ></b-table>
             </div>
             <div :class="{nullData: row.default}" ref="nullData" style="text-align:center">데이터가 없습니다.</div>
             <br>
@@ -46,8 +54,8 @@
   import axioMixin from "@/components/axioMixin"
 
   const dataStore = "dataStore"
-  const tableHeaders = ['no.', '수신자 ID', '전화번호', '수신여부', '수신시간']
-  const tableColumns = ['alarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
+  // const tableHeaders = ['NO.', '수신자 ID', '전화번호', '수신여부', '수신시간']
+  // const tableColumns = ['alarmSeq', 'userId', 'hpNo', 'receiveYn', 'receiveDate']
 
   export default {
     components: {
@@ -58,31 +66,34 @@
     mixins: [axioMixin],
     data () {
       return {
+        fields: [
+          { key: "alarmSeq", label: "NO.", sortable: true},
+          { key: "userId", label: "수신자 ID", sortable: true},
+          { key: "hpNo", label: "전화번호", sortable: true},
+          { key: "receiveYn", label: "수신여부", sortable: true},
+          { key: "receiveDate", label: "수신시간", sortable: true},
+        ],
         page: {
           currentPage: 1,
-          perPage: 7,
+          perPage: 5,
           totalPage: 0
         },
         row: {
           default: false,
-          headers: [...tableHeaders],
-          columns: [...tableColumns],
+          // headers: [...tableHeaders],
+          // columns: [...tableColumns],
           data: []
           // data: [...tableData]
         },
         form: {
-          alarm_seq: ''
-        },
-        // search: {
-        //   options: [
-        //     {value: "default", text: tableHeaders[1]},
-        //     {value: tableColumns[3], text: tableHeaders[3]}
-        //   ]
-        // }
+          alarmSeq: ''
+        }
       }
     },
     mounted() {
-      this.form.alarm_seq = String(this.$route.params.seq);
+      this.form.alarmSeq = String(this.$route.params.row[0].seq);
+      console.log("row Data : " + JSON.stringify(this.$route.params.row[0]));
+      console.log("row seq Data : " + JSON.stringify(this.$route.params.row[0].seq));
       this.view();
     },
     computed: {
@@ -91,16 +102,11 @@
       }
     },
     methods: {
-      // async handle(page) {
-      //   this.form.start = String(page-1);
-      //   var response = await this.request("/restapi/alarmRecv/list", this.form);
-      //   this.row.data = response.result;
-      // },
       async view() {
-        console.log("seq Data : " + this.form.alarm_seq);
+        console.log("this seq Data : " + this.form.alarmSeq);
 
         var response = await this.request("/restapi/alarmRecv/list", this.form);
-        console.log("alarm Data : " + JSON.stringify(response.result));
+        console.log("Data : " + JSON.stringify(response));
 
         this.page.totalPage = response.total_cnt;
         if(this.page.totalPage !==0) this.row.default = true;

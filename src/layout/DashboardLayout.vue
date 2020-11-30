@@ -6,7 +6,7 @@
       <ul>
         <li>
           <a href="#" @click="changeCountents('Overview')" class="nav-link">
-            <em class="nc-icon nc-chart-pie-35"></em>
+            <i class="nc-icon nc-chart-pie-35"></i>
             Dashboard
           </a>
         </li>
@@ -55,10 +55,10 @@
               <i class="nc-icon nc-single-copy-04"></i>
               파일 게시판
             </b-nav-item>
-            <!-- <b-nav-item href="#" @click="changeCountents('Notice')">
+            <b-nav-item href="#" @click="changeCountents('Notice')">
               <i class="nc-icon nc-single-copy-04"></i>
               공지 게시판
-            </b-nav-item> -->
+            </b-nav-item>
           </b-navbar-nav>
         </b-collapse>     
       </ul>
@@ -94,7 +94,7 @@
   // import Menu from '../pages/admin/menu/Menu.vue'
   import editor from '../pages/admin/editor/Manage.vue'
   import file from '../pages/admin/file/Manage.vue'
-  // import Notice from '../pages/admin/notice/notice.vue'
+  import Notice from '../pages/admin/notice/Manage.vue'
   // import NoticeAdd from '../pages/admin/notice/notice_add.vue'
   // import NoticeDetail from '../pages/admin/notice/notice_detail.vue'
   export default {
@@ -110,7 +110,7 @@
       TopNavbar,
       Footer,
       Content,
-      // Notice,
+      Notice,
       MobileMenu,
       Overview,
       Member,

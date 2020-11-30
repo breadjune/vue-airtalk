@@ -30,6 +30,7 @@
                 :current-page="pageSet.currentPage"
                 @row-selected="onRowSelected"
             ></b-table>
+            <p v-if="upload">it's work!!</p>
             <br>
             <div>
               <!--button 공통 컴포넌트 구현 필요 -->
@@ -46,6 +47,7 @@
               </b-button> -->
               <!--pagination(default) -->
               <b-pagination
+                class="page-control"
                 v-model="pageSet.currentPage"
                 :total-rows="pageSet.totalRows"
                 :per-page="pageSet.pageRows"
@@ -78,20 +80,13 @@
       return {}
     },
     props: {
+        upload: Boolean,
         title: String,
         subTitle: String,
         fields: Array,
         data: Array,
         pageSet: Object,
         options: Array
-    },
-    mounted() {
-    //   console.log("title : " + this.title);
-    //   console.log("subTitle : " + this.subTitle);
-    //   console.log("fields : " + JSON.stringify(this.fields));
-    //   console.log("data : " + JSON.stringify(this.data));
-    //   console.log("pageSet : " + JSON.stringify(this.pageSet));
-    //   console.log("options : " + JSON.stringify(this.options));
     },
     methods: {
       onPageSelected(page) {
@@ -103,9 +98,31 @@
       onKeywordSearched(form) {
         if(form.searchWord === null || form.searchWord === "") alert("검색어를 입력하세요.")
         else this.$emit("onKeywordSearched", form);
+      },
+      create() {
+        this.$emit('onCreated', true);
       }
     }
   }
 </script>
 <style>
+#table > tbody > tr > td, .btn {
+  /* font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  color: rgb(100, 100, 100);
+  font-size: 0.8rem;
+}
+#table > thead > tr > th > div {
+  font-weight: bold;
+  text-align: center;
+}
+.custom-select {
+  font-size: 0.8rem;
+  height: calc(1.5em + 0.75rem + 4px);
+}
+.btn {
+  margin-top: 0.05rem;
+}
+#table > thead > tr {
+  text-align: center;
+}
 </style>

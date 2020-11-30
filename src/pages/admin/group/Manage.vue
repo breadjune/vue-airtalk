@@ -30,6 +30,7 @@
               :total-rows="rows"
               :per-page="perPage"
               aria-controls="my-table"
+              style="float:right"
             ></b-pagination>
           <b-form inline>
               <div>
