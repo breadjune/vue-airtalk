@@ -12,7 +12,7 @@
               <p class="card-category">이곳은 사용자 관리 페이지 입니다.</p>
               <hr />
             </template>
-            <search v-bind="search" @btnClick="searchData"></search>
+            <search :options="options" @keywordSearch="searchData"></search>
             <l-table
               class="table-hover table-striped"
               id="my-table"
@@ -35,6 +35,7 @@
               :per-page="page.perPage"
               @change="handle"
               aria-controls="my-table"
+              style="float:right; position:relative; left:-43%;"
             ></b-pagination>
             <div>
               <b-button
@@ -85,12 +86,10 @@ export default {
         start: "0",
         length: "",
       },
-      search: {
         options: [
-          { value: "default", text: tableHeaders[1] },
+          { value: "userId", text: tableHeaders[1] },
           { value: tableColumns[2], text: tableHeaders[2] },
         ],
-      },
     };
   },
   computed: {

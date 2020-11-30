@@ -11,8 +11,8 @@
               <p class="card-category">여기는 글을 쓸수 있는 게시판 입니다.</p>
               <hr>
             </template>
-            <search></search>
-            <l-table class="table-hover table-striped"
+            <search :options="options" @keywordSearch="searchData"></search>
+            <l-table class="table-hover table-striped" id="my-table"
                      :headers="row.headers"
                      :columns="row.columns"
                      :data="row.data"
@@ -67,7 +67,11 @@
       form: {
              keyword: '',
              type: ''
-          }
+          },
+       options: [
+          { value: "title", text: tableHeaders[1] },
+          { value: tableColumns[2], text: tableHeaders[2] },
+        ],
       }
     },
     mounted () {

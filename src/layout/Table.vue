@@ -34,7 +34,7 @@
   export default {
     name: 'l-table',
     props: {
-      fields: Array,
+      headers: Array,
       columns: Array,
       data: Array,
     },

@@ -11,7 +11,7 @@
               <p class="card-category">이곳은 서비스 코드 관리 페이지 입니다.</p>
               <hr>
             </template>
-            <search v-bind="search" @btnClick="searchData"></search>
+            <search :options="options" @keywordSearch="searchData"></search>
             <l-table class="table-hover table-striped"
                      id="my-table"
                      :headers="row.headers"
@@ -38,6 +38,7 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
+                style="float:right; position:relative; left:-43%;"
               ></b-pagination>
                  <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
@@ -86,12 +87,11 @@
           start: '0',
           length: ''
           },
-      search: {
         options: [
-            {value: "default", text: tableHeaders[1]},
+            {value: "code", text: tableHeaders[1]},
             {value: tableColumns[2], text: tableHeaders[2]}
-          ]
-        }
+          ],
+
       }
     },
      computed: {
@@ -171,5 +171,18 @@
     },
   }
 </script>
-<style>
+<style TYPE="text/css">
+
+body, #my-table {
+  font-size: 11pt; 
+  font-family: "맑은 고딕";
+  
+  }
+  #my-table > thead > tr > th {
+    font-size: 13pt; 
+    font-weight: bold;
+    color: black;
+    font-family: "맑은 고딕";
+  }
+
 </style>

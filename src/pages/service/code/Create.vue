@@ -18,10 +18,6 @@
                                 <label for="codeName">Code 이름</label>
                                 <b-input id="codeName" name="codeName" type="text" v-model="codeName" ></b-input>
                             </div>
-                            <div>
-                                <label for="regDate">등록일</label>
-                                <b-input id="regDate" name="regDate" type="text" v-model="regDate" readonly></b-input>
-                            </div>
                             <br>
                             <div class="text-center">
                                 <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()">등록</b-button>
