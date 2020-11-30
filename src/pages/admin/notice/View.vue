@@ -1,5 +1,6 @@
 <template>
   <l-form
+    create
     :title="title"
     :subTitle="subTitle"
     :form="form"
@@ -13,8 +14,8 @@ import LForm from '../../../layout/Form.vue'
 export default {
   data() {
     return {
-      title: '공지 게시판 등록',
-      subTitle: '공지 게시판 등록 데모 페이지 입니다.',
+      title: '공지 게시판 수정',
+      subTitle: '공지 게시판 수정 데모 페이지 입니다.',
       form: []
     }
   },
@@ -24,7 +25,7 @@ export default {
   },
   mixins: [axioMixin],
   mounted() {
-    this.form = this.$route.params.row[0];
+    this.form = this.$route.params.row;
     console.log("this.params : " + JSON.stringify(this.$route.params.row));
     console.log("this.form : " + JSON.stringify(this.form));
   },

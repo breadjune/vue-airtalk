@@ -33,15 +33,15 @@
           { key: "regDate", label: "등록일", sortable: true},
         ],
         data: [
-          { seq: 1, title: "test1", writer: "test1", contents: "test1", regDate: "2020.11.24 13:30"},
-          { seq: 2, title: "test2", writer: "test2", contents: "test2", regDate: "2020.11.24 13:30"},
-          { seq: 3, title: "test3", writer: "test3", contents: "test3", regDate: "2020.11.24 13:30"},
-          { seq: 4, title: "test4", writer: "test4", contents: "test4", regDate: "2020.11.24 13:30"},
-          { seq: 5, title: "test5", writer: "test5", contents: "test5", regDate: "2020.11.24 13:30"},
-          { seq: 6, title: "test6", writer: "test6", contents: "test6", regDate: "2020.11.24 13:30"},
-          { seq: 7, title: "test7", writer: "test7", contents: "test7", regDate: "2020.11.24 13:30"},
-          { seq: 8, title: "test8", writer: "test8", contents: "test8", regDate: "2020.11.24 13:30"},
-          { seq: 9, title: "test9", writer: "test9", contents: "test9", regDate: "2020.11.24 13:30"}
+          { seq: 1, bCode: "0001", title: "test1", writer: "test1", contents: "test1", regDate: "2020.11.24 13:30"},
+          { seq: 2, bCode: "0001", title: "test2", writer: "test2", contents: "test2", regDate: "2020.11.24 13:30"},
+          { seq: 3, bCode: "0001", title: "test3", writer: "test3", contents: "test3", regDate: "2020.11.24 13:30"},
+          { seq: 4, bCode: "0001", title: "test4", writer: "test4", contents: "test4", regDate: "2020.11.24 13:30"},
+          { seq: 5, bCode: "0001", title: "test5", writer: "test5", contents: "test5", regDate: "2020.11.24 13:30"},
+          { seq: 6, bCode: "0001", title: "test6", writer: "test6", contents: "test6", regDate: "2020.11.24 13:30"},
+          { seq: 7, bCode: "0001", title: "test7", writer: "test7", contents: "test7", regDate: "2020.11.24 13:30"},
+          { seq: 8, bCode: "0001", title: "test8", writer: "test8", contents: "test8", regDate: "2020.11.24 13:30"},
+          { seq: 9, bCode: "0001", title: "test9", writer: "test9", contents: "test9", regDate: "2020.11.24 13:30"}
         ],
         pageSet: { currentPage: 1, pageRows: 7, totalRows: 9 },
         options: [

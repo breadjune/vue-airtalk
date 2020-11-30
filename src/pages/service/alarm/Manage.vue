@@ -145,11 +145,13 @@
         } 
       },
       onRowSelected(items) {
-        console.log("items "+JSON.stringify(items));
+        console.log("items : "+JSON.stringify(items));
         this.$emit('rename', 'Content');
         this.$router.push({
           name:"AlarmView",
-          params: items
+          params: {
+            row: items
+          }
         })
       },
       movePage() {

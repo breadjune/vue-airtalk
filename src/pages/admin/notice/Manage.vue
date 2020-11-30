@@ -47,8 +47,7 @@
         options: [
           { value: "title", text: "제목"},
           { value: "writer", text: "작성자"}
-        ]
-      
+        ],
       }
     },
     mounted() {

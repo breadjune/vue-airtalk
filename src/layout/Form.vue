@@ -23,14 +23,18 @@
                 <label for="writer">작성자</label>
                 <b-input id="writer" name="writer" type="text" v-model="form.writer" maxlength="20"></b-input>
               </div>
+              <!-- <div>
+                <label for="contents">내용</label>
+                <editor></editor>
+              </div> -->
               <div>
                 <label for="contents">내용</label>
-                <b-form-textarea id="contents" name="contents" type="text" v-model="form.contents"></b-form-textarea>
+                <b-form-textarea id="contents" name="contents" v-model="form.contents" type="text"></b-form-textarea>
               </div>
-              <div v-if="upload">
+              <!-- <div v-if="upload">
                 <label for="phone">파일 다운로드</label>
-                <b-input id="fileName" name="fileName" type="text" v-model="form.fileName"></b-input>
-              </div>
+                <b-input id="fileName" name="fileName" type="text" ></b-input>
+              </div> -->
             </b-form>
             <br>
             <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
@@ -46,23 +50,28 @@
 </template>
 <script>
 import comment from './Comment.vue'
+import editor from './Editor.vue'
 export default {
   data() {
     return {
+      act: true,
+      dact: false,
     }
   },
   components: {
-    comment
+    comment,
+    editor
   },
   props: {
     title: String,
     subTitle: String,
-    form: Object,
-    upload: false
+    form: Array,
+    upload: Boolean,
+    // create: Boolean
   },
   mounted() {
     // this.form= this.$route.params[0].row;
-    // console.log("this form : " + JSON.stringify(this.form));
+    // console.log("this form? : " + JSON.stringify(this.form));
   },
   methods : {
     list(){
