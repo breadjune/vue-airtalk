@@ -8,7 +8,9 @@
               <h3 class="card-title">계정 관리</h3>
               <hr>
             </template>
+            <search :options="options" @keywordSearch="searchData"></search>
             <b-table
+                id="my-table"
                 striped
                 hover
                 ref="selectableTable"
@@ -35,8 +37,14 @@
 
 <script>
 import axios from "axios"
+import Search from '@/layout/Search.vue'
 
-export default {
+ export default {
+    components: {
+
+      Search,
+    },
+
   data() {
     return {
       fields: [
@@ -45,7 +53,12 @@ export default {
         { key:'adminGroupSeq', label:'사용자그룹' }, 
         { key:'regDate', label:'등록일' }
       ],
-      items: []
+      items: [],
+      options: [
+        {value: "adminId", text: '사용자ID' },
+        {value: 'adminName', text: '사용자명'}
+      ],
+
     }
   },
   

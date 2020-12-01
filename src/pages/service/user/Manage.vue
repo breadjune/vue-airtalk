@@ -23,8 +23,7 @@
               @rowSelected="onRowSelected"
             >
             </l-table>
-             <br>
-            <div v-if="row.noData" style="text-align: center; height: 100px">
+            <div id="noData" v-if="row.noData" style="text-align: center; height: 100px">
               데이터가 없습니다.
             </div>
             <b-pagination
@@ -34,7 +33,7 @@
               :per-page="page.perPage"
               @change="handle"
               aria-controls="my-table"
-              style="float:right; position:relative; left:-42%;"
+              style="position:relative;justify-content:center;margin-bottom:0;"
             ></b-pagination>
             <div>
               <b-button

@@ -26,8 +26,8 @@
            </b-button>
           </template> -->
             </l-table>
-            <br>
-            <div v-if="row.noData" style="text-align:center; height:100px">데이터가 없습니다.
+            <div id="noData" v-if="row.noData" style="text-align:center; height:100px">
+              데이터가 없습니다.
             </div>
               <div>   
               <b-pagination 
@@ -37,7 +37,7 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="float:right; position:relative; left:-42%;"
+                style="position:relative;justify-content:center;margin-bottom:0;margin-top:1rem"
               ></b-pagination>
                  <b-button class="btn btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
@@ -54,7 +54,7 @@
 <script>
   import LTable from '@/layout/Table.vue'
   import Card from 'src/components/Cards/Card.vue'
-  import Search from '../../../layout/Search.vue'
+  import Search from '@/layout/Search.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
   const tableHeaders = [ 'NO.','Code', 'Code 이름', '등록일']
@@ -74,7 +74,7 @@
           totalPage: 0
         },
         row: {
-          default: false,
+          default: true,
           noData: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
@@ -82,7 +82,7 @@
         },
       form: {
           keyword: '',
-          type: '',
+          type: 'all',
           start: '0',
           length: ''
           },
@@ -103,8 +103,12 @@
     },
     methods: {
         init: async function () {
-        var res = await this.request("/restapi/svcCode/list", this.form);
-        console.log("Cdoe data : " + JSON.stringify(res));
+        // var res = await this.request("/restapi/svcCode/list", this.form);
+        // console.log("Cdoe data : " + JSON.stringify(res));
+        this.page.totalPage = await this.request("/restapi/svcCode/count",this.form);
+        console.log("카운트" + this.page.totalPage);
+        this.form.length = String(this.page.perPage);
+        var res = await this.request("/restapi/svcCode/search", this.form);
         //seq 추가
         for (var i = 0; i <res.length ; i++ )
         {res[i]['seq'] = i+1;} 
@@ -172,15 +176,24 @@
 </script>
 <style TYPE="text/css">
 
-#my-table {
+#my-table ,#noData{
   font-size: 0.8rem;
   height: calc(1.5em + 0.75rem + 4px);
+  color: rgb(100, 100, 100);
   }
 
+#text{
+ color: rgb(100, 100, 100);
+ font-size: 0.8rem;
+}
 
-  #my-table > thead > tr > th {
+body{
+  font-size: 0.8rem;
+}
+
+#my-table > thead > tr > th {
     font-weight: bold;
-  }
+ }
  
 
 </style>

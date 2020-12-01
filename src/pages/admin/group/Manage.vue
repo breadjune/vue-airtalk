@@ -29,7 +29,7 @@
               :total-rows="rows"
               :per-page="perPage"
               aria-controls="my-table"
-              style="float:right; position:relative; left:-42%;"
+              style="position:relative;justify-content:center;margin-bottom:0;"
             ></b-pagination>
           <b-form inline>
               <div>

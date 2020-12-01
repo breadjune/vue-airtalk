@@ -2,7 +2,8 @@
   <div class="wrapper">
     <a href=# @click="movePage('Login')" ref="login" style="display:none"></a>
     <side-bar>
-      <mobile-menu slot="content"></mobile-menu>
+      <!-- 모바일 메뉴 우선 보이지 않게 숨김 -->
+      <!-- <mobile-menu slot="content"></mobile-menu> -->
       <ul>
         <li>
           <a href="#" @click="changeCountents('Overview')" class="nav-link">

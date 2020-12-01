@@ -6,7 +6,7 @@
                 <card>
                   <template slot="header">
                     <h4 class="card-title">사용자 관리</h4>
-                      <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호 입력 하십시오.</p>
+                      <p class="card-category">*비밀번호 변경을 원하지 않을 경우 기존 비밀번호에 입력 하십시오.</p>
                         <hr>
                         </template>
                         <b-form>
@@ -15,20 +15,26 @@
                                 <b-input id="amdinId" name="adminId" type="text" v-model="id" readonly></b-input>
                             </div>
                             <div>
-                                <label for="adminName">사용자명</label>
-                                <b-input id="adminName" name="adminName" type="text" v-model="name" :disabled="pwPhoneEmail ? '' : disabled"></b-input>
+                                <label for="adminName">* 사용자명</label>
+                                <b-input id="adminName" name="adminName" type="text" v-model="name" :disabled="PhoneName ? '' : disabled"></b-input>
                             </div>
-                            <div>
+                             <div v-show="btnPassChk" id="text">
+                                <label for="password"> * 기존 비밀번호</label>
+                                <b-input id="bunpassword" name="bunpassword" type="password" v-model="bunpassword" maxlength="20"></b-input>
+                                <b-button v-show="btnPassChk" id="btnPassChk" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="passCheck()" style="margin-top:10px">비밀번호 변경</b-button>
+                                * 비밀번호를 변경하려면 버튼을 눌러주세요.
+                            </div>
+                            <div v-show="btnPass">
                                 <label for="password">비밀번호</label>
-                                <b-input id="password" name="password" type="password" v-model="password" :disabled="pwPhoneEmail ? '' : disabled" maxlength="20"></b-input>
+                                <b-input id="password" name="password" type="password" v-model="password" maxlength="20"></b-input>
                             </div>
-                            <div v-show="inputAdminGroupSelect">
+                            <div v-show="btnPass">
                                 <label for="passwordCheck">비밀번호 확인</label>
-                                <b-input id="passwordCheck" name="passwordCheck" type="password" v-model="passwordCheck" :disabled="pwPhoneEmail ? '' : disabled" maxlength="20"></b-input>
+                                <b-input id="passwordCheck" name="passwordCheck" type="password" v-model="passwordCheck"  maxlength="20"></b-input>
                             </div>
                             <div>
-                                <label for="phone">H.P</label>
-                                <b-input id="phone" name="phone" type="text" v-model="hpNo" :disabled="pwPhoneEmail ? '' : disabled" maxlength="11"></b-input>
+                                <label for="phone">* H.P</label>
+                                <b-input id="phone" name="phone" type="text" v-model="hpNo" :disabled="PhoneName ? '' : disabled" maxlength="11"></b-input>
                             </div>
                             <div>
                                 <label for="regDate">등록일</label>
@@ -72,12 +78,15 @@
                 id: "",
                 name: "",
                 password: "",
+                bunpassword: "",
                 hpNo: "",
                 regDate: "",
                 passwordCheck: "",
+                btnPass: false,                 //패스워드 바꾸는 폼 표시 숨김
+                btnPassChk:false,               //패스워드 바꾸는 버튼 표시 숨김
                 btnModify: true,                // 수정 버튼 표시 or 숨김
                 btnSave: false,                 // 저장, 삭제 버튼 표시 or 숨김
-                pwPhoneEmail: true,             // phone, e-mail disable, undisable
+                PhoneName: true,             // phone, e-mail disable, undisable
                 inputAdminGroup: true,          // adminGroup disable, undisable
                 inputAdminGroupSelect: false,   // adminGroupSelect disable, undisable
                 modalData: "",
@@ -122,21 +131,33 @@
                 this.btnModify = false;
                 this.btnSave = true;
                 this.pwPhoneEmail = false;
-                this.inputAdminGroup = false;
-                this.inputAdminGroupSelect = true;
+                this.btnPassChk=true;
+                this.PhoneName=false;
+            },
+            passCheck(){
+                this.btnPass=!this.btnPass;
+                this.inputAdminGroupSelect=!this.inputAdminGroupSelect;
             },
 
             save() {
-                 if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
+
+                if(this.btnPass==true){ //패스워드 바꾸는 버튼 누르면
+                     if (this.password.length < 10) {
+                        this.modalData = this.msg.passMax;
+                        this.visible = !this.visible;
+                        }
+                     else if (this.password != this.passwordCheck) {
+                        this.modalData = this.msg.passCheck;
+                        this.visible = !this.visible;
+                        }
+                }
+                
+                if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
                       this.modalData = this.msg.phone;
                       this.visible = !this.visible;
                 }
-                else if (this.password.length < 10) {
-                   this.modalData = this.msg.passMax;
-                   this.visible = !this.visible;
-                }
-                else if (this.password != this.passwordCheck) {
-                    this.modalData = this.msg.passCheck;
+                else if(this.bunpassword.length < 10){
+                    this.modalData = this.msg.passMax;
                     this.visible = !this.visible;
                 }
                 else {
@@ -144,8 +165,11 @@
                     id: this.id,
                     name: this.name,
                     password: this.password,
+                    bunpassword: this.bunpassword,
                     hpNo: this.hpNo,
                    };
+
+                   console.log("원래 비밀 번호 : " + this.bunpassword);
                 
                     axios.post("/restapi/user/modify", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
@@ -154,6 +178,12 @@
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
+                        }
+                        else if(result.data.result == 'PASSFAIL'){
+                            this.title= "기존 비밀번호 실패";
+                            this.modalData= "기존 비밀번호와 일지하지 않습니다. 확인 바랍니다.";
+                            this.visible = !this.visible;
+                            this.resultS= "F";     
                         }
                         else {
                             this.title= result.data.result;

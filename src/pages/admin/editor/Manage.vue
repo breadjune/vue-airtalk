@@ -26,7 +26,7 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="float:right; position:relative; left:-42%;"
+                style="position:relative;justify-content:center; margin-bottom:0; margin-top:1rem;"
               ></b-pagination>
             
               <div>
@@ -73,7 +73,7 @@
           totalPage: 0
         },
         row: {
-          default: false,
+          default: true,
           noData: false,
           headers: [...tableHeaders],
           columns: [...tableColumns],
