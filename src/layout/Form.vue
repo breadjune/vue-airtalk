@@ -6,7 +6,6 @@
           <card>
             <template slot="header">
               <h4 class="card-title">{{title}}</h4>
-              <p class="card-category">{{subTitle}}</p>
               <hr>
             </template>
 
@@ -17,20 +16,21 @@
               </div>
               <div>
                 <label for="title">제목</label>
-                <b-input id="title" name="title" type="text" v-model="form.title" maxlength="100"></b-input>
+                <b-input id="title" name="title" type="text" v-html="form.title" v-model="form.title" maxlength="100"><span v-html="rawHtml"></span></b-input>
               </div>
               <div>
                 <label for="writer">작성자</label>
                 <b-input id="writer" name="writer" type="text" v-model="form.writer" maxlength="20"></b-input>
               </div>
-              <!-- <div>
+              <div v-if="create">
                 <label for="contents">내용</label>
                 <editor></editor>
-              </div> -->
-              <div>
+              </div>
+              <div v-else>
                 <label for="contents">내용</label>
                 <b-form-textarea id="contents" name="contents" v-model="form.contents" type="text"></b-form-textarea>
               </div>
+              
               <!-- <div v-if="upload">
                 <label for="phone">파일 다운로드</label>
                 <b-input id="fileName" name="fileName" type="text" ></b-input>
@@ -49,25 +49,21 @@
   </div>
 </template>
 <script>
+import card from 'src/components/Cards/Card.vue'
 import comment from './Comment.vue'
 import editor from './Editor.vue'
 export default {
-  data() {
-    return {
-      act: true,
-      dact: false,
-    }
-  },
   components: {
+    card,
     comment,
     editor
   },
   props: {
     title: String,
     subTitle: String,
-    form: Array,
-    upload: Boolean,
-    // create: Boolean
+    create: Boolean,
+    form: Object,
+    upload: Boolean
   },
   mounted() {
     // this.form= this.$route.params[0].row;

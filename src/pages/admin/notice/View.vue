@@ -1,8 +1,6 @@
 <template>
   <l-form
-    create
     :title="title"
-    :subTitle="subTitle"
     :form="form"
   >
   </l-form>
@@ -15,8 +13,8 @@ export default {
   data() {
     return {
       title: '공지 게시판 수정',
-      subTitle: '공지 게시판 수정 데모 페이지 입니다.',
-      form: []
+      form: {}
+      
     }
   },
   components: {
@@ -25,7 +23,7 @@ export default {
   },
   mixins: [axioMixin],
   mounted() {
-    this.form = this.$route.params.row;
+    this.form = this.$route.params.row[0];
     console.log("this.params : " + JSON.stringify(this.$route.params.row));
     console.log("this.form : " + JSON.stringify(this.form));
   },
@@ -33,7 +31,7 @@ export default {
     list(){
       this.$emit('rename','Content');
       this.$router.push({
-          name: "File"
+          name: "Notice"
       });
     },
     update(){

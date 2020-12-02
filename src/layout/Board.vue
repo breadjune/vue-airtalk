@@ -29,15 +29,18 @@
                 :per-page="pageSet.pageRows"
                 :current-page="pageSet.currentPage"
                 @row-selected="onRowSelected"
-            ></b-table>
-            <p v-if="upload">it's work!!</p>
+            >
+              <template #cell(title)="data">
+                <span v-html="data.value"></span>
+              </template>
+            </b-table>  
             <br>
-            <div>
+            <div class="footer-style">
               <!--button 공통 컴포넌트 구현 필요 -->
               <b-button
-                class="btn-fill mb-2 mr-sm-2 mb-sm-1"
+                class="btn-style btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="primary"
-                @click="movePage()"
+                @click="create"
               >작성
               </b-button>
               <!-- <b-button
@@ -47,13 +50,12 @@
               </b-button> -->
               <!--pagination(default) -->
               <b-pagination
-                class="page-control"
+                class="page-style"
                 v-model="pageSet.currentPage"
                 :total-rows="pageSet.totalRows"
                 :per-page="pageSet.pageRows"
                 @change="onPageSelected"
                 aria-controls="my-table"
-                style="float:right"
               ></b-pagination>
             </div>
           </card>
@@ -80,7 +82,6 @@
       return {}
     },
     props: {
-        upload: Boolean,
         title: String,
         subTitle: String,
         fields: Array,
@@ -107,22 +108,22 @@
 </script>
 <style>
 #table > tbody > tr > td, .btn {
-  /* font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   color: rgb(100, 100, 100);
   font-size: 0.8rem;
 }
 #table > thead > tr > th > div {
   font-weight: bold;
-  text-align: center;
 }
 .custom-select {
   font-size: 0.8rem;
   height: calc(1.5em + 0.75rem + 4px);
 }
-.btn {
-  margin-top: 0.05rem;
+.page-style {
+  position: relative;
+  justify-content: center;
+  /* right: 61px; */
 }
-#table > thead > tr {
-  text-align: center;
+.btn-style {
+  float: left;
 }
 </style>

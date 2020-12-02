@@ -9,6 +9,7 @@
     @onPageSelected="pageSelected"
     @onKeywordSearched="keywordSearched"
     @onRowSelected="rowSelected"
+    @onCreated="created"
   ></board>
 </template>
 <script>
@@ -33,7 +34,7 @@
           { key: "regDate", label: "등록일", sortable: true},
         ],
         data: [
-          { seq: 1, title: "test1", writer: "test1", contents: "test1", regDate: "2020.11.24 13:30"},
+          { seq: 1, title: "test1<i class='nc-icon nc-album-2'><i>", writer: "test1", contents: "<b><p>안녕하세요</p></b><p>테스트입니다.<p/>", regDate: "2020.11.24 13:30"},
           { seq: 2, title: "test2", writer: "test2", contents: "test2", regDate: "2020.11.24 13:30"},
           { seq: 3, title: "test3", writer: "test3", contents: "test3", regDate: "2020.11.24 13:30"},
           { seq: 4, title: "test4", writer: "test4", contents: "test4", regDate: "2020.11.24 13:30"},
@@ -68,16 +69,17 @@
         console.log("items "+JSON.stringify(items));
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"FileView",
+          name:"NoticeView",
           params: {
             row: items
           }
         })
       },
-      movePage() {
+      created() {
+        console.log("created invoke!")
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"FileCreate",
+          name:"NoticeCreate",
         });
       },
       keywordSearched(form) {
