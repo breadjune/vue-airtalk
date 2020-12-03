@@ -3,6 +3,8 @@
     create
     :title="title"
     :form="form"
+    @onList="list"
+    @onSave="save"
   >
   </l-form>
 </template>
@@ -28,13 +30,14 @@ export default {
     console.log("this.form : " + JSON.stringify(this.form));
   },
   methods : {
-    list(){
+    list(flag){
+      console.log("list invoked!");
       this.$emit('rename','Content');
       this.$router.push({
           name: "Notice"
       });
     },
-    update(){
+    save(){
       console.log('Update API invoked.');
       var res = this.request("/rest/file/update.json", this.form);
       console.log('RESULT : ' + JSON.stringify(res));
@@ -42,15 +45,7 @@ export default {
       this.$router.push({
           name: "File"
       });
-    },
-    remove(){
-      console.log('Delete API invoked.');
-      var res = this.request("/rest/file/delete.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
-      this.$router.push({
-          name: "File"
-      });
-    },
+    }
   }
 }
 </script>

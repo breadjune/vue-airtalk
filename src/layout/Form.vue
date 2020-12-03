@@ -8,9 +8,8 @@
               <h4 class="card-title">{{title}}</h4>
               <hr>
             </template>
-
             <b-form>
-              <div>
+              <div v-if="!create">
                 <label for="seq">NO.</label>
                 <b-input id="seq" name="seq" type="text" v-model="form.seq" readonly></b-input>
               </div>
@@ -30,19 +29,24 @@
                 <label for="contents">내용</label>
                 <b-form-textarea id="contents" name="contents" v-model="form.contents" type="text"></b-form-textarea>
               </div>
-              
-              <!-- <div v-if="upload">
-                <label for="phone">파일 다운로드</label>
-                <b-input id="fileName" name="fileName" type="text" ></b-input>
-              </div> -->
+              <div>
+                <b-button v-if="create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
+                <div class="file-box" v-for="(file, index) in files" :key="index">{{files ? files[index].name : ''}}</div>
+              </div>
+              <div style="display:none">
+                <label for="file" ref="upload">파일 첨부</label>
+                <b-form-file id="file" multiple name="file" type="file" v-model="files"></b-form-file>
+              </div>
             </b-form>
-            <br>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="warning" style="float:left" @click="update">수정</b-button>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" style="float:left" @click="down">다운로드</b-button>
-            <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
           </card>
-          <comment></comment>
+          <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" @click="list">목록</b-button>
+          <b-button v-if="create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" @click="update">저장</b-button>
+          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">수정</b-button>
+          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="down">다운로드</b-button>
+          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
+          <card v-if="!create">
+            <comment></comment>
+          </card>
         </div>
       </div>
     </div>
@@ -58,12 +62,16 @@ export default {
     comment,
     editor
   },
+  data() {
+    return {
+      files: null
+    }
+  },
   props: {
     title: String,
     subTitle: String,
     create: Boolean,
-    form: Object,
-    upload: Boolean
+    form: Object
   },
   mounted() {
     // this.form= this.$route.params[0].row;
@@ -71,9 +79,16 @@ export default {
   },
   methods : {
     list(){
-      this.$emit('onlist', true);
+      console.log("onList invoke");
+      this.$emit('onList', true);
     },
     update(){
+
+      this.$emit('onUpdate',true);
+    },
+    save(){
+      var formData = Object();
+      formData.files = this.files
       this.$emit('onUpdate',true);
     },
     down(){
@@ -82,6 +97,21 @@ export default {
     remove(){
       this.$emit('onRemove',true);
     },
+    upload(){
+      const elem = this.$refs.upload
+      elem.click()
+    }
   }
 }
 </script>
+<style>
+.file-box {
+  height: 45px;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+  color: rgb(123, 123, 123);
+  padding: 10px 0 10px 10px;
+  margin: 10px 0 10px 0;
+  border-radius: 5px;
+}
+</style>

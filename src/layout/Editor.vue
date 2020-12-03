@@ -139,12 +139,12 @@
       <editor-content class="editor__content" :editor="editor" />
     </div>
   </card>
-  <div class="col">
+  <!-- <div class="col">
         <h2>HTML</h2>
         <pre>
         {{ html }}
       </pre>
-      </div>
+      </div> -->
   </div>
 </template>
 

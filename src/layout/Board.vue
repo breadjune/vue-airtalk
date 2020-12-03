@@ -27,7 +27,6 @@
                 :fields="fields"
                 :items="data"
                 :per-page="pageSet.pageRows"
-                :current-page="pageSet.currentPage"
                 @row-selected="onRowSelected"
             >
               <template #cell(title)="data">
@@ -97,8 +96,7 @@
         this.$emit('onRowSelected', items);
       },
       onKeywordSearched(form) {
-        if(form.searchWord === null || form.searchWord === "") alert("검색어를 입력하세요.")
-        else this.$emit("onKeywordSearched", form);
+        this.$emit("onKeywordSearched", form);
       },
       create() {
         this.$emit('onCreated', true);
@@ -122,8 +120,5 @@
   position: relative;
   justify-content: center;
   /* right: 61px; */
-}
-.btn-style {
-  float: left;
 }
 </style>
