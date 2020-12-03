@@ -9,6 +9,7 @@
     @onPageSelected="pageSelected"
     @onKeywordSearched="keywordSearched"
     @onRowSelected="rowSelected"
+    @onCreated="created"
   ></board>
 </template>
 <script>
@@ -19,6 +20,7 @@
   const tableHeaders = ['no', '제목', '작성자', '등록일',]
   const tableColumns = ['boardSeq', 'title', 'writer', 'regDate']
   export default {
+    mixins: [axioMixin],
     components: {
       board
     },
@@ -32,57 +34,83 @@
           { key: "writer", label: "작성자", sortable: true},
           { key: "regDate", label: "등록일", sortable: true},
         ],
-        data: [
-          { seq: 1, title: "test1", writer: "test1", contents: "test1", regDate: "2020.11.24 13:30"},
-          { seq: 2, title: "test2", writer: "test2", contents: "test2", regDate: "2020.11.24 13:30"},
-          { seq: 3, title: "test3", writer: "test3", contents: "test3", regDate: "2020.11.24 13:30"},
-          { seq: 4, title: "test4", writer: "test4", contents: "test4", regDate: "2020.11.24 13:30"},
-          { seq: 5, title: "test5", writer: "test5", contents: "test5", regDate: "2020.11.24 13:30"},
-          { seq: 6, title: "test6", writer: "test6", contents: "test6", regDate: "2020.11.24 13:30"},
-          { seq: 7, title: "test7", writer: "test7", contents: "test7", regDate: "2020.11.24 13:30"},
-          { seq: 8, title: "test8", writer: "test8", contents: "test8", regDate: "2020.11.24 13:30"},
-          { seq: 9, title: "test9", writer: "test9", contents: "test9", regDate: "2020.11.24 13:30"}
-        ],
+        data: [],
         pageSet: { currentPage: 1, pageRows: 7, totalRows: 9 },
         options: [
           { value: "title", text: "제목"},
           { value: "writer", text: "작성자"}
         ],
+        form: {
+          type: "",
+          keyword: ""
+        }
       }
     },
     mounted() {
-      // this.init();
+      this.init();
     },
     methods: {
       init: async function () {
-        var res = await this.request("/rest/file/search.json", this.form);
-        console.log("file board data : " + JSON.stringify(res));
-        //   data.seq = JSON.stringify(res[i].seq).replace(/\"/g, "");
-        this.row.data = res;
+        var formData = Object();
+        formData.start = "0";
+        formData.length = String(this.pageSet.pageRows);
+        formData.bcode = "0001";
+        var response = await this.request("/restapi/board/list", formData);
+        console.log("board data : " + JSON.stringify(response));
+        this.data = response.result;
+        this.pageSet.totalRows = response.total_cnt;
       },
-      pageSelected(page) {
-        console.log("page : " + page);
-        this.pageSet.currentPage = page;
+      async pageSelected(page) {
+        if(this.form.type !== "") {
+          var formData = this.form;
+          formData.start = page-1;
+          formData.length = String(this.pageSet.pageRows);
+          formData.bcode = "0001";
+          var response = await this.request("/restapi/board/search", formData);
+          console.log("response data : " + JSON.stringify(formData));
+          this.data = response.result;
+          // console.log("page : " + page);
+          // this.pageSet.currentPage = page;
+        } else {
+          var formData = Object();
+          formData.start = page-1;
+          formData.length = String(this.pageSet.pageRows);
+          formData.bcode = "0001";
+          var response = await this.request("/restapi/board/list", formData);
+          console.log("board data : " + JSON.stringify(response));
+          this.data = response.result;
+        }
       },
       rowSelected(items) {
         console.log("items "+JSON.stringify(items));
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"FileView",
+          name:"NoticeView",
           params: {
             row: items
           }
         })
       },
-      movePage() {
+      created() {
+        console.log("created invoke!")
         this.$emit('rename', 'Content');
         this.$router.push({
-          name:"FileCreate",
+          name:"NoticeCreate",
         });
       },
-      keywordSearched(form) {
+      async keywordSearched(form) {
         console.log("search type : " + form.searchType);
         console.log("search keyword : " + form.searchWord);
+        this.form.type = form.searchType;
+        this.form.keyword = form.searchWord;
+        var formData = this.form;
+        formData.start = "0";
+        formData.length = String(this.pageSet.pageRows);
+        formData.bcode = "0001";
+        var response = await this.request("/restapi/board/search", formData);
+        console.log("response data : " + JSON.stringify(formData));
+        this.data = response.result;
+        this.pageSet.totalRows = response.total_cnt;
       }
     }
   }
