@@ -20,6 +20,13 @@
                 :items="items"
                 @row-selected="onRowSelected">
               </b-table>
+              <b-pagination
+              v-model="currentPage"
+              :total-rows="rows"
+              :per-page="perPage"
+              aria-controls="my-table"
+              style="position:relative;justify-content:center;margin-bottom:0;"
+            ></b-pagination>
               <div>
                 <b-button
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
@@ -41,12 +48,14 @@ import Search from '@/layout/Search.vue'
 
  export default {
     components: {
-
       Search,
     },
 
   data() {
     return {
+      perPage: 4,
+      currentPage: 1,
+
       fields: [
         { key:'adminId', label:'사용자ID' }, 
         { key:'adminName', label:'사용자명' }, 

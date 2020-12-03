@@ -68,7 +68,7 @@ export default {
   mixins: [axioMixin],
   data() {
     return {
-      perPage: 3,
+      perPage: 4,
       currentPage: 1,
       fields: [
         { key: "authGroupSeq", label: "관리자 ID", sortable: true,},

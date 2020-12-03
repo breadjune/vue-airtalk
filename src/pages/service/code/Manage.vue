@@ -29,7 +29,6 @@
             <div id="noData" v-if="row.noData" style="text-align:center; height:100px">
               데이터가 없습니다.
             </div>
-              <div>   
               <b-pagination 
                 v-show="row.default"
                 v-model="page.currentPage"
@@ -37,9 +36,10 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="position:relative;justify-content:center;margin-bottom:0;margin-top:1rem"
+                style="position:relative;justify-content:center;margin-bottom:0;"
               ></b-pagination>
-                 <b-button class="btn btn-fill mb-2 mr-sm-2 mb-sm-1"
+                  <div>  
+                  <b-button class="btn btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage()"
                   >추가

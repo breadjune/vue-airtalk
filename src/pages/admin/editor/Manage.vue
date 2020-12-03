@@ -18,30 +18,25 @@
                      @rowSelected="onRowSelected"
             >
             </l-table>
-            <br>
-            <b-pagination 
+                <b-pagination 
                 v-show="row.default"
                 v-model="page.currentPage"
                 :total-rows="page.totalPage"
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="position:relative;justify-content:center; margin-bottom:0; margin-top:1rem;"
-              ></b-pagination>
-            
-              <div>
-                <br>
-                <b-button
+                style="position:relative;justify-content:center; margin-bottom:0;"
+                 ></b-pagination>
+                <div> 
+                  <b-button
                   class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                   variant="primary"
                   @click="movePage()"
                   >추가
                 </b-button>
               </div>
-
           </card>
         </div>
-
       </div>
     </div>
   </div>
