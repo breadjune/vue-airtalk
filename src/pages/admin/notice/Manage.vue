@@ -81,13 +81,30 @@
           this.data = response.result;
         }
       },
-      rowSelected(items) {
+      // async getFileName(seq) {
+      //   console.log("File seq : " + seq);
+      //   var formData = new FormData();
+      //   formData.append('seq', seq);
+      //   var response = await this.request("/restapi/board/fileNameInfo", formData);
+      //   console.log("response fileName : " + response.fileName);
+      //   return response.fileName;
+      // },
+      async rowSelected(items) {
         console.log("items "+JSON.stringify(items));
+        var formData = new FormData();
+        var seq = items[0].seq;
+        formData.append('seq', seq);
+        var response = await this.request("/restapi/board/fileNameInfo", formData);
+        var fileName = response.fileName
+        console.log("response fileName1 : " + response.fileName);
+        console.log("response fileName2 : " + fileName);
+        items[0].fileName = fileName;
         this.$emit('rename', 'Content');
         this.$router.push({
           name:"NoticeView",
           params: {
-            row: items
+            row: items,
+            // fileName: fileName
           }
         })
       },
@@ -96,6 +113,9 @@
         this.$emit('rename', 'Content');
         this.$router.push({
           name:"NoticeCreate",
+          params: {
+            created: true
+          }
         });
       },
       async keywordSearched(form) {

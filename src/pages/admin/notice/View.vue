@@ -2,6 +2,9 @@
   <l-form
     :title="title"
     :form="form"
+    @onList="list"
+    @onSave="save"
+    @onRemove="remove"
   >
   </l-form>
 </template>
@@ -13,8 +16,8 @@ export default {
   data() {
     return {
       title: '공지 게시판 수정',
+      fileName: '',
       form: {}
-      
     }
   },
   components: {
@@ -24,31 +27,40 @@ export default {
   mixins: [axioMixin],
   mounted() {
     this.form = this.$route.params.row[0];
+    // this.form.fileName = this.$route.params.fileName[0];
     console.log("this.params : " + JSON.stringify(this.$route.params.row));
-    console.log("this.form : " + JSON.stringify(this.form));
+    // console.log("this.fileName : " + JSON.stringify(this.$route.params.fileName));
   },
   methods : {
-    list(){
+    list(flag){
+      console.log("list invoked!");
       this.$emit('rename','Content');
       this.$router.push({
           name: "Notice"
       });
     },
-    update(){
-      console.log('Update API invoked.');
-      var res = this.request("/rest/file/update.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
+    save(formData){
+      formData.append('bcode', '0001');
+      console.log('modify form : ' + formData.get('seq'));
+      console.log('modify form : ' + formData.get('title'));
+      console.log('modify form : ' + formData.get('writer'));
+      console.log('modify form : ' + formData.get('contents'));
+      console.log('modify form : ' + formData.get('files'));
+      var response = this.request("/restapi/board/create", formData);
+      console.log('RESULT : ' + JSON.stringify(response));
       this.$emit('rename','Content');
       this.$router.push({
-          name: "File"
+       name: "Notice"
       });
     },
-    remove(){
-      console.log('Delete API invoked.');
-      var res = this.request("/rest/file/delete.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
+    remove(formData){
+      formData.append('bcode', '0001');
+      console.log('delete form : ' + formData.get('seq'));
+      var response = this.request("/restapi/board/delete", formData);
+      console.log('RESULT : ' + JSON.stringify(response));
+      this.$emit('rename','Content');
       this.$router.push({
-          name: "File"
+          name: "Notice"
       });
     },
   }

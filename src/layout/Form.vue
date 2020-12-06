@@ -9,42 +9,63 @@
               <hr>
             </template>
             <b-form>
-              <div v-if="!create">
+              <div v-if="!btnControl">
                 <label for="seq">NO.</label>
                 <b-input id="seq" name="seq" type="text" v-model="form.seq" readonly></b-input>
               </div>
               <div>
                 <label for="title">제목</label>
-                <b-input id="title" name="title" type="text" v-html="form.title" v-model="form.title" maxlength="100"><span v-html="rawHtml"></span></b-input>
+                <b-input id="title" name="title" type="text" v-model="form.title" maxlength="100"></b-input>
               </div>
               <div>
                 <label for="writer">작성자</label>
                 <b-input id="writer" name="writer" type="text" v-model="form.writer" maxlength="20"></b-input>
               </div>
-              <div v-if="create">
+              <div>
                 <label for="contents">내용</label>
-                <editor></editor>
+                <editor 
+                @onEdit="edit"
+                :showFlag="showFlag"
+                :contents="form.contents"
+                >
+                </editor>
+              </div>
+              <!-- <div v-else>
+                <label for="contents">내용</label>
+                <editor 
+                @onEdit="edit"
+                :showFlag="showFlag"
+                :contents="form.contents"
+                >
+                </editor>
+              </div> -->
+              <!-- <div v-if="create">
+                <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
+                <div class="file-box" v-for="(file, index) in files" :key="index">{{files ? files[index].name : ''}}</div>
+                <div class="file-box">{{files ? files.name : ''}}</div>
+              </div> -->
+              <div v-if="showFlag">
+                <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
+                <div class="file-box">{{files ? files.name : ''}}</div>
               </div>
               <div v-else>
-                <label for="contents">내용</label>
-                <b-form-textarea id="contents" name="contents" v-model="form.contents" type="text"></b-form-textarea>
-              </div>
-              <div>
-                <b-button v-if="create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
-                <div class="file-box" v-for="(file, index) in files" :key="index">{{files ? files[index].name : ''}}</div>
+                <div class="btn btn-success btn-fill mb-2 mr-sm-2 mb-sm-1">다운로드</div>
+                <div class="file-box">{{form.fileName}}</div>
               </div>
               <div style="display:none">
                 <label for="file" ref="upload">파일 첨부</label>
-                <b-form-file id="file" multiple name="file" type="file" v-model="files"></b-form-file>
+                <b-form-file id="file" name="file" type="file" v-model="files"></b-form-file>
               </div>
             </b-form>
           </card>
-          <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" @click="list">목록</b-button>
-          <b-button v-if="create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" @click="update">저장</b-button>
-          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">수정</b-button>
-          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="down">다운로드</b-button>
-          <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
-          <card v-if="!create">
+          <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
+          <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="save">저장</b-button>
+          <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="modify">수정</b-button>
+          <!-- <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="down">다운로드</b-button> -->
+          <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
+          <br><br>
+          <hr>
+          <card v-if="!create" style="clear:both">
             <comment></comment>
           </card>
         </div>
@@ -64,14 +85,22 @@ export default {
   },
   data() {
     return {
-      files: null
+      files: null,
+      showFlag: false,
+      btnControl: false
     }
   },
   props: {
     title: String,
     subTitle: String,
-    create: Boolean,
+    create: ['create'],
     form: Object
+  },
+  watch: {
+    create(flag) {
+      this.showFlag = true;
+      this.btnControl = true;
+    }
   },
   mounted() {
     // this.form= this.$route.params[0].row;
@@ -82,24 +111,39 @@ export default {
       console.log("onList invoke");
       this.$emit('onList', true);
     },
-    update(){
-
-      this.$emit('onUpdate',true);
+    modify(){
+      this.showFlag = true;
     },
     save(){
-      var formData = Object();
-      formData.files = this.files
-      this.$emit('onUpdate',true);
+      var formData = new FormData();
+      formData.append('seq', this.form.seq);
+      formData.append('files', this.files);
+      formData.append('title', this.form.title);
+      formData.append('writer', this.form.writer);
+      formData.append('contents', this.contents);
+      this.$emit('onSave', formData);
+    },
+    contentFunc(){
+      this.editor.setContent(form.contents);
+    },
+    edit(edit){
+      this.contents = edit;
     },
     down(){
       this.$emit('onDown',true);
     },
     remove(){
-      this.$emit('onRemove',true);
+      var formData = new FormData();
+      formData.append('seq', this.form.seq);
+      this.$emit('onRemove', formData);
     },
     upload(){
       const elem = this.$refs.upload
       elem.click()
+    },
+    download(){
+      var formData = new FormData();
+      formData.append('seq', this.form.seq);
     }
   }
 }

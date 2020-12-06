@@ -1,6 +1,6 @@
 <template>
   <l-form
-    create
+    :create="create"
     :title="title"
     :form="form"
     @onList="list"
@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       title: '공지 게시판 작성',
+      create: false,
       form: {}
     }
   },
@@ -23,12 +24,10 @@ export default {
     comment,
     LForm
   },
-  mixins: [axioMixin],
   mounted() {
-    this.form = this.$route.params.row[0];
-    console.log("this.params : " + JSON.stringify(this.$route.params.row));
-    console.log("this.form : " + JSON.stringify(this.form));
+    this.create = this.$route.params.mounted;
   },
+  mixins: [axioMixin],
   methods : {
     list(flag){
       console.log("list invoked!");
@@ -37,13 +36,14 @@ export default {
           name: "Notice"
       });
     },
-    save(){
-      console.log('Update API invoked.');
-      var res = this.request("/rest/file/update.json", this.form);
-      console.log('RESULT : ' + JSON.stringify(res));
+    save(formData){
+      formData.append('bcode', '0001');
+      console.log('save form : ' + JSON.stringify(formData));
+      var response = this.request("/restapi/board/create", formData);
+      console.log('RESULT : ' + JSON.stringify(response));
       this.$emit('rename','Content');
       this.$router.push({
-          name: "File"
+       name: "Notice"
       });
     }
   }

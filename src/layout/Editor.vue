@@ -1,10 +1,11 @@
 <template>
-<div @submit.prevent="{commands, cancel}">
+<div>
   <card>
     <div class="editor">
-      <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+      <editor-menu-bar :editor="editor" v-if="showFlag" v-slot="{ commands, isActive }">
         <div class="menubar">
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.bold() }"
             @click="commands.bold"
@@ -14,6 +15,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.italic() }"
             @click="commands.italic"
@@ -22,7 +24,8 @@
             <img class="icon" src="@/assets/img/icons/italic.svg" alt="" />
           </button>
 
-          <button
+          <button 
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.strike() }"
             @click="commands.strike"
@@ -31,6 +34,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.underline() }"
             @click="commands.underline"
@@ -43,6 +47,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.code() }"
             @click="commands.code"
@@ -51,6 +56,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.paragraph() }"
             @click="commands.paragraph"
@@ -63,6 +69,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.heading({ level: 1 }) }"
             @click="commands.heading({ level: 1 })"
@@ -71,6 +78,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.heading({ level: 2 }) }"
             @click="commands.heading({ level: 2 })"
@@ -79,6 +87,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.heading({ level: 3 }) }"
             @click="commands.heading({ level: 3 })"
@@ -87,6 +96,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.bullet_list() }"
             @click="commands.bullet_list"
@@ -95,6 +105,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.ordered_list() }"
             @click="commands.ordered_list"
@@ -103,6 +114,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.blockquote() }"
             @click="commands.blockquote"
@@ -111,6 +123,7 @@
           </button>
 
           <button
+            type="button"
             class="menubar__button"
             :class="{ 'is-active': isActive.code_block() }"
             @click="commands.code_block"
@@ -193,10 +206,10 @@ export default {
       adminId: "",
       regDate: "",
       btnModify: true,                // 수정 버튼 표시 or 숨김
-      btnSave: false,                 // 저장, 삭제 버튼 표시 or 숨김
-      createChk: true,
+      // btnSave: false,                 // 저장, 삭제 버튼 표시 or 숨김
+      // createChk: true,
       editor: new Editor({
-        // editable: false,
+        editable: false,
         extensions: [
           new Blockquote(),
           new BulletList(),
@@ -223,21 +236,17 @@ export default {
         `,
         
       }),
-    };  
+    }; 
+  },
+  props: {
+    showFlag: ['showFlag'],
+    createFlag: ['createFlag'],
+    contents: ['contents']
   },
   beforeDestroy() {
     this.editor.destroy();
   },
   mounted() {
-            // this.editorSeq = this.$route.params.editorSeq;
-            // this.title = this.$route.params.title;
-            // this.adminId = this.$route.params.adminId;
-            // this.regDate= this.$route.params.regDate;
-            // this.editor.setContent(this.$route.params.contents);
-            // this.createChk= this.$route.params.createChk;
-            
-            //  if(this.createChk==true)
-            //   this.modify();
   },
   computed: {
       html() {
@@ -246,41 +255,75 @@ export default {
     }
   },
   watch: {
-        // title(){
-        //     console.log(this.title);
-        //     this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
-        //     },
-        // html(){
-        //       console.log(this.editor.getHTML());
-        //       this.$emit('childs-event', this.title,this.editor.getHTML(),this.adminId);
-
-        //   },
-        // createChk(){
-        //       console.log(this.createChk);
-        //       if(this.createChk==true)
-        //       this.modify();
-        // }
-
-         },
+    // title(){
+    //     console.log(this.title);
+    //     this.$emit('childs-event', this.title, this.editor.getHTML(),this.adminId);
+    //     },
+    showFlag(flag) {
+      console.log("show flag : " + flag);
+        if(this.showFlag==true) {
+          this.editor.setOptions({
+          editable: true,
+        })
+      }
+    },
+    html(){
+      console.log(this.editor.getHTML());
+      this.$emit('onEdit', this.editor.getHTML());
+    },
+    contents(newData){
+      console.log("contents : " + newData);
+      this.editor.setContent(this.contents);
+    },
+    // modifyFlag(){
+    //   console.log("modifly flag invoked!");
+    //   if(this.modifyFlag==true) {
+    //     this.editor.setOptions({
+    //       editable: true,
+    //     })
+    //     this.btnSave = true;
+    //   }
+    // },
+    // createFlag(){
+    //   console.log("create flag invoked!");
+    //   if(this.createFlag==true) {
+    //     this.editor.setOptions({
+    //       editable: true,
+    //     })
+    //     this.btnSave = true;
+    //   }
+    // }
+    // modifyChk(){
+    //   console.log(this.modifyFlag);
+    //   if(this.modifyFlag==true) {
+    //     this.modify();
+    //     this.editor.setContent(this.contents);
+    //   }
+    // },
+    // createChk(){
+    //   console.log(this.createFlag);
+    //   if(this.createFlag==true)
+    //   this.editor.setOptions({
+    //     editable: true,
+    //   })
+    // }
+  },
    methods: {
-       showImagePrompt(command) {
-         const src = prompt('이미지 URL을 입력하여 주십시오.');
-         if (src !== null) {
-            command({ src })
-         }
-
-        },
-        //   modify() {
-        //     this.btnModify = false;
-        //     this.btnSave = true;
-        //     this.editor.setOptions({
-        //        editable: true,
-        //      })
-        // },
+      showImagePrompt(command) {
+        const src = prompt('이미지 URL을 입력하여 주십시오.');
+        if (src !== null) {
+          command({ src })
+        }
+      },
+      modify() {
+        this.editor.setOptions({
+          editable: true,
+        })
+      },
         // save(){
         //     console.log(' save()');
         //     this.$emit('childs-event',this.editorSeq, this.title, this.editor.getHTML(),this.adminId ,);
-        // },
+        // }
         // del(){
         //     console.log(' del()');
         //     this.$emit('childs-eventDel', this.editorSeq);

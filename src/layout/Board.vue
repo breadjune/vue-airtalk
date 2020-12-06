@@ -35,13 +35,6 @@
             </b-table>  
             <br>
             <div class="footer-style">
-              <!--button 공통 컴포넌트 구현 필요 -->
-              <b-button
-                class="btn-style btn-fill mb-2 mr-sm-2 mb-sm-1"
-                variant="primary"
-                @click="create"
-              >작성
-              </b-button>
               <!-- <b-button
                 class="btn-fill mb-2 mr-sm-2 mb-sm-1"
                 variant="success"
@@ -56,6 +49,13 @@
                 @change="onPageSelected"
                 aria-controls="my-table"
               ></b-pagination>
+              <!--button 공통 컴포넌트 구현 필요 -->
+              <b-button
+                class="btn-style btn-fill mb-2 mr-sm-2 mb-sm-1"
+                variant="primary"
+                @click="create"
+              >작성
+              </b-button>
             </div>
           </card>
         </div>
