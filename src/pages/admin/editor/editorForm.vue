@@ -10,121 +10,61 @@
         <b-input id="title" name="title" type="text" v-model="title" :disabled="btnModify ? '' : disabled "></b-input>
       </div>
       <div>
-          <label>내용</label>
+        <label>내용</label>
        <card>
         <div class="editor">
           <editor-menu-bar :editor="editor" v-show="btnSave" v-slot="{ commands, isActive }">
             <div class="menubar">
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.bold() }"
-                @click="commands.bold"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.bold() }"  @click="commands.bold">
                 <img class="icon" src="@/assets/img/icons/bold.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.italic() }"
-                @click="commands.italic"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.italic() }" @click="commands.italic">
                 <!-- <icon name="italic" /> -->
                 <img class="icon" src="@/assets/img/icons/italic.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.strike() }"
-                @click="commands.strike"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.strike() }" @click="commands.strike">
                 <img class="icon" src="@/assets/img/icons/strike.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.underline() }"
-                @click="commands.underline"
-              >
-                <img
-                  class="icon"
-                  src="@/assets/img/icons/underline.svg"
-                  alt=""
-                />
+              <button class="menubar__button" :class="{ 'is-active': isActive.underline() }"  @click="commands.underline">
+                <img class="icon" src="@/assets/img/icons/underline.svg" alt=""/>
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.code() }"
-                @click="commands.code"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.code() }" @click="commands.code" >
                 <img class="icon" src="@/assets/img/icons/code.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.paragraph() }"
-                @click="commands.paragraph"
-              >
-                <img
-                  class="icon"
-                  src="@/assets/img/icons/paragraph.svg"
-                  alt=""
-                />
+              <button class="menubar__button" :class="{ 'is-active': isActive.paragraph() }" @click="commands.paragraph" >
+                <img class="icon" src="@/assets/img/icons/paragraph.svg" alt=""/>
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-                @click="commands.heading({ level: 1 })"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 1 }) }" @click="commands.heading({ level: 1 })">
                 H1
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-                @click="commands.heading({ level: 2 })"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
                 H2
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-                @click="commands.heading({ level: 3 })"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.heading({ level: 3 }) }" @click="commands.heading({ level: 3 })">
                 H3
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.bullet_list() }"
-                @click="commands.bullet_list"
-              >
+              <button class="menubar__button" :class="{ 'is-active': isActive.bullet_list() }" @click="commands.bullet_list">
                 <img class="icon" src="@/assets/img/icons/ul.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.ordered_list() }"
-                @click="commands.ordered_list"
-              >
+              <button class="menubar__button"  :class="{ 'is-active': isActive.ordered_list() }"  @click="commands.ordered_list">
                 <img class="icon" src="@/assets/img/icons/ol.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.blockquote() }"
-                @click="commands.blockquote"
-              >
+              <button  class="menubar__button"  :class="{ 'is-active': isActive.blockquote() }"  @click="commands.blockquote">
                 <img class="icon" src="@/assets/img/icons/quote.svg" alt="" />
               </button>
 
-              <button
-                class="menubar__button"
-                :class="{ 'is-active': isActive.code_block() }"
-                @click="commands.code_block"
-              >
+              <button class="menubar__button"  :class="{ 'is-active': isActive.code_block() }"  @click="commands.code_block">
                 <img class="icon" src="@/assets/img/icons/code.svg" alt="" />
               </button>
 
@@ -145,7 +85,6 @@
               </button>
             </div>
           </editor-menu-bar>
-
           <editor-content class="editor__content" :editor="editor" />
         </div>
       </card>
@@ -158,13 +97,13 @@
         {{ html }}
       </pre>
       </div>
-    <hr />
+    <hr/>
       <div style="display:inline;">
-                                <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
-                                <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
-                                <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnModify">삭제</b-button>
-                                <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="cancel()">목록</b-button>
-        </div>
+              <b-button id="modifyBtn" variant="primary" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="modify()" v-show="btnModify">수정</b-button>
+              <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()" v-show="btnSave">저장</b-button>
+              <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()" v-show="btnModify">삭제</b-button>
+              <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="cancel()">목록</b-button>
+      </div>
   </div>
 </template>
 
@@ -273,7 +212,6 @@ export default {
         // html(){
         //       console.log(this.editor.getHTML());
         //       this.$emit('childs-event', this.title,this.editor.getHTML(),this.adminId);
-
         //   },
         createChk(){
               console.log(this.createChk);

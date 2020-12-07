@@ -41,6 +41,7 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
+                style="position:relative;justify-content:center; margin-bottom:0;"
               ></b-pagination>
             </div>
           </card>

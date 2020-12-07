@@ -26,6 +26,7 @@
                 select-mode="single"
                 :fields="fields"
                 :items="data"
+                sort-icon-left
                 :per-page="pageSet.pageRows"
                 @row-selected="onRowSelected"
             >

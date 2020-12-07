@@ -13,7 +13,11 @@
           <td v-for="column in columns" 
               :key="column"
           >{{itemValue(item, column)}}</td>
+           <td id="btnTD">
+             <p v-html="btnData" @click="btnClick"></p>
+           </td>
         </slot>
+       
     </tr>
     </tbody>
   </table>
@@ -37,7 +41,15 @@
       headers: Array,
       columns: Array,
       data: Array,
+      btnData:"",
     },
+    data () {
+      return {
+
+        btnChk:false,
+        
+      }
+      },
     methods: {
       hasValue (item, column) {
         return item[column.toLowerCase()] !== 'undefined'
@@ -47,8 +59,21 @@
       },
       rowSelected (item) {
         console.log("item : " + item[0]);
+        if(this.btnChk){
+          this.btnGo(item);
+        }
+        else{       
         this.$emit("rowSelected", item);
         console.log("invoke RowSelected!");
+        }
+      },
+      btnClick(){
+           this.btnChk=true;
+           console.log("버튼 클릭 : ");
+      },
+      btnGo(item){
+          console.log("버튼 기능 : " +  item);
+          this.$emit("btnClick", item);
       }
     }
   }

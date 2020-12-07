@@ -9,25 +9,27 @@
               <hr>
             </template>
               <search :options="options" @keywordSearch="searchData"></search>
-            <!-- <div v-if="this.$store.getters['groupStore/memberList'].length > 0"> -->
-            
-            <b-table
-              id="my-table"
-              striped
-              hover
-              selectable
-              select-mode="single"
-              :fields="fields"
-              :items="this.$store.getters['groupStore/memberList']"
-              :per-page="perPage"
-              :current-page="currentPage"
-              @row-selected="onRowSelected"
+             <b-table
+                id="my-table"
+                striped
+                hover
+                selectable
+                select-mode="single"
+                :fields="fields"
+                :items="row.data"
+                :per-page="page.perPage"
+                sort-icon-left
+                @row-selected="onRowSelected"
             ></b-table>
-            <!-- 페이징 처리 테스트-->
+             <div id="noData" v-if="row.noData" style="text-align:center; height:100px">
+              데이터가 없습니다.
+            </div>
             <b-pagination
-              v-model="currentPage"
-              :total-rows="rows"
-              :per-page="perPage"
+              v-show="row.default"
+              v-model="page.currentPage"
+              :total-rows="page.totalPage"
+              :per-page="page.perPage"
+              @change="handle"
               aria-controls="my-table"
               style="position:relative;justify-content:center;margin-bottom:0;"
             ></b-pagination>
@@ -68,34 +70,90 @@ export default {
   mixins: [axioMixin],
   data() {
     return {
-      perPage: 4,
-      currentPage: 1,
+      page: {
+        currentPage: 1,
+        perPage: 4,
+        totalPage: 0,
+      },
+      row: {
+        default: true,
+        noData: false,
+        data: [],
+      },
       fields: [
-        { key: "authGroupSeq", label: "관리자 ID", sortable: true,},
-        { key: "name",label: "관리자 명", sortable: false, },
-        { key: "description", label: "사용자 그룹", sortable: false, },
-        { key: "regDate", label: "등록일", sortable: false, },
+        { key: "adminGroupSeq", label: "관리자 ID", sortable: true,},
+        { key: "name",label: "관리자 명", sortable: true, },
+        { key: "description", label: "사용자 그룹", sortable: true, },
+        { key: "regDate", label: "등록일", sortable: true, },
       ],
-      form: {
-        searchWord: "",
-        searchType: null,
+       form: {
+        keyword: "",
+        type: "all",
+        start: "0",
+        length: "",
       },
       options: [
-        { value: null, text: "전체" },
-        { value: "adminName", text: "이름" },
+        { value: "name", text: "관리자 명" },
+        { value: "description", text: "사용자 그룹" },
       ],
     };
   }, 
-  computed: {
-      rows() {
-        return this.$store.getters['groupStore/memberList'].length
-      }
+ computed: {
+    rows() {
+      return this.row.data.length;
     },
+  },
+  mounted() {
+    this.init();
+  },
   methods: {
-    init: async function () {
-      var data = await this.request("/rest/group/search.json", this.form);
-      console.log("DB 정보 확인 : " + JSON.stringify(data));
-      this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
+      init: async function () {
+      this.page.totalPage = await this.request("/rest/group/count",this.form);
+      console.log("카운트" + this.page.totalPage);
+      this.form.length = String(this.page.perPage);
+      var res = await this.request("/rest/group/search", this.form);
+      console.log("Group data : " + JSON.stringify(res));
+      this.row.data = res;
+    },
+    // init: async function () {
+    //   var data = await this.request("/rest/group/search.json", this.form);
+    //   console.log("DB 정보 확인 : " + JSON.stringify(data));
+    //   this.$store.dispatch("groupStore/selectGroupListBySearchWord", data);
+    // },
+     async handle(page) {
+      console.log("page : " + page);
+      console.log("current Page : " + this.page.currentPage);
+      this.form.start = String(page - 1);
+      var response = await this.request("/rest/group/search", this.form);
+      this.row.data = response;
+    },
+    async searchData(form) {
+      if (form.searchWord === null || form.searchWord === "") {
+        alert("검색어를 입력하세요.");
+      } else {
+        this.form.keyword = form.searchWord;
+        if (form.searchType == "default") {
+          console.log(form.searchType);
+          this.form.type = "userId";
+        } else {
+          this.form.type = form.searchType;
+        }
+        this.form.start = "0";
+        this.form.length = String(this.page.perPage);
+        this.page.totalPage = await this.request("/rest/group/count",this.form);
+        
+        //데이터 없음 화면 및 페이징 UI 변경
+        if (this.page.totalPage !== 0) {
+          this.row.default = true;
+          this.row.noData = false;
+        } else {
+          this.row.default = false;
+          this.row.noData = true;
+        }
+         var response = await this.request("/rest/group/search", this.form);
+          console.log("GROUP Data : " + JSON.stringify(response));
+         this.row.data = response;
+      }
     },
     onRowSelected(items) {
       console.log("아이템 보기 ==== "+JSON.stringify(items));
@@ -119,9 +177,6 @@ export default {
       this.$emit('rename', 'Content');
       this.$router.push("/admin/group-create");
     },
-  },
-  mounted() {
-    this.init();
   },
 };
 

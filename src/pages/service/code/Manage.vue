@@ -4,28 +4,29 @@
       <div class="row">
         <div class="col-12">
           <card class="strpied-tabled-with-hover"
-                body-classes="table-responsive"
           >
             <template slot="header">
               <h3 class="card-title">서비스 코드 관리</h3>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
-            <l-table class="table-hover table-striped"
-                     id="my-table"
-                     :headers="row.headers"
-                     :columns="row.columns"
-                     :data="row.data"
-                     :per-page="perPage"
-                     :current-page="currentPage"
-                     @rowSelected="onRowSelected"
+            <b-table
+                id="my-table"
+                striped
+                hover
+                selectable
+                select-mode="single"
+                :fields="fields"
+                :items="row.data"
+                 sort-icon-left
+                :per-page="page.perPage"
             >
-          <!-- <template #cell(show_details)>
-             <b-button size="sm" @click="test" class="mr-2">
-           {{ row.detailsShowing ? 'Hide' : 'Show'}} 삭제
-           </b-button>
-          </template> -->
-            </l-table>
+              <template #cell(btnShow)="row">
+                <div class="text-center">
+                     <b-button class='btn btn-fill btn-danger' @click="remove(row.item)" id='delBtn'>삭제</b-button>
+                </div>
+              </template>
+            </b-table>
             <div id="noData" v-if="row.noData" style="text-align:center; height:100px">
               데이터가 없습니다.
             </div>
@@ -45,6 +46,13 @@
                   >추가
                 </b-button>
               </div>
+               <app-my-modal
+                :title="title"
+                :visible.sync="visible">
+                <div>
+                  {{modalData}}
+                </div> 
+              </app-my-modal>   
           </card>
         </div>
       </div>
@@ -52,22 +60,31 @@
   </div>
 </template>
 <script>
-  import LTable from '@/layout/Table.vue'
   import Card from 'src/components/Cards/Card.vue'
   import Search from '@/layout/Search.vue'
   import axios from 'axios'
+  import Modal from '@/layout/Modal.vue'
   import axioMixin from "@/components/axioMixin"
   const tableHeaders = [ 'NO.','Code', 'Code 이름', '등록일']
   const tableColumns = [ 'seq','code', 'codeName', 'regDate']
   export default {
     components: {
-      LTable,
       Card,
       Search,
+      appMyModal: Modal,
     },
     mixins: [axioMixin],
     data () {
       return {
+        visible: false,
+        modalData: "",
+        title:"서비스 코드 관리",
+        resultS: "",
+        delData:"",
+        msg:{
+              success: "정상 처리되었습니다.",
+              fail: "실패 하였습니다. ",
+            },
         page: {
           currentPage: 1,
           perPage: 4,
@@ -79,6 +96,7 @@
           headers: [...tableHeaders],
           columns: [...tableColumns],
           data: [],
+          btnData: "<b-button class='btn btn-fill btn-danger' id='delBtn'>삭제</b-button>"
         },
       form: {
           keyword: '',
@@ -86,6 +104,13 @@
           start: '0',
           length: ''
           },
+      fields: [
+        { key: "seq", label: "NO.", sortable: true },
+        { key: "code",label: "Code", sortable: true },
+        { key: "codeName", label: "Code 이름", sortable: true },
+        { key: "regDate", label: "등록일", sortable: true},
+        { key: "btnShow", label: ""  }
+      ],
         options: [
             {value: "code", text: tableHeaders[1]},
             {value: tableColumns[2], text: tableHeaders[2]}
@@ -98,6 +123,14 @@
         return this.row.data.length
       }
     },
+      watch: {
+           visible(){  //모달이 닫히면 false 체크
+              if(this.visible==false && this.resultS=="S"){
+                  this.$emit("rename", "Content");
+                   this.$router.push("/service/codeManage");
+               }
+           }
+        },
     mounted () {
       this.init();
     },
@@ -111,7 +144,7 @@
         var res = await this.request("/restapi/svcCode/search", this.form);
         //seq 추가
         for (var i = 0; i <res.length ; i++ )
-        {res[i]['seq'] = i+1;} 
+        { res[i]['seq'] = i+1;} 
         this.row.data = res;
       },
     //페이지 핸들
@@ -154,17 +187,46 @@
         this.row.data = response;
         } 
       },
-      onRowSelected(items) {
-        console.log("items "+JSON.stringify(items));
-        this.$emit('rename', 'Content');
-        this.$router.push({
-        name: "CodeView",
-        params: { 
-            code : items.code,
-            codeName: items.codeName,
-            regDate: items.regDate,
-        },
-      });
+      // onRowSelected(items) {
+      //   console.log("items "+JSON.stringify(items));
+      //   this.delData = items;
+      //   this.$emit('rename', 'Content');
+      //   this.$router.push({
+      //   name: "CodeView",
+      //   params: { 
+      //       code : items.code,
+      //       codeName: items.codeName,
+      //       regDate: items.regDate,
+      //   },
+      // });
+      // },
+       remove(items) {
+        console.log("Del items "+JSON.stringify(items));
+
+       let data ={
+              code: items.code
+              };
+        if(confirm("삭제 하시겠습니까?") == true) {
+              console.log(items.code);
+              axios.post("/restapi/svcCode/remove", data)
+                            .then((result) => {
+                        if(result.data.result == "SUCCESS") {
+                            this.title= result.data.result;
+                            this.modalData= this.msg.success;
+                            this.visible = !this.visible;
+                            this.resultS= "S";
+                        }
+                        else {
+                            this.title= result.data.result;
+                            this.modalData= this.msg.fail;
+                            this.visible = !this.visible;
+                            this.resultS= "F";
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
       },
       movePage() {
         this.$emit('rename', 'Content');
@@ -192,8 +254,25 @@ body{
 }
 
 #my-table > thead > tr > th {
-    font-weight: bold;
+font-weight: bold;
  }
+
+#delBtn{
+    padding: 0.4rem;
+    border: 0px;
+}
+/* .table>thead>tr>th{ 
+  text-align: center!important;
+} */
+
+/* #btnTD{
+  width:10%
+
+}
+
+table > thead > tr > th:nth-child(1) { width:5%; }
+table > thead > tr > th:nth-child(2) { width:10%; }
+table > thead > tr > th:nth-child(3) { width:15%; } */
  
 
 </style>

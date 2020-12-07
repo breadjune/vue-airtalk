@@ -4,15 +4,13 @@
       <div class="row">
         <div class="col-12">
           <card
-            class="strpied-tabled-with-hover"
-            body-classes="table-responsive"
-          >
+            class="strpied-tabled-with-hover">
             <template slot="header">
               <h3 class="card-title">사용자 관리</h3>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
-            <l-table
+            <!-- <l-table
               class="table-hover table-striped"
               id="my-table"
               :headers="row.headers"
@@ -22,7 +20,20 @@
               :current-page="currentPage"
               @rowSelected="onRowSelected"
             >
-            </l-table>
+            </l-table> -->
+            <b-table
+                id="my-table"
+                striped
+                hover
+                selectable
+                select-mode="single"
+                sort-icon-left
+                :fields="fields"
+                :items="row.data"
+                :per-page="page.perPage"
+                @row-selected="onRowSelected"
+            ></b-table>
+
             <div id="noData" v-if="row.noData" style="text-align: center; height: 100px">
               데이터가 없습니다.
             </div>
@@ -66,6 +77,13 @@ export default {
   mixins: [axioMixin],
   data() {
     return {
+      fields: [
+          { key: "seq", label: "NO.", sortable: true},
+          { key: "userId", label: "사용자 ID", sortable: true},
+          { key: "name", label: "이름", sortable: true},
+          { key: "hpNo", label: "핸드폰 번호", sortable: true},
+          { key: "regDate", label: "등록일", sortable: true},
+        ],
       page: {
         currentPage: 1,
         perPage: 4,

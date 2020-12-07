@@ -11,13 +11,18 @@
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
-            <l-table class="table-hover table-striped" id="my-table"
-                     :headers="row.headers"
-                     :columns="row.columns"
-                     :data="row.data"
-                     @rowSelected="onRowSelected"
-            >
-            </l-table>
+           <b-table
+                id="my-table"
+                striped
+                hover
+                selectable
+                select-mode="single"
+                sort-icon-left
+                :fields="fields"
+                :items="row.data"
+                :per-page="page.perPage"
+                @row-selected="onRowSelected"
+            ></b-table>
                 <b-pagination 
                 v-show="row.default"
                 v-model="page.currentPage"
@@ -48,7 +53,7 @@
   // import editorTable from './editorTable.vue'
   import axios from 'axios'
   import axioMixin from "@/components/axioMixin"
-  const tableHeaders = ['no', '제목', '작성자', '등록일']
+  const tableHeaders = ['No.', '제목', '작성자', '등록일']
   const tableColumns = ['editorSeq', 'title', 'adminId', 'regDate']
 
   export default {
@@ -79,6 +84,12 @@
              keyword: '',
              type: ''
           },
+           fields: [
+        { key:'editorSeq', label:'No.',sortable: true, }, 
+        { key:'title', label:'제목' ,sortable: true,}, 
+        { key:'adminId', label:'작성자' ,sortable: true,}, 
+        { key:'regDate', label:'등록일' ,sortable: true,}
+      ],
        options: [
           { value: "title", text: tableHeaders[1] },
           { value: tableColumns[2], text: tableHeaders[2] },
