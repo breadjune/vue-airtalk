@@ -5,10 +5,12 @@
     @onList="list"
     @onSave="save"
     @onRemove="remove"
+    @onDownload="download"
   >
   </l-form>
 </template>
 <script>
+import axios from "axios"
 import axioMixin from "@/components/axioMixin"
 import comment from '../../../layout/Comment.vue'
 import LForm from '../../../layout/Form.vue'
@@ -41,13 +43,12 @@ export default {
     },
     save(formData){
       formData.append('bcode', '0001');
-      console.log('modify form : ' + formData.get('seq'));
-      console.log('modify form : ' + formData.get('title'));
-      console.log('modify form : ' + formData.get('writer'));
-      console.log('modify form : ' + formData.get('contents'));
-      console.log('modify form : ' + formData.get('files'));
-      var response = this.request("/restapi/board/create", formData);
-      console.log('RESULT : ' + JSON.stringify(response));
+      // if(formData.get("files") != null) {
+      //   console.log("upload create");
+      //   this.request("/restapi/board/uploadCreate", formData);
+      // } else {
+        this.request("/restapi/board/create", formData);
+      // }
       this.$emit('rename','Content');
       this.$router.push({
        name: "Notice"
@@ -63,6 +64,11 @@ export default {
           name: "Notice"
       });
     },
+    download(seq){
+      var response = axios.get("/restapi/board/download?seq="+seq).then((result) => {
+        console.log(result.data);
+      });
+    }
   }
 }
 </script>

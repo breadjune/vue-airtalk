@@ -13,11 +13,19 @@
                 <label for="seq">NO.</label>
                 <b-input id="seq" name="seq" type="text" v-model="form.seq" readonly></b-input>
               </div>
-              <div>
+               <div v-if="!showFlag">
+                <label for="title">제목</label>
+                <b-input id="title" name="title" type="text" v-model="form.title" readonly maxlength="100"></b-input>
+              </div>
+              <div v-if="!showFlag">
+                <label for="writer">작성자</label>
+                <b-input id="writer" name="writer" type="text" v-model="form.writer" readonly maxlength="20"></b-input>
+              </div>
+              <div v-if="showFlag">
                 <label for="title">제목</label>
                 <b-input id="title" name="title" type="text" v-model="form.title" maxlength="100"></b-input>
               </div>
-              <div>
+              <div v-if="showFlag">
                 <label for="writer">작성자</label>
                 <b-input id="writer" name="writer" type="text" v-model="form.writer" maxlength="20"></b-input>
               </div>
@@ -49,17 +57,18 @@
                 <div class="file-box">{{files ? files.name : ''}}</div>
               </div>
               <div v-else>
-                <div class="btn btn-success btn-fill mb-2 mr-sm-2 mb-sm-1">다운로드</div>
+                <div class="btn btn-success btn-fill mb-2 mr-sm-2 mb-sm-1" @click="download">다운로드</div>
                 <div class="file-box">{{form.fileName}}</div>
               </div>
               <div style="display:none">
-                <label for="file" ref="upload">파일 첨부</label>
-                <b-form-file id="file" name="file" type="file" v-model="files"></b-form-file>
+                <label for="files" ref="upload">파일 첨부</label>
+                <b-form-file id="files" name="files" type="file" v-model="files"></b-form-file>
               </div>
             </b-form>
           </card>
           <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
-          <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="save">저장</b-button>
+          <b-button v-if="btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="save">저장</b-button>
+          <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">저장</b-button>
           <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="modify">수정</b-button>
           <!-- <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="down">다운로드</b-button> -->
           <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
@@ -116,8 +125,16 @@ export default {
     },
     save(){
       var formData = new FormData();
+      if(this.files != null) formData.append('files', this.files);
+      formData.append('title', this.form.title);
+      formData.append('writer', this.form.writer);
+      formData.append('contents', this.contents);
+      this.$emit('onSave', formData);
+    },
+    update(){
+      var formData = new FormData();
       formData.append('seq', this.form.seq);
-      formData.append('files', this.files);
+      if(this.files != null) formData.append('files', this.files);
       formData.append('title', this.form.title);
       formData.append('writer', this.form.writer);
       formData.append('contents', this.contents);
@@ -142,11 +159,17 @@ export default {
       elem.click()
     },
     download(){
-      var formData = new FormData();
-      formData.append('seq', this.form.seq);
-    }
+      console.log("seq : " + this.form.seq);
+      this.$emit('onDownload', this.form.seq);
+    },
+    isNotEmpty : function(_str){
+		obj = String(_str);
+		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+		else return true;
+	  }
   }
 }
+
 </script>
 <style>
 .file-box {

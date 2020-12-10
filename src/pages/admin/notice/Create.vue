@@ -9,6 +9,7 @@
   </l-form>
 </template>
 <script>
+import axios from "axios"
 import axioMixin from "@/components/axioMixin"
 import comment from '../../../layout/Comment.vue'
 import LForm from '../../../layout/Form.vue'
@@ -37,9 +38,17 @@ export default {
       });
     },
     save(formData){
+      for (var key of formData.keys()) console.log("key : " + key);
+      for (var value of formData.values()) console.log("value : " + value);
+      
       formData.append('bcode', '0001');
-      console.log('save form : ' + JSON.stringify(formData));
-      var response = this.request("/restapi/board/create", formData);
+      
+      if(formData.get("files") != null) {
+        console.log("upload create");
+        this.request("/restapi/board/uploadCreate", formData);
+      } else {
+        this.request("/restapi/board/create", formData);
+      }
       console.log('RESULT : ' + JSON.stringify(response));
       this.$emit('rename','Content');
       this.$router.push({

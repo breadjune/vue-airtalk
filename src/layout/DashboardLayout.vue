@@ -48,14 +48,14 @@
         </li>
         <b-collapse id="navbar-toggle-collapse" class="board-toggle">
           <b-navbar-nav class="ml-auto">
-            <b-nav-item href="#" @click="changeCountents('editor')">
+            <!-- <b-nav-item href="#" @click="changeCountents('editor')">
               <i class="nc-icon nc-single-copy-04"></i>
               글쓰기 게시판
             </b-nav-item>
             <b-nav-item href="#" @click="changeCountents('file')">
               <i class="nc-icon nc-single-copy-04"></i>
               파일 게시판
-            </b-nav-item>
+            </b-nav-item> -->
             <b-nav-item href="#" @click="changeCountents('Notice')">
               <i class="nc-icon nc-single-copy-04"></i>
               공지 게시판
