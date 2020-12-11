@@ -145,9 +145,6 @@ export default {
       this.row.data = response;
     },
     async searchData(form) {
-      if (form.searchWord === null || form.searchWord === "") {
-        alert("검색어를 입력하세요.");
-      } else {
         this.form.keyword = form.searchWord;
         if (form.searchType == "default") {
           console.log(form.searchType);
@@ -176,7 +173,6 @@ export default {
             console.log("User data : " + JSON.stringify(response[i]));
           }
          this.row.data = response;
-      }
     },
     onRowSelected(items) {
       console.log("items " + JSON.stringify(items));
@@ -184,11 +180,11 @@ export default {
       this.$router.push({
         name: "UserView",
         params: {
-          id: items.userId,
-          name: items.name,
-          password: items.password,
-          hpNo: items.hpNo,
-          regDate: items.regDate,
+          id: items[0].userId,
+          name: items[0].name,
+          password: items[0].password,
+          hpNo: items[0].hpNo,
+          regDate: items[0].regDate,
         },
       });
     },

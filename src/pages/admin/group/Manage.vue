@@ -128,9 +128,6 @@ export default {
       this.row.data = response;
     },
     async searchData(form) {
-      if (form.searchWord === null || form.searchWord === "") {
-        alert("검색어를 입력하세요.");
-      } else {
         this.form.keyword = form.searchWord;
         if (form.searchType == "default") {
           console.log(form.searchType);
@@ -153,14 +150,13 @@ export default {
          var response = await this.request("/rest/group/search", this.form);
           console.log("GROUP Data : " + JSON.stringify(response));
          this.row.data = response;
-      }
     },
     onRowSelected(items) {
       console.log("아이템 보기 ==== "+JSON.stringify(items));
       this.$emit('rename', 'Content');
       this.$router.push({
         name: "GroupInfo",
-        params: { authGroupSeq : items[0].authGroupSeq,
+        params: { authGroupSeq : items[0].adminGroupSeq,
                   authName : items[0].name,
                   desc : items[0].description,
                   regDate : items[0].regDate,

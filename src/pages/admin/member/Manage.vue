@@ -126,9 +126,7 @@ import axioMixin from "@/components/axioMixin";
       this.row.data = response;
     },
     async searchData(form) {
-      if (form.searchWord === null || form.searchWord === "") {
-        alert("검색어를 입력하세요.");
-      } else {
+
         this.form.keyword = form.searchWord;
         if (form.searchType == "default") {
           console.log(form.searchType);
@@ -151,7 +149,6 @@ import axioMixin from "@/components/axioMixin";
          var response = await this.request("/rest/admin/search", this.form);
           console.log("admin Data : " + JSON.stringify(response));
          this.row.data = response;
-      }
     },
   
     onRowSelected(param) {

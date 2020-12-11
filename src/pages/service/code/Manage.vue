@@ -159,10 +159,6 @@
         this.row.data = response;
         },
       async searchData(form) {
-        if(form.searchWord === null || form.searchWord === "") {
-          alert("검색어를 입력하세요.")
-        }
-        else {
           this.form.keyword = form.searchWord;
           if(form.searchType == "default") {this.form.type = "code";}
           else {this.form.type = form.searchType;}
@@ -185,7 +181,6 @@
           for (var i = 0; i <response.length ; i++ )
           { response[i]['seq'] = i+1; } 
         this.row.data = response;
-        } 
       },
       // onRowSelected(items) {
       //   console.log("items "+JSON.stringify(items));
@@ -222,7 +217,7 @@
                             this.visible = !this.visible;
                             this.resultS= "F";
                         }
-                    });
+                    });     
                 }
                 else {
                     return false;

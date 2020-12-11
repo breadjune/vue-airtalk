@@ -204,13 +204,13 @@
                     axios.post("/restapi/user/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
                         }
                         else {
-                            this.title= result.data;
+                            this.title= result.data.result;
                             this.modalData= this.msg.fail;
                             this.visible = !this.visible;
                             this.resultS= "F";

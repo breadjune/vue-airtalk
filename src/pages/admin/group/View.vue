@@ -181,7 +181,7 @@ export default {
   },
 
   mounted() {
-    this.init();
+    this.init(); 
     this.user.authGroupSeq = this.$route.params.authGroupSeq;
     this.user.authName = this.$route.params.authName;
     this.user.desc = this.$route.params.desc;
@@ -191,9 +191,7 @@ export default {
     console.log("authName: " + this.user.authName);
     console.log("desc: " + this.user.desc);
     console.log("regDate: " + this.user.regDate); 
-    
-    this.init2();
-
+     this.init2();
   },
   methods: {
     movePage: function (event) {
@@ -204,7 +202,7 @@ export default {
       axios
         .get("/rest/group/menuList.json")
         .then((result) => {
-          console.log("result.data : " + JSON.stringify(result.data));
+          console.log("result.data1 : " + JSON.stringify(result.data));
           this.result = result.data;
           this.resultL = this.result.length;
           console.log(this.result.length);
@@ -230,7 +228,7 @@ export default {
           }
         })
         .then((result) => {
-          console.log("result.data : " + JSON.stringify(result.data));
+          console.log("result.data2 : " + JSON.stringify(result.data));
           this.result = result.data;
           this.resultL = this.result.length;
           console.log(this.result.length);
@@ -244,7 +242,6 @@ export default {
         });
     },
     update() {
-
         // 셀렉트 박스 값 저장
           for (var i = 0; i <this.resultL ; i++ ){
            this.selected[i] = this.resultA[i].auth;
