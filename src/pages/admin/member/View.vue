@@ -163,12 +163,12 @@
                         if(result.data == "SUCCESS") {
                             alert("정상 삭제 되었습니다.");
                             this.$emit('rename', 'Content');
-                            this.$router.push("/admin/admin-list");
+                            this.$router.push("/admin/member-list");
                         }
                         else {
                             alert("삭제 실패 하였습니다.");
                             this.$emit('rename', 'Content');
-                            this.$router.push("/admin/admin-list");
+                            this.$router.push("/admin/member-list");
                         }
                     });
                 }
