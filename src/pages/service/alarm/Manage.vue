@@ -28,6 +28,7 @@
                 select-mode="single"
                 :fields="fields"
                 :items="row.data"
+                sort-icon-left
                 :per-page="page.perPage"
                 @row-selected="onRowSelected"
               ></b-table>

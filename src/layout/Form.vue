@@ -38,20 +38,6 @@
                 >
                 </editor>
               </div>
-              <!-- <div v-else>
-                <label for="contents">내용</label>
-                <editor 
-                @onEdit="edit"
-                :showFlag="showFlag"
-                :contents="form.contents"
-                >
-                </editor>
-              </div> -->
-              <!-- <div v-if="create">
-                <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
-                <div class="file-box" v-for="(file, index) in files" :key="index">{{files ? files[index].name : ''}}</div>
-                <div class="file-box">{{files ? files.name : ''}}</div>
-              </div> -->
               <div v-if="showFlag">
                 <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="success" @click="upload">업로드</b-button>
                 <div class="file-box">{{files ? files.name : ''}}</div>
@@ -70,11 +56,10 @@
           <b-button v-if="btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="save">저장</b-button>
           <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">저장</b-button>
           <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="modify">수정</b-button>
-          <!-- <b-button v-if="!create" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="down">다운로드</b-button> -->
           <b-button v-if="!btnControl" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="remove">삭제</b-button>
           <br><br>
           <hr>
-          <card v-if="!create" style="clear:both">
+          <card v-if="!btnControl" style="clear:both">
             <comment></comment>
           </card>
         </div>
@@ -117,7 +102,6 @@ export default {
   },
   methods : {
     list(){
-      console.log("onList invoke");
       this.$emit('onList', true);
     },
     modify(){

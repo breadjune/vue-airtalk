@@ -142,7 +142,10 @@
         this.name = name
       },
       changeCountents(name) {
-
+        
+        this.$session.remove('page');
+        this.$session.remove('type');
+        this.$session.remove('keyword');
         console.log("name is ... : " + name);
 
         var list = document.querySelectorAll('.nav-main__links li');

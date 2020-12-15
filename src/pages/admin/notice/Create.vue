@@ -49,7 +49,6 @@ export default {
       } else {
         this.request("/restapi/board/create", formData);
       }
-      console.log('RESULT : ' + JSON.stringify(response));
       this.$emit('rename','Content');
       this.$router.push({
        name: "Notice"

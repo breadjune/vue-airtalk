@@ -35,6 +35,7 @@ export default {
   },
   methods : {
     list(flag){
+      var totalPage = this.$session.get("totalPage");
       console.log("list invoked!");
       this.$emit('rename','Content');
       this.$router.push({
@@ -42,13 +43,17 @@ export default {
       });
     },
     save(formData){
+      for (var key of formData.keys()) console.log("key : " + key);
+      for (var value of formData.values()) console.log("value : " + value);
+      
       formData.append('bcode', '0001');
-      // if(formData.get("files") != null) {
-      //   console.log("upload create");
-      //   this.request("/restapi/board/uploadCreate", formData);
-      // } else {
+      
+      if(formData.get("files") != null) {
+        console.log("upload create");
+        this.request("/restapi/board/uploadCreate", formData);
+      } else {
         this.request("/restapi/board/create", formData);
-      // }
+      }
       this.$emit('rename','Content');
       this.$router.push({
        name: "Notice"
@@ -65,9 +70,10 @@ export default {
       });
     },
     download(seq){
-      var response = axios.get("/restapi/board/download?seq="+seq).then((result) => {
-        console.log(result.data);
-      });
+      // var response = axios.post("/restapi/board/download?seq="+seq).then((result) => {
+      //   console.log(result.data);
+      // });
+      document.location ="/restapi/board/download?seq="+seq;
     }
   }
 }
