@@ -63,7 +63,7 @@ import axioMixin from "@/components/axioMixin";
        page: {
         currentPage: 1,
         perPage: 4,
-        totalPage: 0,
+        totalPage: 99,
       },
       row: {
         default: true,
@@ -93,7 +93,16 @@ import axioMixin from "@/components/axioMixin";
   mounted() {
     this.init();
   },
-  
+  created() {
+  if(this.$session.get("keyword")!=undefined )
+    this.form.keyword = this.$session.get("keyword");
+  if(this.$session.get("page")!=undefined){
+    this.form.start = this.$session.get("page")-1;
+    this.page.currentPage = this.$session.get("page");
+  }
+  if(this.$session.get("type")!=undefined)
+    this.form.type = this.$session.get("type");
+  },
   methods: {
     // list: function() {
     //   axios.get("/rest/admin/search.json").then((result) => {
@@ -119,21 +128,17 @@ import axioMixin from "@/components/axioMixin";
       this.row.data = res;
     },
      async handle(page) {
-      console.log("page : " + page);
-      console.log("current Page : " + this.page.currentPage);
       this.form.start = String(page - 1);
       var response = await this.request("/rest/admin/search", this.form);
       this.row.data = response;
+      this.$session.set('page', this.page.currentPage );
     },
     async searchData(form) {
+        this.$session.set('keyword', form.searchWord);
+        this.$session.set('type', form.searchType);
 
         this.form.keyword = form.searchWord;
-        if (form.searchType == "default") {
-          console.log(form.searchType);
-          this.form.type = "adminId";
-        } else {
-          this.form.type = form.searchType;
-        }
+        this.form.type = form.searchType;
         this.form.start = "0";
         this.form.length = String(this.page.perPage);
         this.page.totalPage = await this.request("/rest/admin/count",this.form);
@@ -159,6 +164,7 @@ import axioMixin from "@/components/axioMixin";
           adminId : param[0].adminId,
         },
       });
+      this.$session.set('page', this.page.currentPage );
     },
     create() {
       this.$emit('rename', 'Content');

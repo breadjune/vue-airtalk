@@ -116,6 +116,17 @@ export default {
   mounted() {
     this.init();
   },
+  created() {
+    //session 가져오기
+    if(this.$session.get("keyword")!=undefined )
+      this.form.keyword = this.$session.get("keyword");
+    if(this.$session.get("page")!=undefined){
+     this.form.start = this.$session.get("page")-1;
+     this.page.currentPage = this.$session.get("page");
+   }
+    if(this.$session.get("type")!=undefined)
+      this.form.type = this.$session.get("type");
+  },
   methods: {
     init: async function () {
       // var res = await this.request("/restapi/user/list", this.form);
@@ -143,15 +154,13 @@ export default {
         console.log("User data : " + JSON.stringify(response[i]));
       }
       this.row.data = response;
+      this.$session.set('page', this.page.currentPage );
     },
     async searchData(form) {
+        this.$session.set('keyword', form.searchWord);
+        this.$session.set('type', form.searchType);
         this.form.keyword = form.searchWord;
-        if (form.searchType == "default") {
-          console.log(form.searchType);
-          this.form.type = "userId";
-        } else {
-          this.form.type = form.searchType;
-        }
+        this.form.type = form.searchType;
         this.form.start = "0";
         this.form.length = String(this.page.perPage);
 
@@ -187,6 +196,7 @@ export default {
           regDate: items[0].regDate,
         },
       });
+      this.$session.set('page', this.page.currentPage );
     },
     movePage() {
       this.$emit("rename", "Content");

@@ -160,8 +160,7 @@
         },
       async searchData(form) {
           this.form.keyword = form.searchWord;
-          if(form.searchType == "default") {this.form.type = "code";}
-          else {this.form.type = form.searchType;}
+          this.form.type = form.searchType;
           this.form.start = "0";
           this.form.length = String(this.page.perPage);
           this.page.totalPage = await this.request("/restapi/svcCode/count", this.form);

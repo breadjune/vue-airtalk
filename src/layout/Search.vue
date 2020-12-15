@@ -19,6 +19,10 @@ export default {
     },
     mounted() {
         console.log("options : " + JSON.stringify(this.options));
+      if(this.$session.get("type")!=undefined || this.$session.get("keyword")!=undefined){
+           this.form.searchType = this.$session.get("type");
+           this.form.searchWord = this.$session.get("keyword");
+      }
     },
     props: {
         options: Array
