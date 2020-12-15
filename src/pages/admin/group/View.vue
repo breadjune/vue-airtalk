@@ -292,6 +292,7 @@ export default {
       let data = {
         authGroupSeq: this.user.authGroupSeq,
       };
+      if(confirm("삭제 하시겠습니까?") == true) {
       console.log(data);
       axios
         .post("/rest/group/delete.json", data)
@@ -314,6 +315,7 @@ export default {
         .catch((e) => {
           console.log("error : " + e);
         });
+      }
     },
   },
 };

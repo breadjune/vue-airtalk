@@ -181,7 +181,7 @@
                         }
                         else if(result.data.result == 'PASSFAIL'){
                             this.title= "기존 비밀번호 실패";
-                            this.modalData= "기존 비밀번호와 일지하지 않습니다. 확인 바랍니다.";
+                            this.modalData= "기존 비밀번호와 일치하지 않습니다. 확인 바랍니다.";
                             this.visible = !this.visible;
                             this.resultS= "F";     
                         }

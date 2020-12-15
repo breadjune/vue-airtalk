@@ -169,6 +169,9 @@
         }
       },
       active(list) {
+        //라우터 정보 초기화 
+        this.$router.push("/admin/overview");
+        
         for (var i = 0; i < list.length; i++) { 
           (function(idx) {
             list[idx].classList.remove("active");

@@ -217,7 +217,9 @@
                             this.visible = !this.visible;
                             this.resultS= "F";
                         }
-                    });     
+                    }); 
+                     this.$router.push("/admin/overview");
+                     this.$router.push("/service/codeManage");    
                 }
                 else {
                     return false;
