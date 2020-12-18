@@ -1,7 +1,6 @@
 <template>
   <board
     :title="title"
-    :subTitle="subTitle"
     :fields="fields"
     :data="data"
     :pageSet="pageSet"
@@ -27,7 +26,6 @@
     data () {
       return {
         title: '공지 게시판',
-        subTitle: '공지 게시판 데모 페이지 입니다.',
         fields: [
           { key: "seq", label: "NO.", sortable: true},
           { key: "title", label: "제목", sortable: true},
@@ -80,8 +78,6 @@
         }
         console.log("board data : " + JSON.stringify(response));
 
-        response = this.dateParse(response);
-
         this.data = response.result;
         this.pageSet.totalRows = response.total_cnt;
 
@@ -108,8 +104,6 @@
           var response = await this.request("/restapi/board/search", formData);
           console.log("response data : " + JSON.stringify(response));
 
-          response = this.dateParse(response);
-
           this.data = response.result;
 
         } else {
@@ -123,8 +117,6 @@
           formData.bcode = "0001";
           var response = await this.request("/restapi/board/list", formData);
           console.log("board data : " + JSON.stringify(response));
-
-          response = this.dateParse(response);
 
           this.data = response.result;
         }
@@ -188,21 +180,12 @@
         var response = await this.request("/restapi/board/"+url, formData);
         console.log("response data : " + JSON.stringify(formData));
 
-        response = this.dateParse(response);
-
         this.data = response.result;
         this.pageSet.totalRows = response.total_cnt;
 
         this.$session.set('totalPage', response.total_cnt);
 
         console.log("session page param : ["+this.$session.get('page')+"]["+this.$session.get('type')+"]["+this.$session.get('keyword')+"]["+this.$session.get('totalPage')+"]");
-      },
-      dateParse(response) {
-        for(var i=0; i < response.result.length; i++) {
-          var regDate = response.result[i].regDate.substring(0, 8);
-          response.result[i].regDate = regDate.slice(0, 4)+"-"+regDate.slice(4, 6)+"-"+regDate.slice(6);
-        }
-        return response;
       }
     }
   }

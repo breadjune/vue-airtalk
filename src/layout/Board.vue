@@ -8,7 +8,6 @@
           >
             <template slot="header">
               <h3 class="card-title">{{title}}</h3>
-              <p class="card-category">{{subTitle}}</p>
               <hr>
             </template>
             <!--search(custom)-->
@@ -83,7 +82,6 @@
     },
     props: {
         title: String,
-        subTitle: String,
         fields: Array,
         data: Array,
         pageSet: Object,

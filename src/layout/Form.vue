@@ -86,7 +86,6 @@ export default {
   },
   props: {
     title: String,
-    subTitle: String,
     create: ['create'],
     form: Object
   },
