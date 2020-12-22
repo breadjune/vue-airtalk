@@ -97,6 +97,7 @@
                     fail: "실패 하였습니다. ",
                     phone: "핸드폰 번호를 확인 하세요.",
                     passMax: "비밀번호는 최소 10자리 이상 입력하세요.",
+                    bunpassMax: "기존 비밀번호는 최소 10자리 이상 입력하세요.",
                     passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
                  },
             }
@@ -140,8 +141,15 @@
             },
 
             save() {
-
-                if(this.btnPass==true){ //패스워드 바꾸는 버튼 누르면
+                if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
+                      this.modalData = this.msg.phone;
+                      this.visible = !this.visible;
+                }
+                else if(this.bunpassword.length < 10){
+                    this.modalData = this.msg.bunpassMax;
+                    this.visible = !this.visible;
+                }   
+                else if(this.btnPass==true){ //패스워드 바꾸는 버튼 누르면
                      if (this.password.length < 10) {
                         this.modalData = this.msg.passMax;
                         this.visible = !this.visible;
@@ -150,15 +158,6 @@
                         this.modalData = this.msg.passCheck;
                         this.visible = !this.visible;
                         }
-                }
-                
-                if (this.hpNo == null || this.hpNo == "" || this.hpNo.length < 10) {
-                      this.modalData = this.msg.phone;
-                      this.visible = !this.visible;
-                }
-                else if(this.bunpassword.length < 10){
-                    this.modalData = this.msg.passMax;
-                    this.visible = !this.visible;
                 }
                 else {
                    let data ={
