@@ -18,7 +18,9 @@ export default {
     return {
       title: '공지 게시판 작성',
       create: false,
-      form: {}
+      form: {
+       adminName: "" 
+      }
     }
   },
   components: {
@@ -27,6 +29,7 @@ export default {
   },
   mounted() {
     this.create = this.$route.params.mounted;
+    this.form.adminName = this.$session.get("adminName");
   },
   mixins: [axioMixin],
   methods : {

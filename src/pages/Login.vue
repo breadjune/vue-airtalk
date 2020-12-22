@@ -74,7 +74,7 @@
             console.log("data : " + JSON.stringify(data));
             // this.$store.commit("loginStore/loginComplete", data)
             this.$session.start();
-            this.$session.set('name', data.name);
+            this.$session.set('adminName', data.name);
             this.$session.set('level', data.adminGroupSeq);
             console.log("authToken : " + result.headers.authorization);
             this.$cookie.set('auth', result.headers.authorization);
