@@ -92,8 +92,6 @@
     },
     mounted() {
       this.form.alarmSeq = String(this.$route.params.row[0].seq);
-      console.log("row Data : " + JSON.stringify(this.$route.params.row[0]));
-      console.log("row seq Data : " + JSON.stringify(this.$route.params.row[0].seq));
       this.view();
     },
     computed: {
@@ -118,6 +116,9 @@
         this.$emit('rename', 'Content');
         this.$router.push({
           name:"AlarmManage",
+          params: {
+            research: true
+          }
         });
       }
     }

@@ -33,7 +33,7 @@
                 :per-page="page.perPage"
                 @change="handle"
                 aria-controls="my-table"
-                style="position:relative;justify-content:center; margin-bottom:0;"
+                style="position:relative;justify-content:center;margin-bottom:0;"
               ></b-pagination>
             </div>
           </card>
@@ -80,7 +80,7 @@
         page: {
           currentPage: 1,
           perPage: 7,
-          totalPage: 0
+          totalPage: 9999
         },
         row: {
           default: false,
@@ -101,22 +101,18 @@
         return this.row.data.length
       }
     },
+    mounted() {
+      if(this.$route.params.research) {
+        this.reSearch();
+      }
+    },
     methods: {
-      async handle(page) {
-        var formData = this.form;
-        formData.start = String(page-1);
-        formData.length = String(this.page.perPage);
-        var response = await this.request("/restapi/alarm/list", formData);
-        console.log("response Data : " + JSON.stringify(response));
-        this.row.data = response.result;
-        console.log("this Data : " + JSON.stringify(this.row.data));
-      },
       async searchData(form) {
         console.log("form : " + JSON.stringify(form));
         if(form.searchWord === null || form.searchWord === "") {
           alert("검색어를 입력하세요.")
         } else {
- 
+          
           this.form.type = form.searchType;
           this.form.keyword = form.searchWord;
           var formData = this.form;
@@ -131,10 +127,51 @@
 
           console.log("this Data : " + JSON.stringify(this.row.data));
 
+          this.$session.set('type', form.searchType);
+          this.$session.set('keyword',form.searchWord);
+          this.$session.set('totalPage', response.total_cnt);
+
           if(this.page.totalPage !== 0) this.row.default = true;
           else this.row.default = false
 
         } 
+      },
+      async reSearch() {
+        var page = this.$session.get('page');
+        var type = this.$session.get('type');
+        var keyword = this.$session.get('keyword');
+        var totalPage = this.$session.get('totalPage');
+
+        console.log("session : "+page+"/"+type+"/"+keyword+"/"+totalPage);
+
+        this.form.type = type !== undefined ? type : "";
+        this.form.keyword = keyword !== undefined ? keyword : "";
+
+        var formData = this.form;
+        formData.start = page !== undefined ? page-1 : 0;
+        formData.length = String(this.page.perPage);
+
+        var response = await this.request("/restapi/alarm/list", formData);
+
+        this.row.data = response.result;
+        this.page.totalPage = response.total_cnt;
+
+        this.page.currentPage = page !== undefined ? page : 1;
+
+        if(this.page.totalPage !== 0) this.row.default = true;
+          else this.row.default = false
+
+      },
+      async handle(page) {
+        console.log("page : " + page);
+        var formData = this.form;
+        formData.start = String(page-1);
+        formData.length = String(this.page.perPage);
+        var response = await this.request("/restapi/alarm/list", formData);
+        console.log("response Data : " + JSON.stringify(response));
+        this.row.data = response.result;
+        console.log("this Data : " + JSON.stringify(this.row.data));
+        this.$session.set('page', (String)(page));
       },
       onRowSelected(items) {
         console.log("items : "+JSON.stringify(items));
@@ -145,13 +182,7 @@
             row: items
           }
         })
-      },
-      movePage() {
-        this.$emit('rename', 'Content');
-        this.$router.push({
-          name:"FileCreate",
-        });
-      },
+      }
     }
   }
 </script>
