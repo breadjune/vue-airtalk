@@ -75,6 +75,7 @@
                 msg:{
                     success: "정상 처리되었습니다.",
                     fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+                    failId: "이미 사용중인 아이디 입니다. 다른 아이디를 사용해주세요",
                     phone: "핸드폰 번호를 확인 하세요.",
                     passMax: "비밀번호는 최소 10자리 이상 입력하세요.",
                     passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
@@ -127,6 +128,12 @@
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
+                        }
+                        else if(result.data.result == 'FAILID'){
+                            this.title= "중복된 아이디";
+                            this.modalData= this.msg.failId;
+                            this.visible = !this.visible;
+                            this.resultS= "F"
                         }
                         else {
                             this.title= result.data;

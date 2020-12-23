@@ -209,6 +209,7 @@
                             this.modalData= this.msg.success;
                             this.visible = !this.visible;
                             this.resultS= "S";
+                            this.init();
                         }
                         else {
                             this.title= result.data.result;
@@ -217,8 +218,6 @@
                             this.resultS= "F";
                         }
                     }); 
-                     this.$router.push("/admin/overview");
-                     this.$router.push("/service/codeManage");    
                 }
                 else {
                     return false;

@@ -60,7 +60,7 @@ $module: 'my-modal';
   }
 
   &__header {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     text-align: left;
     line-height: 1.1;
@@ -68,11 +68,11 @@ $module: 'my-modal';
     position: relative;
   }
   &__body {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     padding: 25px;
-    min-height: 100px;
-    max-height: 500px;
+    min-height: 80px;
+    max-height: 400px;
     overflow-y: scroll;
   }
   &__btn {

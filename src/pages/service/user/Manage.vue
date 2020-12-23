@@ -87,7 +87,7 @@ export default {
       page: {
         currentPage: 1,
         perPage: 4,
-        totalPage: 0,
+        totalPage: 99,
       },
       row: {
         default: true,
