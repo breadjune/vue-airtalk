@@ -83,6 +83,7 @@ export default {
           { key: "name", label: "이름", sortable: true},
           { key: "hpNo", label: "핸드폰 번호", sortable: true},
           { key: "regDate", label: "등록일", sortable: true},
+          { key: "pushKey", label: "PUSH KEY", sortable: true}
         ],
       page: {
         currentPage: 1,

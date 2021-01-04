@@ -54,7 +54,7 @@
           </card>
           <b-button class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="list">목록</b-button>
           <b-button v-if="createFlag" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="save">저장</b-button>
-          <b-button v-if="showFlag" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">저장</b-button>
+          <b-button v-if="showFlag && !createFlag" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="update">저장</b-button>
           <b-button v-if="!showFlag && !createFlag" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="primary" style="float:left" @click="modify">수정</b-button>
           <b-button v-if="!createFlag" class="btn-fill mb-2 mr-sm-2 mb-sm-1" variant="danger" style="float:left" @click="del">삭제</b-button>
           <br><br>
@@ -122,7 +122,7 @@ export default {
   },
   watch: {
     create(flag) {
-      // this.showFlag = true;
+      this.showFlag = true;
       this.createFlag = true;
     },
     visible(){  //모달이 닫히면 false 체크
@@ -152,7 +152,7 @@ export default {
       var formData = new FormData();
       if(this.files != null) formData.append('files', this.files);
       formData.append('title', this.form.title);
-      formData.append('writer', this.form.writer);
+      formData.append('writer', this.form.adminName);
       formData.append('contents', this.contents);
       this.$emit('onSave', formData);
     },

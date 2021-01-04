@@ -61,13 +61,23 @@
                                 <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()">삭제</b-button>
                                 <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">목록</b-button>
                             </div>
-                             <app-my-modal
+                            <app-my-modal
                                      :title="title"
                                       :visible.sync="visible">
                                      <div>
                                       {{modalData}}
                                      </div> 
-                               </app-my-modal>      
+                            </app-my-modal>
+                            <confirm
+                                :status="modal.status"
+                                :header="modal.header"
+                                :body="modal.body"
+                                @isCancel="toggle"
+                                @isOk="remove">
+                                <div>
+                                {{modalData}}
+                                </div> 
+                            </confirm>       
                         </b-form>
                     </card>
                 </div>
@@ -79,10 +89,12 @@
 <script>
     import axios from "axios"
     import Modal from '@/layout/Modal.vue'
+    import Confirm from '@/layout/Confirm.vue'
 
     export default {
          components: {
           appMyModal: Modal,
+          Confirm
          },
         data() {
             return {
@@ -117,6 +129,23 @@
                     passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
                     emailCheck: "E-mail을 입력란을 확인 하세요.",
                  },
+                modal: {
+                    status: false,
+                    header: "",
+                    body: "",
+                    headerMsg: {
+                    alert: "확인",
+                    create: "등록",
+                    modify: "수정",
+                    delete: "삭제"
+                    },
+                    bodyMsg:{
+                    delete: "정말 삭제 하시겠습니까?",
+                    fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+                    title: "제목을 입력해 주세요.",
+                    content: "내용을 입력해 주세요."
+                    }
+                }
             }
         },
 
@@ -230,28 +259,46 @@
                     });
                 }
             },
-
-            del() {
-                if(confirm("삭제 하시겠습니까?") == true) {
-                    console.log(this.adminId);
-                    axios.get("/rest/admin/delete.json", { params: { adminId: this.adminId } }).then((result) => {
-                        if(result.data == "SUCCESS") {
-                            alert("정상 삭제 되었습니다.");
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/admin/member-list");
-                        }
-                        else {
-                            alert("삭제 실패 하였습니다.");
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/admin/member-list");
-                        }
-                    });
-                }
-                else {
-                    return false;
-                }
+            toggle() {
+                this.modal.status = !this.modal.status; 
             },
-
+            del() {
+                // if(confirm("삭제 하시겠습니까?") == true) {
+                //     console.log(this.adminId);
+                //     axios.get("/rest/admin/delete.json", { params: { adminId: this.adminId } }).then((result) => {
+                //         if(result.data == "SUCCESS") {
+                //             alert("정상 삭제 되었습니다.");
+                //             this.$emit('rename', 'Content');
+                //             this.$router.push("/admin/member-list");
+                //         }
+                //         else {
+                //             alert("삭제 실패 하였습니다.");
+                //             this.$emit('rename', 'Content');
+                //             this.$router.push("/admin/member-list");
+                //         }
+                //     });
+                // }
+                // else {
+                //     return false;
+                // }
+                this.modal.header = this.modal.headerMsg.delete;
+                this.modal.body = this.modal.bodyMsg.delete;
+                this.toggle();
+            },
+            remove() {
+                axios.get("/rest/admin/delete.json", { params: { adminId: this.adminId } }).then((result) => {
+                    if(result.data == "SUCCESS") {
+                        alert("정상 삭제 되었습니다.");
+                        this.$emit('rename', 'Content');
+                        this.$router.push("/admin/member-list");
+                    }
+                    else {
+                        alert("삭제 실패 하였습니다.");
+                        this.$emit('rename', 'Content');
+                        this.$router.push("/admin/member-list");
+                    }
+                });
+            },
             list() {
                 this.$emit('rename', 'Content');
                 this.$router.push("/admin/member-list");

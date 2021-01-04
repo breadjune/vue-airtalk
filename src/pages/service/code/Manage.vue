@@ -23,7 +23,7 @@
             >
               <template #cell(btnShow)="row">
                 <div class="text-center">
-                     <b-button class='btn btn-fill btn-danger' @click="remove(row.item)" id='delBtn'>삭제</b-button>
+                     <b-button class='btn btn-fill btn-danger' @click="del(row.item)" id='delBtn'>삭제</b-button>
                 </div>
               </template>
             </b-table>
@@ -52,7 +52,17 @@
                 <div>
                   {{modalData}}
                 </div> 
-              </app-my-modal>   
+              </app-my-modal>
+              <confirm
+                :status="modal.status"
+                :header="modal.header"
+                :body="modal.body"
+                @isCancel="toggle"
+                @isOk="remove">
+                <div>
+                  {{modalData}}
+                </div> 
+              </confirm>    
           </card>
         </div>
       </div>
@@ -65,6 +75,7 @@
   import axios from 'axios'
   import Modal from '@/layout/Modal.vue'
   import axioMixin from "@/components/axioMixin"
+  import Confirm from '@/layout/Confirm.vue'
   const tableHeaders = [ 'NO.','Code', 'Code 이름', '등록일']
   const tableColumns = [ 'seq','code', 'codeName', 'regDate']
   export default {
@@ -72,6 +83,7 @@
       Card,
       Search,
       appMyModal: Modal,
+      Confirm
     },
     mixins: [axioMixin],
     data () {
@@ -98,24 +110,40 @@
           data: [],
           btnData: "<b-button class='btn btn-fill btn-danger' id='delBtn'>삭제</b-button>"
         },
-      form: {
-          keyword: '',
-          type: 'all',
-          start: '0',
-          length: ''
-          },
-      fields: [
-        { key: "seq", label: "NO.", sortable: true },
-        { key: "code",label: "Code", sortable: true },
-        { key: "codeName", label: "Code 이름", sortable: true },
-        { key: "regDate", label: "등록일", sortable: true},
-        { key: "btnShow", label: ""  }
-      ],
+        form: {
+            keyword: '',
+            type: 'all',
+            start: '0',
+            length: ''
+            },
+        fields: [
+          { key: "seq", label: "NO.", sortable: true },
+          { key: "code",label: "Code", sortable: true },
+          { key: "codeName", label: "Code 이름", sortable: true },
+          { key: "regDate", label: "등록일", sortable: true},
+          { key: "btnShow", label: ""  }
+        ],
         options: [
             {value: "code", text: tableHeaders[1]},
             {value: tableColumns[2], text: tableHeaders[2]}
-          ],
-
+        ],
+        modal: {
+          status: false,
+          header: "",
+          body: "",
+          headerMsg: {
+            alert: "확인",
+            create: "등록",
+            modify: "수정",
+            delete: "삭제"
+          },
+          bodyMsg:{
+            delete: "정말 삭제 하시겠습니까?",
+            fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+            title: "제목을 입력해 주세요.",
+            content: "내용을 입력해 주세요."
+          }
+        }
       }
     },
      computed: {
@@ -194,14 +222,24 @@
       //   },
       // });
       // },
-       remove(items) {
+      toggle(){
+        this.modal.status = !this.modal.status; 
+      },
+      del(items){
+        this.modal.header = this.modal.headerMsg.delete;
+        this.modal.body = this.modal.bodyMsg.delete;
+        this.delData = items.code;
+        console.log("item code : "+this.delData);
+        this.toggle();
+      },
+      remove() {
         console.log("Del items "+JSON.stringify(items));
 
-       let data ={
-              code: items.code
-              };
-        if(confirm("삭제 하시겠습니까?") == true) {
-              console.log(items.code);
+      //  let data ={
+      //         code: items.code
+      //         };
+      //   if(confirm("삭제 하시겠습니까?") == true) {
+      //         console.log(items.code);
               axios.post("/restapi/svcCode/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
@@ -218,10 +256,10 @@
                             this.resultS= "F";
                         }
                     }); 
-                }
-                else {
-                    return false;
-                }
+                // }
+                // else {
+                //     return false;
+                // }
       },
       movePage() {
         this.$emit('rename', 'Content');

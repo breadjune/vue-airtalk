@@ -124,6 +124,7 @@
 
           this.row.data = response.result;
           this.page.totalPage = response.total_cnt;
+          this.page.currentPage = 1;
 
           console.log("this Data : " + JSON.stringify(this.row.data));
 

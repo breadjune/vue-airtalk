@@ -53,7 +53,17 @@
                                      <div>
                                       {{modalData}}
                                      </div> 
-                               </app-my-modal>      
+                               </app-my-modal>
+                               <confirm
+                                    :status="modal.status"
+                                    :header="modal.header"
+                                    :body="modal.body"
+                                    @isCancel="toggle"
+                                    @isOk="remove">
+                                    <div>
+                                    {{modalData}}
+                                    </div> 
+                                </confirm>          
                         </b-form>
                     </card>
                 </div>
@@ -65,10 +75,12 @@
 <script>
     import axios from "axios"
     import Modal from '@/layout/Modal.vue'
+    import Confirm from '@/layout/Confirm.vue'
 
     export default {
          components: {
           appMyModal: Modal,
+          Confirm
 
          },
         data() {
@@ -100,6 +112,23 @@
                     bunpassMax: "기존 비밀번호는 최소 10자리 이상 입력하세요.",
                     passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
                  },
+                modal: {
+                    status: false,
+                    header: "",
+                    body: "",
+                    headerMsg: {
+                    alert: "확인",
+                    create: "등록",
+                    modify: "수정",
+                    delete: "삭제"
+                    },
+                    bodyMsg:{
+                    delete: "정말 삭제 하시겠습니까?",
+                    fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+                    title: "제목을 입력해 주세요.",
+                    content: "내용을 입력해 주세요."
+                    }
+                }
             }
         },
 
@@ -193,14 +222,40 @@
                     });
                 }
             },
-
+            toggle() {
+                this.modal.status = !this.modal.status; 
+            },
             del() {
-                let data ={
-                    id: this.id,
-                    };
-                if(confirm("삭제 하시겠습니까?") == true) {
-                    console.log(this.id);
-                    axios.post("/restapi/user/remove", data)
+                // let data ={
+                //     id: this.id,
+                //     };
+                // if(confirm("삭제 하시겠습니까?") == true) {
+                //     console.log(this.id);
+                //     axios.post("/restapi/user/remove", data)
+                //             .then((result) => {
+                //         if(result.data.result == "SUCCESS") {
+                //             this.title= result.data.result;
+                //             this.modalData= this.msg.success;
+                //             this.visible = !this.visible;
+                //             this.resultS= "S";
+                //         }
+                //         else {
+                //             this.title= result.data.result;
+                //             this.modalData= this.msg.fail;
+                //             this.visible = !this.visible;
+                //             this.resultS= "F";
+                //         }
+                //     });
+                // }
+                // else {
+                //     return false;
+                // }
+                this.modal.header = this.modal.headerMsg.delete;
+                this.modal.body = this.modal.bodyMsg.delete;
+                this.toggle();
+            },
+            remove() {
+                axios.post("/restapi/user/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
                             this.title= result.data.result;
@@ -215,12 +270,7 @@
                             this.resultS= "F";
                         }
                     });
-                }
-                else {
-                    return false;
-                }
             },
-
             list() {
                 this.$emit('rename', 'Content');
                 this.$router.push("/service/userManage");

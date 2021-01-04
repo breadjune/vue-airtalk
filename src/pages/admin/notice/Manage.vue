@@ -1,15 +1,18 @@
 <template>
-  <board
-    :title="title"
-    :fields="fields"
-    :data="data"
-    :pageSet="pageSet"
-    :options="options"
-    @onPageSelected="pageSelected"
-    @onKeywordSearched="keywordSearched"
-    @onRowSelected="rowSelected"
-    @onCreated="created"
-  ></board>
+  <div>
+    <a href=# @click="movePage(route.url,route.data)" ref="pageMove" style="display:none"></a>
+    <board
+      :title="title"
+      :fields="fields"
+      :data="data"
+      :pageSet="pageSet"
+      :options="options"
+      @onPageSelected="pageSelected"
+      @onKeywordSearched="keywordSearched"
+      @onRowSelected="rowSelected"
+      @onCreated="created"
+    ></board>
+  </div>
 </template>
 <script>
   import board from "../../../layout/Board.vue"
@@ -45,6 +48,10 @@
         form: {
           type: "",
           keyword: ""
+        },
+        route: {
+          url: "",
+          data: {}
         }
       }
     },
@@ -145,13 +152,16 @@
         })
       },
       created() {
-        this.$emit('rename', 'Content');
-        this.$router.push({
-          name:"NoticeCreate",
-          params: {
-            created: true
-          }
-        });
+        // this.$emit('rename', 'Content');
+        // this.$router.push({
+        //   name:"NoticeCreate",
+        //   params: {
+        //     created: true
+        //   }
+        // });
+        this.route.url = "NoticeCreate"
+        const elem = this.$refs.pageMove
+        elem.click()
       },
       async keywordSearched(form) {
         console.log("form params : [type:"+form.searchType+"][keyword:"+form.searchWord+"]");
@@ -166,9 +176,6 @@
           this.form.keyword = "";
           url = "list"
         }
-        
-        this.$session.set('type', form.searchType);
-        this.$session.set('keyword',form.searchWord);
 
         this.pageSet.currentPage = 1;
 
@@ -183,9 +190,19 @@
         this.data = response.result;
         this.pageSet.totalRows = response.total_cnt;
 
+        this.$session.set('type', form.searchType);
+        this.$session.set('keyword',form.searchWord);
         this.$session.set('totalPage', response.total_cnt);
-
+        this.$session.set('page', '1');
+        
         console.log("session page param : ["+this.$session.get('page')+"]["+this.$session.get('type')+"]["+this.$session.get('keyword')+"]["+this.$session.get('totalPage')+"]");
+      },
+      movePage(url, data) {
+        this.$emit('rename', 'Content');
+        this.$router.push({
+        name: url,
+        params: data
+        });
       }
     }
   }

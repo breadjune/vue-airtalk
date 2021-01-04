@@ -94,18 +94,29 @@
                 <b-button
                   variant="danger"
                   class="btn btn-fill mb-2 mr-sm-2 mb-sm-0"
-                  @click="remove()"
+                  @click="del()"
                 >
                   삭제
                 </b-button>
               </div>
-                  <app-my-modal
-                   :title="title"
-                   :visible.sync="visible">
-                     <div>
-                        {{modalData}}
-                   </div>
-                  </app-my-modal>
+                <app-my-modal
+                  :title="title"
+                  :visible.sync="visible">
+                    <div>
+                      {{modalData}}
+                  </div>
+                </app-my-modal>
+
+                <confirm
+                  :status="modal.status"
+                  :header="modal.header"
+                  :body="modal.body"
+                  @isCancel="toggle"
+                  @isOk="remove">
+                  <div>
+                    {{modalData}}
+                  </div> 
+                </confirm> 
 
               <div class="clearfix"></div>
             </b-form>
@@ -120,13 +131,14 @@
 <script>
 import axios from "axios";
 import Modal from '@/layout/Modal.vue'
+import Confirm from '@/layout/Confirm.vue'
 const groupStore = "groupStore";
 
 export default {
   name: "GroupInfo",
    components: {
     appMyModal: Modal,
-
+    Confirm
     },
   data() {
     return {
@@ -169,6 +181,23 @@ export default {
         { value: "RCUD", text: "읽기/생성/수정/삭제" },
         { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
       ],
+      modal: {
+        status: false,
+        header: "",
+        body: "",
+        headerMsg: {
+          alert: "확인",
+          create: "등록",
+          modify: "수정",
+          delete: "삭제"
+        },
+        bodyMsg:{
+          delete: "정말 삭제 하시겠습니까?",
+          fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+          title: "제목을 입력해 주세요.",
+          content: "내용을 입력해 주세요."
+        }
+      }
     };
   },  
   watch:{
@@ -287,8 +316,15 @@ export default {
         this.visible = !this.visible;
       }
     },
-
-    remove() {
+    toggle(){
+      this.modal.status = !this.modal.status; 
+    },
+    del(){
+      this.modal.header = this.modal.headerMsg.delete;
+      this.modal.body = this.modal.bodyMsg.delete;
+      this.toggle();
+    },
+    remove(){
       let data = {
         authGroupSeq: this.user.authGroupSeq,
       };

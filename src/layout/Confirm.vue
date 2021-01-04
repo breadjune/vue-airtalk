@@ -17,7 +17,7 @@
       <b-button size="sm" class="btn btn-fill btn-primary" style="margin-right:3px" @click="$emit('isOk', true)">
         확인
       </b-button>
-      <b-button size="sm" class="btn btn-fill btn-danger" @click="cancel">
+      <b-button v-if="header !== 'alert'" size="sm" class="btn btn-fill btn-danger" @click="cancel">
         취소
       </b-button>
     </template>
@@ -26,6 +26,11 @@
 <script>
 export default {
   name: 'my-modal',
+  data() {
+    return {
+      alertFlag: false
+    }
+  },
   props: {
     status: {
         type: Boolean,
@@ -42,8 +47,8 @@ export default {
     }
   },
   watch: {
-      confirm() {
-          console.log("confirm : " + this.confirm);
+      header() {
+          console.log("confirm : " + this.header);
       }
   },
   methods: {
