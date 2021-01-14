@@ -47,6 +47,17 @@
                                 <b-button id="saveBtn" variant="success" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="save()">저장</b-button>
                                 <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">취소</b-button>
                             </div>
+                            <confirm
+                                :status="modal.status"
+                                :header="modal.header"
+                                :body="modal.body"
+                                :redirect="modal.redirect"
+                                @isCancel="toggle"
+                            >
+                            <div>
+                            {{modalData}}
+                            </div> 
+                            </confirm>    
                         </b-form>
                     </card>
                 </div>
@@ -57,8 +68,12 @@
 
 <script>
     import axios from "axios"
+    import Confirm from '@/layout/Confirm.vue'
     
     export default {
+        components: {
+            Confirm
+        },
         data() {
             return {
                 adminId: "",
@@ -69,6 +84,12 @@
                 passwordCheck: "",
                 phone: "",
                 email: "",
+                modal: {
+                    status: false,
+                    header: "",
+                    body: "",
+                    redirect: false
+                }
             }
         },
 
@@ -82,19 +103,29 @@
         methods: {
             save() {
                 if (this.adminId == null || this.adminId == "" || this.adminId.indexOf('@') <= 0) {
-                    alert("ID를 확인 하세요");
+                    this.modal.header = "확인";
+                    this.modal.body = "email 형식으로 작성해주세요.";
+                    this.toggle();
                 }
                 else if (this.phone == null || this.phone == "" || this.phone.length < 10) {
-                    alert("핸드폰 번호를 확인 하세요.");
+                    this.modal.header = "확인";
+                    this.modal.body = "휴대폰 번호 형식이 아닙니다.";
+                    this.toggle();
                 }
                 else if (this.password.length < 10) {
-                    alert("비밀번호는 최소 10자리 이상 입력하세요.");
+                    this.modal.header = "확인";
+                    this.modal.body = "비밀번호는 최소 10자리 이상 입력하세요.";
+                    this.toggle();
                 }
                 else if (this.password != this.passwordCheck) {
-                    alert("비밀번호가 일치하지 않습니다.");
+                    this.modal.header = "확인";
+                    this.modal.body = "비밀번호가 일치하지 않습니다.";
+                    this.toggle();
                 }
                 else if (this.email == null || this.email == "" || this.email.indexOf('@') <= 0) {
-                    alert("E-mail을 확인 하세요.");
+                    this.modal.header = "확인";
+                    this.modal.body = "email형식이 아닙니다.";
+                    this.toggle();
                 }
                 else {
                     var formData = new FormData();
@@ -108,17 +139,25 @@
                     axios.post("/rest/admin/create.json", formData).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data == 'SUCCESS') {
-                            alert("계정이 생성 되었습니다.");
-                            this.$emit('rename', 'Content');
-                            this.$router.push("/admin/member-list");
+                            this.modal.header = "확인";
+                            this.modal.body = "계정이 생성 되었습니다.";
+                            this.modal.redirect = true
+                            this.toggle();
                         }
                         else {
-                            alert("저장에 실패하였습니다.");
+                            // alert("저장에 실패하였습니다.");
+                            this.modal.header = "확인";
+                            this.modal.body = "생성에 실패하였습니다.";
+                            this.modal.active = ""
+                            this.toggle();
                         }
                     });
                 }
             },
-
+            toggle(value) {
+                this.modal.status = !this.modal.status; 
+                if(value) this.list();
+            },
             list() {
                 this.$emit('rename', 'Content');
                 this.$router.push({

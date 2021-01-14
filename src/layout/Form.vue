@@ -118,7 +118,10 @@ export default {
   props: {
     title: String,
     create: ['create'],
-    form: Object
+    form: {
+      type: Object,
+      required: false
+    }
   },
   watch: {
     create(flag) {

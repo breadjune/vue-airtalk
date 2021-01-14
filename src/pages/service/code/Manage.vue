@@ -57,6 +57,7 @@
                 :status="modal.status"
                 :header="modal.header"
                 :body="modal.body"
+                :redirect="modal.redirect"
                 @isCancel="toggle"
                 @isOk="remove">
                 <div>
@@ -73,7 +74,7 @@
   import Card from 'src/components/Cards/Card.vue'
   import Search from '@/layout/Search.vue'
   import axios from 'axios'
-  import Modal from '@/layout/Modal.vue'
+  // import Modal from '@/layout/Modal.vue'
   import axioMixin from "@/components/axioMixin"
   import Confirm from '@/layout/Confirm.vue'
   const tableHeaders = [ 'NO.','Code', 'Code 이름', '등록일']
@@ -82,21 +83,21 @@
     components: {
       Card,
       Search,
-      appMyModal: Modal,
+      // appMyModal: Modal,
       Confirm
     },
     mixins: [axioMixin],
     data () {
       return {
-        visible: false,
-        modalData: "",
-        title:"서비스 코드 관리",
-        resultS: "",
-        delData:"",
-        msg:{
-              success: "정상 처리되었습니다.",
-              fail: "실패 하였습니다. ",
-            },
+        // visible: false,
+        // modalData: "",
+        // title:"서비스 코드 관리",
+        // resultS: "",
+        // delData:"",
+        // msg:{
+        //       success: "정상 처리되었습니다.",
+        //       fail: "실패 하였습니다. ",
+        //     },
         page: {
           currentPage: 1,
           perPage: 4,
@@ -131,18 +132,19 @@
           status: false,
           header: "",
           body: "",
-          headerMsg: {
-            alert: "확인",
-            create: "등록",
-            modify: "수정",
-            delete: "삭제"
-          },
-          bodyMsg:{
-            delete: "정말 삭제 하시겠습니까?",
-            fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
-            title: "제목을 입력해 주세요.",
-            content: "내용을 입력해 주세요."
-          }
+          redirect: false
+          // headerMsg: {
+          //   alert: "확인",
+          //   create: "등록",
+          //   modify: "수정",
+          //   delete: "삭제"
+          // },
+          // bodyMsg:{
+          //   delete: "정말 삭제 하시겠습니까?",
+          //   fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+          //   title: "제목을 입력해 주세요.",
+          //   content: "내용을 입력해 주세요."
+          // }
         }
       }
     },
@@ -226,34 +228,36 @@
         this.modal.status = !this.modal.status; 
       },
       del(items){
-        this.modal.header = this.modal.headerMsg.delete;
-        this.modal.body = this.modal.bodyMsg.delete;
+        this.modal.header = "삭제";
+        this.modal.body = "정말 삭제 하시겠습니까?";
         this.delData = items.code;
         console.log("item code : "+this.delData);
         this.toggle();
       },
       remove() {
-        console.log("Del items "+JSON.stringify(items));
+      // console.log("Del items "+JSON.stringify(items));
 
-      //  let data ={
-      //         code: items.code
-      //         };
+       let data ={ code: this.delData };
       //   if(confirm("삭제 하시겠습니까?") == true) {
       //         console.log(items.code);
               axios.post("/restapi/svcCode/remove", data)
                             .then((result) => {
                         if(result.data.result == "SUCCESS") {
-                            this.title= result.data.result;
-                            this.modalData= this.msg.success;
-                            this.visible = !this.visible;
-                            this.resultS= "S";
+                            // this.title= result.data.result;
+                            // this.modalData= this.msg.success;
+                            // this.visible = !this.visible;
+                            // this.resultS= "S";
+                            this.toggle();
                             this.init();
                         }
                         else {
-                            this.title= result.data.result;
-                            this.modalData= this.msg.fail;
-                            this.visible = !this.visible;
-                            this.resultS= "F";
+                            // this.title= result.data.result;
+                            // this.modalData= this.msg.fail;
+                            // this.visible = !this.visible;
+                            // this.resultS= "F";
+                            this.modal.header = "확인";
+                            this.modal.body = "삭제에 실패하였습니다.";
+                            this.toggle();
                         }
                     }); 
                 // }
@@ -264,7 +268,7 @@
       movePage() {
         this.$emit('rename', 'Content');
         this.$router.push("/service/codeCreate");
-      },
+      }
       
     },
   }

@@ -99,18 +99,19 @@
                   삭제
                 </b-button>
               </div>
-                <app-my-modal
+                <!-- <app-my-modal
                   :title="title"
                   :visible.sync="visible">
                     <div>
                       {{modalData}}
                   </div>
-                </app-my-modal>
+                </app-my-modal> -->
 
                 <confirm
                   :status="modal.status"
                   :header="modal.header"
                   :body="modal.body"
+                  :redirect="modal.redirect"
                   @isCancel="toggle"
                   @isOk="remove">
                   <div>
@@ -130,14 +131,14 @@
 
 <script>
 import axios from "axios";
-import Modal from '@/layout/Modal.vue'
+// import Modal from '@/layout/Modal.vue'
 import Confirm from '@/layout/Confirm.vue'
 const groupStore = "groupStore";
 
 export default {
   name: "GroupInfo",
    components: {
-    appMyModal: Modal,
+    // appMyModal: Modal,
     Confirm
     },
   data() {
@@ -150,13 +151,13 @@ export default {
         desc: "",
         regDate: "",
       },
-      msg:{
-          success: "정상 처리되었습니다.",
-          fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
-          groupName: "사용자 그룹을 입력해 주세요.",
-          desc: "설명을 입력해 주세요",
+      // msg:{
+      //     success: "정상 처리되었습니다.",
+      //     fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+      //     groupName: "사용자 그룹을 입력해 주세요.",
+      //     desc: "설명을 입력해 주세요",
 
-      },
+      // },
       fields: ["Menu_name", "show_details"],
       items: [
         { Menu_name: "회원관리" },
@@ -185,28 +186,29 @@ export default {
         status: false,
         header: "",
         body: "",
-        headerMsg: {
-          alert: "확인",
-          create: "등록",
-          modify: "수정",
-          delete: "삭제"
-        },
-        bodyMsg:{
-          delete: "정말 삭제 하시겠습니까?",
-          fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
-          title: "제목을 입력해 주세요.",
-          content: "내용을 입력해 주세요."
-        }
+        redirect: false
+        // headerMsg: {
+        //   alert: "확인",
+        //   create: "등록",
+        //   modify: "수정",
+        //   delete: "삭제"
+        // },
+        // bodyMsg:{
+        //   delete: "정말 삭제 하시겠습니까?",
+        //   fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
+        //   title: "제목을 입력해 주세요.",
+        //   content: "내용을 입력해 주세요."
+        // }
       }
     };
   },  
   watch:{
-    visible(){  //모달이 닫히면 false 체크
-        if(this.visible==false && this.resultS=="S"){
-          this.$emit("rename", "Content");
-          this.$router.push("/admin/group-list");
-        }
-    }
+    // visible(){  //모달이 닫히면 false 체크
+    //     if(this.visible==false && this.resultS=="S"){
+    //       this.$emit("rename", "Content");
+    //       this.$router.push("/admin/group-list");
+    //     }
+    // }
   },
 
   mounted() {
@@ -290,17 +292,25 @@ export default {
           .then((result) => {
            console.log("result.data : " + result.data);
            this.result = result.data;
-            if (result.data == "SUCCESS"){
-            this.title= result.data;
-            this.modalData= this.msg.success;
-            this.visible = !this.visible;
-            this.resultS= "S";
+          if (result.data == "SUCCESS"){
+            // this.title= result.data;
+            // this.modalData= this.msg.success;
+            // this.visible = !this.visible;
+            // this.resultS= "S";
+            this.modal.header = "확인";
+            this.modal.body = "정상 처리 되었습니다.";
+            this.modal.redirect = true;
+            this.toggle();
           }
-          else{
-            this.title= result.data;
-            this.modalData= this.msg.fail;
-            this.visible = !this.visible;
-            this.resultS= "F";
+          else {
+            // this.title= result.data;
+            // this.modalData= this.msg.fail;
+            // this.visible = !this.visible;
+            // this.resultS= "F";
+            this.modal.header = "확인";
+            this.modal.body = "실패 되었습니다.";
+            this.modal.redirect = true;
+            this.toggle();
           }
            })
           .catch((e) => {
@@ -308,27 +318,29 @@ export default {
           });
       }
       else if(data.gname==""){
-        this.modalData = this.msg.groupName;
-        this.visible = !this.visible;
+        this.modal.header = "확인";
+        this.modal.body = "사용자 그룹을 입력해 주세요.";
+        this.toggle();
       }
       else if(data.userGroup==""){
-        this.modalData = this.msg.desc;
-        this.visible = !this.visible;
+        this.modal.header = "확인";
+        this.modal.body = "설명을 입력해 주세요";
+        this.toggle();
       }
     },
-    toggle(){
+    toggle(value){
       this.modal.status = !this.modal.status; 
+      if(value) this.movePage();
     },
     del(){
-      this.modal.header = this.modal.headerMsg.delete;
-      this.modal.body = this.modal.bodyMsg.delete;
+      this.modal.header = "삭제";
+      this.modal.body = "정말 삭제 하시겠습니까?";
       this.toggle();
     },
     remove(){
       let data = {
         authGroupSeq: this.user.authGroupSeq,
       };
-      if(confirm("삭제 하시겠습니까?") == true) {
       console.log(data);
       axios
         .post("/rest/group/delete.json", data)
@@ -336,22 +348,17 @@ export default {
           console.log("result.data : " + result.data);
           this.result = result.data;
            if (result.data == "SUCCESS"){
-            this.title= result.data;
-            this.modalData= this.msg.success;
-            this.visible = !this.visible;
-            this.resultS= "S";
+            this.movePage();
           }
           else{
-            this.title= result.data;
-            this.modalData= this.msg.fail;
-            this.visible = !this.visible;
-            this.resultS= "F";
+            this.modal.header = "확인";
+            this.modal.body = "삭제에 실패하였습니다.";
+            this.toggle(); 
           }
         })
         .catch((e) => {
           console.log("error : " + e);
         });
-      }
     },
   },
 };

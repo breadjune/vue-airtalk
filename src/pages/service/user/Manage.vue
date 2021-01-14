@@ -3,36 +3,27 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <card
-            class="strpied-tabled-with-hover">
+          <card class="strpied-tabled-with-hover">
             <template slot="header">
               <h3 class="card-title">사용자 관리</h3>
               <hr>
             </template>
             <search :options="options" @keywordSearch="searchData"></search>
-            <!-- <l-table
-              class="table-hover table-striped"
-              id="my-table"
-              :headers="row.headers"
-              :columns="row.columns"
-              :data="row.data"
-              :per-page="perPage"
-              :current-page="currentPage"
-              @rowSelected="onRowSelected"
-            >
-            </l-table> -->
-            <b-table
-                id="my-table"
-                striped
-                hover
-                selectable
-                select-mode="single"
-                sort-icon-left
-                :fields="fields"
-                :items="row.data"
-                :per-page="page.perPage"
-                @row-selected="onRowSelected"
-            ></b-table>
+            <div style="overflow-x:scroll">
+              <b-table
+                  id="my-table"
+                  striped
+                  hover
+                  selectable
+                  select-mode="single"
+                  table-class="text-nowrap"
+                  sort-icon-left
+                  :fields="fields"
+                  :items="row.data"
+                  :per-page="page.perPage"
+                  @row-selected="onRowSelected"
+              ></b-table>
+            </div>
 
             <div id="noData" v-if="row.noData" style="text-align: center; height: 100px">
               데이터가 없습니다.

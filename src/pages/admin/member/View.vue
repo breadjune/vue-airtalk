@@ -61,17 +61,18 @@
                                 <b-button id="deleteBtn" variant="danger" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="del()">삭제</b-button>
                                 <b-button id="listBtn" variant="info" class="btn btn-fill mb-2 mr-sm-2 mb-sm-0" @click="list()">목록</b-button>
                             </div>
-                            <app-my-modal
+                            <!-- <app-my-modal
                                      :title="title"
                                       :visible.sync="visible">
                                      <div>
                                       {{modalData}}
                                      </div> 
-                            </app-my-modal>
+                            </app-my-modal> -->
                             <confirm
                                 :status="modal.status"
                                 :header="modal.header"
                                 :body="modal.body"
+                                :redirect="modal.redirect"
                                 @isCancel="toggle"
                                 @isOk="remove">
                                 <div>
@@ -88,18 +89,16 @@
 
 <script>
     import axios from "axios"
-    import Modal from '@/layout/Modal.vue'
+    // import Modal from '@/layout/Modal.vue'
     import Confirm from '@/layout/Confirm.vue'
 
     export default {
          components: {
-          appMyModal: Modal,
+        //   appMyModal: Modal,
           Confirm
          },
         data() {
             return {
-                visible: false,
-
                 adminId: "",
                 adminName: "",
                 adminGroup: "",
@@ -117,34 +116,11 @@
                 pwPhoneEmail: true,             // phone, e-mail disable, undisable
                 inputAdminGroup: true,          // adminGroup disable, undisable
                 inputAdminGroupSelect: false,   // adminGroupSelect disable, undisable
-                modalData: "",
-                title:"계정 관리",
-                resultS: "",
-                msg:{
-                    success: "정상 처리되었습니다.",
-                    fail: "실패 하였습니다. ",
-                    phone: "핸드폰 번호를 확인 하세요.",
-                    passMax: "비밀번호는 최소 10자리 이상 입력하세요.",
-                    bunpassMax: "기존 비밀번호는 최소 10자리 이상 입력하세요.",
-                    passCheck: "입력하신 비밀번호가 서로 일치하지 않습니다.",
-                    emailCheck: "E-mail을 입력란을 확인 하세요.",
-                 },
                 modal: {
                     status: false,
                     header: "",
                     body: "",
-                    headerMsg: {
-                    alert: "확인",
-                    create: "등록",
-                    modify: "수정",
-                    delete: "삭제"
-                    },
-                    bodyMsg:{
-                    delete: "정말 삭제 하시겠습니까?",
-                    fail: "저장 실패 하였습니다. 정보를 확인해주세요.",
-                    title: "제목을 입력해 주세요.",
-                    content: "내용을 입력해 주세요."
-                    }
+                    redirect: false
                 }
             }
         },
@@ -154,12 +130,6 @@
             phone : function() {
                 return this.phone = this.phone.replace(/[^0-9]/g, '');
             },
-            visible(){  //모달이 닫히면 false 체크
-                if(this.visible==false && this.resultS=="S"){
-                    this.$emit("rename", "Content");
-                    this.$router.push("/admin/member-list");
-                }
-             }
         },
 
         created() {
@@ -196,106 +166,84 @@
             save() {
                 
                 if (this.phone == null || this.phone == "" || this.phone.length < 10) {
-                    this.modalData = this.msg.phone;
-                    this.visible = !this.visible;
+                    this.modal.header = "확인";
+                    this.modal.body = "휴대폰 번호 형식이 아닙니다.";
+                    this.toggle();
                 }
                 else if (this.bunpassword.length < 10) {
-                    this.modalData = this.msg.bunpassMax;
-                    this.visible = !this.visible;
+                    this.modal.header = "확인";
+                    this.modal.body = "비밀번호는 최소 10자리 이상 입력하세요.";
+                    this.toggle();
                 }
                 else if (this.email == null || this.email == "" || this.email.indexOf('@') <= 0) {
-                    this.modalData = this.msg.emailCheck;
-                    this.visible = !this.visible; 
-                }
-                else if(this.btnPass==true){ //패스워드 바꾸는 버튼 누르면
-                     if (this.password.length < 10) {
-                        this.modalData = this.msg.passMax;
-                        this.visible = !this.visible;
-                        }
-                     else if (this.password != this.passwordCheck) {
-                        this.modalData = this.msg.passCheck;
-                        this.visible = !this.visible;
-                        }
+                    this.modal.header = "확인";
+                    this.modal.body = "email 형식으로 작성해주세요.";
+                    this.toggle();
                 }
                 else {
-                    // var formData = new FormData();
-                    // formData.append('adminId', this.adminId);
-                    // formData.append('adminGroupSeq', this.adminGroupSeq);
-                    // formData.append('password', this.password);
-                    // formData.append('phone', this.phone);
-                    // formData.append('email', this.email);
-                    // formData.append('bunpassword' , this.bunpassword);
-
-                let data ={
-                    adminId: this.adminId,
-                    adminGroupSeq: this.adminGroupSeq,
-                    adminName: this.adminName,
-                    password: this.password,
-                    email: this.email,
-                    phone: this.phone,   
-                    bunpassword: this.bunpassword,
-                   };
+                    
+                    if(this.btnPass==true) { //패스워드 바꾸는 버튼 누르면
+                        if (this.password.length < 10) {
+                            this.modal.header = "확인";
+                            this.modal.body = "비밀번호는 최소 10자리 이상 입력하세요.";
+                            this.toggle();
+                        }
+                        else if (this.password != this.passwordCheck) {
+                            this.modal.header = "확인";
+                            this.modal.body = "비밀번호가 일치하지 않습니다.";
+                            this.toggle();
+                        }
+                    }
+                    
+                    let data ={
+                        adminId: this.adminId,
+                        adminGroupSeq: this.adminGroupSeq,
+                        adminName: this.adminName,
+                        password: this.password,
+                        email: this.email,
+                        phone: this.phone,   
+                        bunpassword: this.bunpassword,
+                    };
 
                     axios.post("/rest/admin/update.json", data).then((result) =>  {
                         // 정상 처리 될 경우 리스트 화면으로 이동
                         if(result.data.result == 'SUCCESS') {
-                            this.title= result.data.result;
-                            this.modalData= this.msg.success;
-                            this.visible = !this.visible;
-                            this.resultS= "S";
+                            this.modal.header = "확인";
+                            this.modal.body = "정상 처리 되었습니다.";
+                            this.modal.redirect = true;
+                            this.toggle();
                         }
                         else if(result.data.result == 'PASSFAIL'){
-                            this.title= "기존 비밀번호 실패";
-                            this.modalData= "기존 비밀번호와 일치하지 않습니다. 확인 바랍니다.";
-                            this.visible = !this.visible;
-                            this.resultS= "F";     
+                            this.modal.header = "확인";
+                            this.modal.body = "기존 비밀번호가 일치하지 않습니다.";
+                            this.toggle();     
                         }
                         else {
-                            this.title= result.data.result;
-                            this.modalData= this.msg.fail;
-                            this.visible = !this.visible;
-                            this.resultS= "F";
+                            this.modal.header = "확인";
+                            this.modal.body = "알수없는 오류";
+                            this.toggle(); 
                         }
                     });
                 }
             },
-            toggle() {
-                this.modal.status = !this.modal.status; 
+            toggle(value) {
+                this.modal.status = !this.modal.status;
+                if(value) this.list();
             },
             del() {
-                // if(confirm("삭제 하시겠습니까?") == true) {
-                //     console.log(this.adminId);
-                //     axios.get("/rest/admin/delete.json", { params: { adminId: this.adminId } }).then((result) => {
-                //         if(result.data == "SUCCESS") {
-                //             alert("정상 삭제 되었습니다.");
-                //             this.$emit('rename', 'Content');
-                //             this.$router.push("/admin/member-list");
-                //         }
-                //         else {
-                //             alert("삭제 실패 하였습니다.");
-                //             this.$emit('rename', 'Content');
-                //             this.$router.push("/admin/member-list");
-                //         }
-                //     });
-                // }
-                // else {
-                //     return false;
-                // }
-                this.modal.header = this.modal.headerMsg.delete;
-                this.modal.body = this.modal.bodyMsg.delete;
+                this.modal.header = "삭제";
+                this.modal.body = "정말 삭제 하시겠습니까?";
                 this.toggle();
             },
             remove() {
                 axios.get("/rest/admin/delete.json", { params: { adminId: this.adminId } }).then((result) => {
                     if(result.data == "SUCCESS") {
-                        alert("정상 삭제 되었습니다.");
-                        this.$emit('rename', 'Content');
-                        this.$router.push("/admin/member-list");
+                        this.list();
                     }
                     else {
-                        alert("삭제 실패 하였습니다.");
-                        this.$emit('rename', 'Content');
-                        this.$router.push("/admin/member-list");
+                        this.modal.header = "확인";
+                        this.modal.body = "삭제에 실패하였습니다.";
+                        this.toggle(); 
                     }
                 });
             },

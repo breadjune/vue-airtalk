@@ -1,7 +1,7 @@
 <template>
   <b-modal v-model="status" id="modal-scoped"
     size="sm"
-    :header-bg-variant="'danger'"
+    :header-bg-variant="hColor"
     :header-text-variant="'light'">
 
     <template #modal-header="{}">
@@ -14,11 +14,14 @@
 
     <template #modal-footer="{}">
       <!-- Emulate built in modal footer ok and cancel button actions -->
-      <b-button size="sm" class="btn btn-fill btn-primary" style="margin-right:3px" @click="$emit('isOk', true)">
+      <b-button v-if="header !== '확인'" size="sm" class="btn btn-fill btn-primary" style="margin-right:3px" @click="$emit('isOk', true)">
         확인
       </b-button>
-      <b-button v-if="header !== 'alert'" size="sm" class="btn btn-fill btn-danger" @click="cancel">
+      <b-button v-if="header !== '확인'" size="sm" class="btn btn-fill btn-danger" @click="cancel">
         취소
+      </b-button>
+      <b-button v-else size="sm" class="btn btn-fill btn-primary" @click="cancel">
+        확인
       </b-button>
     </template>
   </b-modal>
@@ -28,7 +31,8 @@ export default {
   name: 'my-modal',
   data() {
     return {
-      alertFlag: false
+      alertFlag: false,
+      hColor: "danger"
     }
   },
   props: {
@@ -44,17 +48,28 @@ export default {
     body: {
         type: String,
         require: false
+    },
+    redirect: {
+        type: Boolean,
+        require: false
     }
   },
   watch: {
       header() {
           console.log("confirm : " + this.header);
+          // if(this.header == "확인") {
+          //   this.hColor = "primary"
+          // }
+      },
+      redirect() {
+        console.log("redirect status : " + redirect);
+        if(redirect) this.hColor = "primary"
       }
   },
   methods: {
       cancel() {
           this.status = false;
-          this.$emit('isCancel', false);
+          this.$emit('isCancel', this.redirect);
       }
   }
 }

@@ -79,14 +79,24 @@
                 >
                   목록
                 </b-button>
-                
-                <app-my-modal
+                <!-- <app-my-modal
                    :title="title"
                    :visible.sync="visible">
-                     <div>
-                        {{modalData}}
+                    <div>
+                      {{modalData}}
                    </div>
-                  </app-my-modal>
+                </app-my-modal> -->
+                <confirm
+                  :status="modal.status"
+                  :header="modal.header"
+                  :body="modal.body"
+                  :redirect="modal.redirect"
+                  @isCancel="toggle"
+                  @isOk="remove">
+                  <div>
+                  {{modalData}}
+                  </div> 
+                </confirm>
               </div>
               <div class="clearfix"></div>
             </b-form>
@@ -102,12 +112,13 @@
 const groupStore = "groupStore";
 
 import axios from "axios";
-import Modal from '@/layout/Modal.vue'
+// import Modal from '@/layout/Modal.vue'
+import Confirm from '@/layout/Confirm.vue'
 export default {
   name: "GroupCreate",
   components: {
-    appMyModal: Modal,
-
+    // appMyModal: Modal,
+    Confirm
     },
    computed: {
       groupState() {
@@ -151,18 +162,24 @@ export default {
         { value: "RCUD", text: "읽기/생성/수정/삭제" },
         { value: "RCUDA", text: "읽기/생성/수정/삭제/승인" },
       ],
+      modal: {
+        status: false,
+        header: "",
+        body: "",
+        redirect: false
+      }
     };
   },
   mounted() {
     this.init();
   },
   watch:{
-    visible(){  //모달이 닫히면 false 체크
-        if(this.visible==false && this.resultS=="S"){
-          this.$emit("rename", "Content");
-          this.$router.push("/admin/group-list");
-        }
-    }
+    // visible(){  //모달이 닫히면 false 체크
+    //   if(this.visible==false && this.resultS=="S"){
+    //     this.$emit("rename", "Content");
+    //     this.$router.push("/admin/group-list");
+    //   }
+    // }
   },
   methods: {
     movePage: function (event) {
@@ -196,6 +213,13 @@ export default {
           console.log("error : " + e);
         });
     },
+    toggle(value) {
+      this.modal.status = !this.modal.status; 
+      if(value) {
+        this.$emit("rename", "Content");
+        this.$router.push("/admin/group-list");
+      }
+    },
     async create() {
       let data = {
         gname: this.user.gname,
@@ -211,16 +235,24 @@ export default {
           console.log("result.data : " + result.data);
           this.result = result.data;
           if (result.data == "SUCCESS"){
-            this.title= result.data;
-            this.modalData= this.msg.success;
-            this.visible = !this.visible;
-            this.resultS= "S";
+            // this.title= result.data;
+            // this.modalData= this.msg.success;
+            // this.visible = !this.visible;
+            // this.resultS= "S";
+            this.modal.header = "확인";
+            this.modal.body = "그룹이 생성 되었습니다.";
+            this.modal.redirect = true
+            this.toggle();
           }
           else{
-            this.title= result.data;
-            this.modalData= this.msg.fail;
-            this.visible = !this.visible;
-            this.resultS= "F";
+            // this.title= result.data;
+            // this.modalData= this.msg.fail;
+            // this.visible = !this.visible;
+            // this.resultS= "F";
+            this.modal.header = "확인";
+            this.modal.body = "생성 실패 되었습니다.";
+            this.modal.redirect = true
+            this.toggle();
           }
         })
         .catch((e) => {
@@ -229,12 +261,14 @@ export default {
   
       }
       else if(this.groupState==false){
-        this.modalData = this.msg.groupName;
-        this.visible = !this.visible;
+        this.modal.header = "확인";
+        this.modal.body = "사용자 그룹을 입력해 주세요.";
+        this.toggle();
       }
       else if(this.nameState==false){
-        this.modalData = this.msg.desc;
-        this.visible = !this.visible;
+        this.modal.header = "확인";
+        this.modal.body = "설명을 입력해 주세요";
+        this.toggle();
       }
 
     },
